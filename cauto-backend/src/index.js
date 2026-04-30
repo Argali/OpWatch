@@ -72,4 +72,16 @@ app.use("/api/bugs",        require("./routes/bugs"));
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Cauto backend running on http://localhost:${PORT}`));
+
+async function startServer() {
+  if (process.env.ERP_SOURCE !== "mock") {
+    try {
+      await require("./data/xmlLoader").load();
+    } catch (err) {
+      console.error("[XmlLoader] Failed to load XML data:", err.message);
+    }
+  }
+  app.listen(PORT, () => console.log(`Cauto backend running on http://localhost:${PORT}`));
+}
+
+startServer();

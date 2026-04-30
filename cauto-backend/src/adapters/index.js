@@ -2,6 +2,7 @@ const provider = process.env.GPS_PROVIDER || "mock";
 
 const adapters = {
   mock:    require("./gps.mock"),
+  erpmock: require("./gps.erpmock"),
   visirun: require("./gps.visirun"),
 };
 

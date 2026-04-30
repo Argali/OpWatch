@@ -1,0 +1,187 @@
+﻿<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+
+<Styles>
+ <Style ss:ID="omBool">
+  <NumberFormat ss:Format="True/False"/>
+ </Style>
+ <Style ss:ID="omDateTime">
+  <NumberFormat ss:Format="General Date"/>
+ </Style>
+ <Style ss:ID="omDate">
+  <NumberFormat ss:Format="Short Date"/>
+ </Style>
+ <Style ss:ID="omNumber">
+  <NumberFormat ss:Format="General Number"/>
+ </Style>
+ <Style ss:ID="omTime">
+  <NumberFormat ss:Format="Medium Time"/>
+ </Style>
+ <Style ss:ID="omColHeadingText">
+  <ss:Font ss:Bold="1"/>
+ </Style>
+ <Style ss:ID="omWsHeadingText">
+  <ss:Font ss:Bold="1" ss:Size="12"/>
+ </Style>
+ <Style ss:ID="xlGeneral">
+  <NumberFormat ss:Format="General"/>
+ </Style>
+ <Style ss:ID="xlGeneralNumber">
+  <NumberFormat ss:Format="General Number"/>
+ </Style>
+ <Style ss:ID="xlGeneralDate">
+  <NumberFormat ss:Format="General Date"/>
+ </Style>
+ <Style ss:ID="xlLongDate">
+  <NumberFormat ss:Format="Long Date"/>
+ </Style>
+ <Style ss:ID="xlMediumDate">
+  <NumberFormat ss:Format="Medium Date"/>
+ </Style>
+ <Style ss:ID="xlShortDate">
+  <NumberFormat ss:Format="Short Date"/>
+ </Style>
+ <Style ss:ID="xlLongTime">
+  <NumberFormat ss:Format="Long Time"/>
+ </Style>
+ <Style ss:ID="xlMediumTime">
+  <NumberFormat ss:Format="Medium Time"/>
+ </Style>
+ <Style ss:ID="xlShortTime">
+  <NumberFormat ss:Format="Short Time"/>
+ </Style>
+ <Style ss:ID="xlCurrency">
+  <NumberFormat ss:Format="Currency"/>
+ </Style>
+ <Style ss:ID="xlFixed">
+  <NumberFormat ss:Format="Fixed"/>
+ </Style>
+ <Style ss:ID="xlStandard">
+  <NumberFormat ss:Format="Standard"/>
+ </Style>
+ <Style ss:ID="xlPercent">
+  <NumberFormat ss:Format="Percent"/>
+ </Style>
+ <Style ss:ID="xlScientific">
+  <NumberFormat ss:Format="Scientific"/>
+ </Style>
+ <Style ss:ID="xlTrueFalse">
+  <NumberFormat ss:Format="True/False"/>
+ </Style>
+</Styles>
+
+<Worksheet ss:Name="Sheet1">
+<Table>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+
+
+ <Row>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">X</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">OSSERVAZIONE</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PREVISIONE</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">ConfIntLo</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">ConfIntUp</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PrevIntLo</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PrevIntUp</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PERIODO</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">1</Data></Cell>
+  <Cell><Data ss:Type="Number">200330.2252</Data></Cell>
+  <Cell><Data ss:Type="Number">211567.376276</Data></Cell>
+  <Cell><Data ss:Type="Number">208735.000069</Data></Cell>
+  <Cell><Data ss:Type="Number">214399.752483</Data></Cell>
+  <Cell><Data ss:Type="Number">197717.928113</Data></Cell>
+  <Cell><Data ss:Type="Number">225416.82444</Data></Cell>
+  <Cell><Data ss:Type="String">202001
+202012</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">2</Data></Cell>
+  <Cell><Data ss:Type="Number">221354.9344</Data></Cell>
+  <Cell><Data ss:Type="Number">213151.362019</Data></Cell>
+  <Cell><Data ss:Type="Number">211024.935207</Data></Cell>
+  <Cell><Data ss:Type="Number">215277.788831</Data></Cell>
+  <Cell><Data ss:Type="Number">199428.878627</Data></Cell>
+  <Cell><Data ss:Type="Number">226873.845411</Data></Cell>
+  <Cell><Data ss:Type="String">202101
+202112</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">3</Data></Cell>
+  <Cell><Data ss:Type="Number">221755.6602</Data></Cell>
+  <Cell><Data ss:Type="Number">214735.347762</Data></Cell>
+  <Cell><Data ss:Type="Number">213070.607845</Data></Cell>
+  <Cell><Data ss:Type="Number">216400.087679</Data></Cell>
+  <Cell><Data ss:Type="Number">201076.78933</Data></Cell>
+  <Cell><Data ss:Type="Number">228393.906194</Data></Cell>
+  <Cell><Data ss:Type="String">202201
+202212</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">4</Data></Cell>
+  <Cell><Data ss:Type="Number">218060.6693</Data></Cell>
+  <Cell><Data ss:Type="Number">216319.333505</Data></Cell>
+  <Cell><Data ss:Type="Number">214654.593588</Data></Cell>
+  <Cell><Data ss:Type="Number">217984.073422</Data></Cell>
+  <Cell><Data ss:Type="Number">202660.775072</Data></Cell>
+  <Cell><Data ss:Type="Number">229977.891937</Data></Cell>
+  <Cell><Data ss:Type="String">202301
+202312</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">5</Data></Cell>
+  <Cell><Data ss:Type="Number">216731.1762</Data></Cell>
+  <Cell><Data ss:Type="Number">217903.319248</Data></Cell>
+  <Cell><Data ss:Type="Number">215776.892436</Data></Cell>
+  <Cell><Data ss:Type="Number">220029.74606</Data></Cell>
+  <Cell><Data ss:Type="Number">204180.835856</Data></Cell>
+  <Cell><Data ss:Type="Number">231625.80264</Data></Cell>
+  <Cell><Data ss:Type="String">202401
+202412</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">6</Data></Cell>
+  <Cell><Data ss:Type="Number">214931.3785</Data></Cell>
+  <Cell><Data ss:Type="Number">219487.30499</Data></Cell>
+  <Cell><Data ss:Type="Number">216654.928784</Data></Cell>
+  <Cell><Data ss:Type="Number">222319.681197</Data></Cell>
+  <Cell><Data ss:Type="Number">205637.856827</Data></Cell>
+  <Cell><Data ss:Type="Number">233336.753154</Data></Cell>
+  <Cell><Data ss:Type="String">202501
+202512</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">7</Data></Cell>
+  <Cell><Data ss:Type="Number">0</Data></Cell>
+  <Cell><Data ss:Type="Number">221071.290733</Data></Cell>
+  <Cell><Data ss:Type="Number">217428.029699</Data></Cell>
+  <Cell><Data ss:Type="Number">224714.551767</Data></Cell>
+  <Cell><Data ss:Type="Number">207033.548379</Data></Cell>
+  <Cell><Data ss:Type="Number">235109.033088</Data></Cell>
+  <Cell><Data ss:Type="String">202601
+202612</Data></Cell>
+ </Row>
+
+</Table>
+</Worksheet>
+</Workbook>

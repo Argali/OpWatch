@@ -1,0 +1,3793 @@
+﻿<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+
+<Styles>
+ <Style ss:ID="omBool">
+  <NumberFormat ss:Format="True/False"/>
+ </Style>
+ <Style ss:ID="omDateTime">
+  <NumberFormat ss:Format="General Date"/>
+ </Style>
+ <Style ss:ID="omDate">
+  <NumberFormat ss:Format="Short Date"/>
+ </Style>
+ <Style ss:ID="omNumber">
+  <NumberFormat ss:Format="General Number"/>
+ </Style>
+ <Style ss:ID="omTime">
+  <NumberFormat ss:Format="Medium Time"/>
+ </Style>
+ <Style ss:ID="omColHeadingText">
+  <ss:Font ss:Bold="1"/>
+ </Style>
+ <Style ss:ID="omWsHeadingText">
+  <ss:Font ss:Bold="1" ss:Size="12"/>
+ </Style>
+ <Style ss:ID="xlGeneral">
+  <NumberFormat ss:Format="General"/>
+ </Style>
+ <Style ss:ID="xlGeneralNumber">
+  <NumberFormat ss:Format="General Number"/>
+ </Style>
+ <Style ss:ID="xlGeneralDate">
+  <NumberFormat ss:Format="General Date"/>
+ </Style>
+ <Style ss:ID="xlLongDate">
+  <NumberFormat ss:Format="Long Date"/>
+ </Style>
+ <Style ss:ID="xlMediumDate">
+  <NumberFormat ss:Format="Medium Date"/>
+ </Style>
+ <Style ss:ID="xlShortDate">
+  <NumberFormat ss:Format="Short Date"/>
+ </Style>
+ <Style ss:ID="xlLongTime">
+  <NumberFormat ss:Format="Long Time"/>
+ </Style>
+ <Style ss:ID="xlMediumTime">
+  <NumberFormat ss:Format="Medium Time"/>
+ </Style>
+ <Style ss:ID="xlShortTime">
+  <NumberFormat ss:Format="Short Time"/>
+ </Style>
+ <Style ss:ID="xlCurrency">
+  <NumberFormat ss:Format="Currency"/>
+ </Style>
+ <Style ss:ID="xlFixed">
+  <NumberFormat ss:Format="Fixed"/>
+ </Style>
+ <Style ss:ID="xlStandard">
+  <NumberFormat ss:Format="Standard"/>
+ </Style>
+ <Style ss:ID="xlPercent">
+  <NumberFormat ss:Format="Percent"/>
+ </Style>
+ <Style ss:ID="xlScientific">
+  <NumberFormat ss:Format="Scientific"/>
+ </Style>
+ <Style ss:ID="xlTrueFalse">
+  <NumberFormat ss:Format="True/False"/>
+ </Style>
+</Styles>
+
+<Worksheet ss:Name="Sheet1">
+<Table>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omDate"/>
+<Column ss:AutoFitWidth="1" ss:Width="250"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omDate"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omDate"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+<Column ss:AutoFitWidth="1" ss:Width="25" ss:StyleID="omNumber"/>
+
+
+ <Row>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">KM_ORE_VITA</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">AUTOM</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">TARGA</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">DES_ART</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">CDC</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">ID_SETTORE</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">DATA_IMMATRICOLAZIONE</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">CATEGORIA_EURO</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PREVISIONE_DATA_OVER</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">PREVISIONE_DATA_CONSIGLIO</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">TOTALE_SATURAZIONE</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">ORE_DURANTE_ANALISI</Data></Cell>
+  <Cell ss:StyleID="omColHeadingText"><Data ss:Type="String">KM_DURANTE_ANALISI</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">6000.00</Data></Cell>
+  <Cell><Data ss:Type="String">001D</Data></Cell>
+  <Cell><Data ss:Type="String">ABR489</Data></Cell>
+  <Cell><Data ss:Type="String">SPAZZATRICE BUCHER 2020 PAT.B - ABR489</Data></Cell>
+  <Cell><Data ss:Type="String">C790</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2002-07-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">(199/96/CE)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">002S</Data></Cell>
+  <Cell><Data ss:Type="String">DE737BS</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOSCALA TOYOTA/CTE PAT.B - DE737BS (PROPRIETA&apos; CAUTO)</Data></Cell>
+  <Cell><Data ss:Type="String">C630</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-03-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2003/76/CE-A)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">005A</Data></Cell>
+  <Cell><Data ss:Type="String">CX384CB</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO PAT.B - CX384CB</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2005-07-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/1 CE RIF. 98/69 CE)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">30.00</Data></Cell>
+  <Cell><Data ss:Type="Number">133.00</Data></Cell>
+  <Cell><Data ss:Type="Number">696.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">6000.00</Data></Cell>
+  <Cell><Data ss:Type="String">006D</Data></Cell>
+  <Cell><Data ss:Type="String">DA665NZ</Data></Cell>
+  <Cell><Data ss:Type="String">SPAZZATRICE DULEVO 5000 PAT.C - DA665NZ</Data></Cell>
+  <Cell><Data ss:Type="String">C801</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-03-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">006S</Data></Cell>
+  <Cell><Data ss:Type="String">DS509SW</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION ISUZU CASSONE TRILATERALE PAT.B - DS509SW - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-12-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA C ECOL. M)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2058-07-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2048-07-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">47.00</Data></Cell>
+  <Cell><Data ss:Type="Number">206.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1824.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">007S</Data></Cell>
+  <Cell><Data ss:Type="String">DS019TP</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA NISSAN CABSTAR CESTELLO SOLLEVATORE PAT.B - DS019TP (PROPRIETA&apos; CAUTO)</Data></Cell>
+  <Cell><Data ss:Type="String">C640</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-12-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">6000.00</Data></Cell>
+  <Cell><Data ss:Type="String">008D</Data></Cell>
+  <Cell><Data ss:Type="String">ALK482</Data></Cell>
+  <Cell><Data ss:Type="String">SPAZZATRICE SCHMIDT SWINGO 200 PLUS PAT.B ALK482</Data></Cell>
+  <Cell><Data ss:Type="String">C790</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-06-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6C (REG. 595/2009/2016/1718C)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-05-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">38.00</Data></Cell>
+  <Cell><Data ss:Type="Number">168.00</Data></Cell>
+  <Cell><Data ss:Type="Number">694.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">008S</Data></Cell>
+  <Cell><Data ss:Type="String">DY423AL</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO VOLKSWAGEN CADDY BENZ/METANO PAT.B - DY423AL - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C620</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-10-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">6000.00</Data></Cell>
+  <Cell><Data ss:Type="String">009D</Data></Cell>
+  <Cell><Data ss:Type="String">AKT591</Data></Cell>
+  <Cell><Data ss:Type="String">SPAZZATRICE AEBI SCHMIDT CLEANGO 500 E6C TARGATA AKT591</Data></Cell>
+  <Cell><Data ss:Type="String">C800</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2019-09-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6C (REG. 595/2009-2016/1718C)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-08-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-04-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">26.00</Data></Cell>
+  <Cell><Data ss:Type="Number">116.00</Data></Cell>
+  <Cell><Data ss:Type="Number">753.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">01.11.02</Data></Cell>
+  <Cell><Data ss:Type="String">AF94439</Data></Cell>
+  <Cell><Data ss:Type="String">RIMORCHIO 2 ASSI SCARRABILE R1 - B.T.E. PAT. C+E - AF94439</Data></Cell>
+  <Cell><Data ss:Type="String">C710</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">NESSUNA</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">01.11.04</Data></Cell>
+  <Cell><Data ss:Type="String">XA297DA</Data></Cell>
+  <Cell><Data ss:Type="String">RIMORCHIO 2 ASSI SCARRABILE R3 - ATLAS PAT. C+E - XA297DA</Data></Cell>
+  <Cell><Data ss:Type="String">C710</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">NESSUNA</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">01.11.06</Data></Cell>
+  <Cell><Data ss:Type="String">XA501YP</Data></Cell>
+  <Cell><Data ss:Type="String">RIMORCHIO 2 ASSI  R6 - SCARRABILE RBG2A PAT. C+E - XA501YP - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C710</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-11-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">NESSUNA</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">01.20.001</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">TRICICLO PER SPAZZAMENTO A PEDALATA ASSISTITA</Data></Cell>
+  <Cell><Data ss:Type="String">C875</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">010D</Data></Cell>
+  <Cell><Data ss:Type="String">APL591</Data></Cell>
+  <Cell><Data ss:Type="String">SPAZZATRICE AEBI SCHMIDT CLEANGO 500 TARGATA APL591</Data></Cell>
+  <Cell><Data ss:Type="String">C800</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-01-26T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO 5 (REG. 2016/1628 - 2017/654)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">010S</Data></Cell>
+  <Cell><Data ss:Type="String">FA594TG</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE FIAT DUCATO PAT.B - FA594TG - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-09-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (195/2013 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2043-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-07-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">65.00</Data></Cell>
+  <Cell><Data ss:Type="Number">286.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3179.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">011S</Data></Cell>
+  <Cell><Data ss:Type="String">FT342CT</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE MERCEDES VITO PAT.B - FT342CT - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-11-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B (REG 2015/45</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2053-12-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2044-06-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">51.00</Data></Cell>
+  <Cell><Data ss:Type="Number">224.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1912.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">012S</Data></Cell>
+  <Cell><Data ss:Type="String">EZ636MF</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO VOLKSVAGEN CADDY PAT. B - TARGATO EZ636MF - PROPRIETA&apos; CDS (EX MEMUA)</Data></Cell>
+  <Cell><Data ss:Type="String">C620</Data></Cell>
+  <Cell><Data ss:Type="String">PUL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-05-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (195/2013)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">013S</Data></Cell>
+  <Cell><Data ss:Type="String">GE929WS</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FORD TRANSIT  PAT. B - TARGATO GE929WS - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C620</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-03-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">014S</Data></Cell>
+  <Cell><Data ss:Type="String">GM649YL</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT SCUDO PATENTE B - TARGATO GM649YL - PROPRIETA&apos; CDS</Data></Cell>
+  <Cell><Data ss:Type="String">C620</Data></Cell>
+  <Cell><Data ss:Type="String">SOL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-02-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.005</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO SLM 100/16 MANUALE - C5 MTR 56099</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">SPI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.006</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM E 10N ELETTRICO - C6</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">SPI</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.010</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM XE 15.3 AC ELETTRICO 15 Q.LI - C9</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">DIS</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.013</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA PER BALLE MONTATA SUI MULETTO 02.10.15</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2001-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">98/37/EG</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.015</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM STILL RX 60-50 ELETTRICO 50 Q.LI - C13</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.016</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO LINDE GIALLO H80D/900 GASOLIO 80 Q.LI - C14</Data></Cell>
+  <Cell><Data ss:Type="String">C861</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">98/37/CE</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.018</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO LINDE ROSSO H80D/900-03 GASOLIO 80 Q.LI - C16</Data></Cell>
+  <Cell><Data ss:Type="String">C861</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.020</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA ROTANTE PER ELETTRODOMESTICI BOLZONI</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.021</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA ELETTRODOMESTICI BOLZONI</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.022</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">TRANSPALLET ELETTRICO JUNGHEINRICH CBD 15-170J 550 - C17</Data></Cell>
+  <Cell><Data ss:Type="String">C865</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.023</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM STILL RX 60-25 ELETTRICO 25 Q.LI - C18</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.024</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM XE 18.3 AC ELETTRICO 18 Q.LI - C19</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.026</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA PER BALLE CON GANASCE PER C14</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.027</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO SDJ1000 STACKER MANUALE - C20</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">SPI</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">2006/42EC</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.028</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM XE 18 ELETTRICO 18 Q.LI - C21</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.029</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO C22 CLARK GEN EX 25 COMPLETO DI PINZA RIT. CASCADE/RONCARI MOD. 36G – MRC C22</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.030</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM XE 18 ELETTRICO 18 Q.LI - C23</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.031</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO OM XE 18 ELETTRICO 18 Q.LI - C24</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">OFF</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.032</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">TRANSPALLET ELETTRICO STILL EXU-H18 - C25</Data></Cell>
+  <Cell><Data ss:Type="String">C865</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.033</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO LINDE  H80D/900 GASOLIO 80 Q.LI - C26</Data></Cell>
+  <Cell><Data ss:Type="String">C861</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">98/37/CE</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.034</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA ROTANTE CASCADE 170G-PBS PER C26</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.035</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO STILL RX50-16 ELETTRICO 16 Q.LI - C27</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.036</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO STILL RX60-25 ELETTRICO 25 Q.LI - C28</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.037</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA CASCADE FEMII  PER MULETTO C28 - VER1284266-1R0</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.038</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO ELETTRICO STILL RX20 18 (TRE RUOTE) - C29</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">MAG</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.039</Data></Cell>
+  <Cell><Data ss:Type="String">AGC745</Data></Cell>
+  <Cell><Data ss:Type="String">PALA DA SCAVO 900LITRI L. 2.240mm, Matricola: 0788936008 DA USARE SU SOLLEVATORE MERLO</Data></Cell>
+  <Cell><Data ss:Type="String">C862</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.040</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA CASCADE MOD. 170G-PBS. - MATRICOLA VER1331203-1R0 - C16P</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.041</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO ELETTRICO STILL RX20  (3 RUOTE) - C30</Data></Cell>
+  <Cell><Data ss:Type="String">C860</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.042</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PIATTAFORMA DI LAVORO SEMOVENTE ELEVABILE JLG 2030ES MATR. 1200008991 - C31</Data></Cell>
+  <Cell><Data ss:Type="String">C600</Data></Cell>
+  <Cell><Data ss:Type="String">OFF</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.043</Data></Cell>
+  <Cell><Data ss:Type="String">ANL332</Data></Cell>
+  <Cell><Data ss:Type="String">MERLO SOLLEVATORE TELESCOPICO - C32 - TARGATO ANL332</Data></Cell>
+  <Cell><Data ss:Type="String">C862</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.044</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">TRANSPALLET ELETTRICO STILL EXV 10 C (I)  - C33</Data></Cell>
+  <Cell><Data ss:Type="String">C865</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.045</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO LINDE  H80D/900 GASOLIO 80 Q.LI - C34</Data></Cell>
+  <Cell><Data ss:Type="String">C861</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">98/37/CE</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.10.046</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">MULETTO - CARRELLO ELEVATORE ELETTRICO STILL MOD. RX20 20P (4 RUOTE)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">98/37/CE</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.02</Data></Cell>
+  <Cell><Data ss:Type="String">ISPEL 07/2002006/S</Data></Cell>
+  <Cell><Data ss:Type="String">CASSONE CON CARICATORE E POLIPO 3G (SU MEZZO 95)</Data></Cell>
+  <Cell><Data ss:Type="String">C840</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.03</Data></Cell>
+  <Cell><Data ss:Type="String">ISPESL 12/200150-BS</Data></Cell>
+  <Cell><Data ss:Type="String">CASSONE CON CARICATORE E POLIPO 4G</Data></Cell>
+  <Cell><Data ss:Type="String">C840</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.04</Data></Cell>
+  <Cell><Data ss:Type="String">INAIL BS/2 00562 /2015</Data></Cell>
+  <Cell><Data ss:Type="String">CARICATORE POLIPO FUCHS MHL320D 5G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.06</Data></Cell>
+  <Cell><Data ss:Type="String">INAIL BS/2 00585 /2017</Data></Cell>
+  <Cell><Data ss:Type="String">CASSONE CON CARICATORE E POLIPO 7G</Data></Cell>
+  <Cell><Data ss:Type="String">C840</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.07</Data></Cell>
+  <Cell><Data ss:Type="String">NO VERIFICA PERIODICA, E&apos; ALLESTITA CON LA BENNA</Data></Cell>
+  <Cell><Data ss:Type="String">ESCAVATORE CINGOLATO KOMATSU 8G</Data></Cell>
+  <Cell><Data ss:Type="String">C920</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.08</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA X ESCAVATORE + IMPIANTO 8GP</Data></Cell>
+  <Cell><Data ss:Type="String">C920</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.09</Data></Cell>
+  <Cell><Data ss:Type="String">INAIL BS/2 00452 /2018</Data></Cell>
+  <Cell><Data ss:Type="String">CASSONE CON CARICATORE E POLIPO 9G</Data></Cell>
+  <Cell><Data ss:Type="String">C840</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.10</Data></Cell>
+  <Cell><Data ss:Type="String">INAIL 2020/200279/BS</Data></Cell>
+  <Cell><Data ss:Type="String">CARICATORE MINELLI  MOD. M20  - 10G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.11</Data></Cell>
+  <Cell><Data ss:Type="String">INAIL 2020/200409/BS</Data></Cell>
+  <Cell><Data ss:Type="String">CARICATORE MINELLI  MOD. M18  - 11G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.12</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">PINZA SELEZIONATRICE KINSHOFER MODELLO GR25D SU 12G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.13</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">ESCAVATORE SU CINGOLI GOMMATI DOOSAN DX63-3 12G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.14</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">CASSONE CON CARICATORE E POLIPO 13G - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C840</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">02.11.15</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String">CARICATORE POLIPO LIEBHERR LH22 - 1250  14G</Data></Cell>
+  <Cell><Data ss:Type="String">C925</Data></Cell>
+  <Cell><Data ss:Type="String">IMP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">071</Data></Cell>
+  <Cell><Data ss:Type="String">CP653TT</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA IVECO DAILY/AUTOBREN PAT.B - CP653TT</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2004-07-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2055-07-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-06-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">15.00</Data></Cell>
+  <Cell><Data ss:Type="Number">66.00</Data></Cell>
+  <Cell><Data ss:Type="Number">565.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">081</Data></Cell>
+  <Cell><Data ss:Type="String">CY923CY</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 3 ASSI IVECO/AUTOBREN PAT.C - CY923CY</Data></Cell>
+  <Cell><Data ss:Type="String">C730</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2005-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">44.00</Data></Cell>
+  <Cell><Data ss:Type="Number">195.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2056.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">087</Data></Cell>
+  <Cell><Data ss:Type="String">DE403SB</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI IVECO/AUTOBREN PAT.C - DE403SB</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-12-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">088</Data></Cell>
+  <Cell><Data ss:Type="String">DE372SB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/AGAZZI PAT.B - DE372SB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-01-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2766-09-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2283-07-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">2.00</Data></Cell>
+  <Cell><Data ss:Type="Number">9.00</Data></Cell>
+  <Cell><Data ss:Type="Number">28.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">093</Data></Cell>
+  <Cell><Data ss:Type="String">DH029CS</Data></Cell>
+  <Cell><Data ss:Type="String">FIAT DUCATO RIBASSATO CON CASSONE FISSO PAT.B  - DH029CS</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-03-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2154-04-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2082-03-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">20.00</Data></Cell>
+  <Cell><Data ss:Type="Number">89.00</Data></Cell>
+  <Cell><Data ss:Type="Number">252.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">095</Data></Cell>
+  <Cell><Data ss:Type="String">FZ411MA</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE MERCEDES AXOR PAT.C - FZ411MA (ex DK210HY)</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-07-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">61.00</Data></Cell>
+  <Cell><Data ss:Type="Number">269.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4413.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">097</Data></Cell>
+  <Cell><Data ss:Type="String">DE320YY</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE IVECO DAILY PAT.B ADR - DE320YY</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-11-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2041-03-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-06-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">51.00</Data></Cell>
+  <Cell><Data ss:Type="Number">223.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1696.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">098</Data></Cell>
+  <Cell><Data ss:Type="String">CK621HW</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA RENAULT/ELEFANTCAR PAT.C  ADR - CK621HW</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2003-11-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">48.00</Data></Cell>
+  <Cell><Data ss:Type="Number">212.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2434.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">101</Data></Cell>
+  <Cell><Data ss:Type="String">DL527NA</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/AGAZZI PAT.B - DL527NA</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-12-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-12-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2042-07-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">40.00</Data></Cell>
+  <Cell><Data ss:Type="Number">177.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1307.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">102</Data></Cell>
+  <Cell><Data ss:Type="String">DL573NA</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - DL573NA</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2046-03-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2038-07-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">61.00</Data></Cell>
+  <Cell><Data ss:Type="Number">270.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1767.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">104</Data></Cell>
+  <Cell><Data ss:Type="String">DL993NA</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI IVECO/AUTOBREN PAT.C - DL993NA</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-02-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">24.00</Data></Cell>
+  <Cell><Data ss:Type="Number">104.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1163.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">105</Data></Cell>
+  <Cell><Data ss:Type="String">DN540MS</Data></Cell>
+  <Cell><Data ss:Type="String">FIAT DUCATO RIBASSATO CON CASSONE FISSO APERTO PAT.B - DN540MS</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-03-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2212-01-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2171-02-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">33.00</Data></Cell>
+  <Cell><Data ss:Type="Number">147.00</Data></Cell>
+  <Cell><Data ss:Type="Number">445.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">108</Data></Cell>
+  <Cell><Data ss:Type="String">CK537WY</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA IVECO/ANTEO PAT.C ADR - CK537WY</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2003-12-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">109</Data></Cell>
+  <Cell><Data ss:Type="String">CL036JH</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO MAGIRUS STRALIS PAT.C ADR - CL036JH</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2004-01-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">88.00</Data></Cell>
+  <Cell><Data ss:Type="Number">389.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6732.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">111</Data></Cell>
+  <Cell><Data ss:Type="String">CM617FF</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA MERCEDES/DAUTEL PAT.C  ADR - CM617FF</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2004-03-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">95.00</Data></Cell>
+  <Cell><Data ss:Type="Number">419.00</Data></Cell>
+  <Cell><Data ss:Type="Number">9544.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">112</Data></Cell>
+  <Cell><Data ss:Type="String">DP904HH</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/AGAZZI PAT.B - DP904HH</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-09-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-10-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-06-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">61.00</Data></Cell>
+  <Cell><Data ss:Type="Number">268.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4161.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">115</Data></Cell>
+  <Cell><Data ss:Type="String">FJ051CH</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 3 ASSI RENAULT/FARID PAT.C - FJ051CH (EX CZ024TH)</Data></Cell>
+  <Cell><Data ss:Type="String">C730</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2005-11-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2109-02-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2083-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">6.00</Data></Cell>
+  <Cell><Data ss:Type="Number">27.00</Data></Cell>
+  <Cell><Data ss:Type="Number">692.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">117</Data></Cell>
+  <Cell><Data ss:Type="String">ZA426XZ</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA BIVASCA ISUZU/ROSSI PAT.B - ZA426XZ</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-02-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2006/51/CE RIF.2005/55/CE RIGA B1 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">60.00</Data></Cell>
+  <Cell><Data ss:Type="Number">265.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2740.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">127</Data></Cell>
+  <Cell><Data ss:Type="String">CZ202RR</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION MITSUBISHI CON GRU CASSONE TRILATERALE PAT.C - CZ202RR</Data></Cell>
+  <Cell><Data ss:Type="String">C780</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-02-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">4285-10-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">3644-12-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">1.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6.00</Data></Cell>
+  <Cell><Data ss:Type="Number">39.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">129</Data></Cell>
+  <Cell><Data ss:Type="String">DJ487DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/IRIDE PAT.C - DJ487DJ</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-11-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">130</Data></Cell>
+  <Cell><Data ss:Type="String">DJ585DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI IVECO/AUTOBREN PAT.C - DJ585DJ</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-12-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-06-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-04-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">30.00</Data></Cell>
+  <Cell><Data ss:Type="Number">132.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2352.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">131</Data></Cell>
+  <Cell><Data ss:Type="String">DJ488DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/IRIDE PAT.C - DJ488DJ</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-11-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2043-02-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2038-06-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">46.00</Data></Cell>
+  <Cell><Data ss:Type="Number">203.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3424.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">132</Data></Cell>
+  <Cell><Data ss:Type="String">DJ586DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI IVECO/AUTOBREN PAT.C - DJ586DJ</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-12-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-02-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">43.00</Data></Cell>
+  <Cell><Data ss:Type="Number">189.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2180.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">134</Data></Cell>
+  <Cell><Data ss:Type="String">CY014EG</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION DUCATO CASSONE TRILATERALE PAT.B - CY014EG</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-03-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2049-01-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2038-02-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">60.00</Data></Cell>
+  <Cell><Data ss:Type="Number">262.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1665.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">136</Data></Cell>
+  <Cell><Data ss:Type="String">ZA477XZ</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA BIVASCA ISUZU/ROSSI PAT.B - ZA477XZ</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-12-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2064-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2048-04-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">27.00</Data></Cell>
+  <Cell><Data ss:Type="Number">119.00</Data></Cell>
+  <Cell><Data ss:Type="Number">841.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">137</Data></Cell>
+  <Cell><Data ss:Type="String">DZ345RB</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT FIORINO BENZ/METANO PAT.B ADR - DZ345RB</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-12-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2063-07-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-01-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">9.00</Data></Cell>
+  <Cell><Data ss:Type="Number">41.00</Data></Cell>
+  <Cell><Data ss:Type="Number">580.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">138</Data></Cell>
+  <Cell><Data ss:Type="String">EB516TX</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT FIORINO BENZ/METANO PAT.B ADR - EB516TX</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-02-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2078-07-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2050-12-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">20.00</Data></Cell>
+  <Cell><Data ss:Type="Number">86.00</Data></Cell>
+  <Cell><Data ss:Type="Number">494.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">139</Data></Cell>
+  <Cell><Data ss:Type="String">DD366NG</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION MITSUBISHI CON GRU E PEDANA PAT.C  - DD366NG</Data></Cell>
+  <Cell><Data ss:Type="String">C780</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-09-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2177-08-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2133-04-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">24.00</Data></Cell>
+  <Cell><Data ss:Type="Number">105.00</Data></Cell>
+  <Cell><Data ss:Type="Number">564.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">140</Data></Cell>
+  <Cell><Data ss:Type="String">DZ343RB</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT PANDA BENZ/METANO PAT.B - DZ343RB</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-12-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-06-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-04-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">19.00</Data></Cell>
+  <Cell><Data ss:Type="Number">84.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3294.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">142</Data></Cell>
+  <Cell><Data ss:Type="String">DE090NW</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 3 ASSI PAT.C MERCEDES/EMITECNODUE PAT.C - DE090NW</Data></Cell>
+  <Cell><Data ss:Type="String">C730</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-10-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-10-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-01-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">56.00</Data></Cell>
+  <Cell><Data ss:Type="Number">249.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2682.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">145</Data></Cell>
+  <Cell><Data ss:Type="String">DC560ER</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE MERCEDES AXOR PAT.C - DC560ER</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-07-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (2001/27/CE RIF. 1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">68.00</Data></Cell>
+  <Cell><Data ss:Type="Number">298.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5618.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">146</Data></Cell>
+  <Cell><Data ss:Type="String">CZ082GY</Data></Cell>
+  <Cell><Data ss:Type="String">FIAT DUCATO RIBASSATO CON CASSA PAT.B ADR - CZ082GY</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-06-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">149</Data></Cell>
+  <Cell><Data ss:Type="String">ED570GP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - ED570GP</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-09-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO+FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">16.00</Data></Cell>
+  <Cell><Data ss:Type="Number">69.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1515.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">153</Data></Cell>
+  <Cell><Data ss:Type="String">BZ714YD</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI MERCEDES/AUTOBREN PAT.C - BZ714YD</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">73.00</Data></Cell>
+  <Cell><Data ss:Type="Number">322.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3332.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">154</Data></Cell>
+  <Cell><Data ss:Type="String">GT801MR</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 3 ASSI IVECO/AUTOBREN PAT.C - GT801MR  (EX  DS942TP)</Data></Cell>
+  <Cell><Data ss:Type="String">C730</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-06-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">19.00</Data></Cell>
+  <Cell><Data ss:Type="Number">84.00</Data></Cell>
+  <Cell><Data ss:Type="Number">787.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">155</Data></Cell>
+  <Cell><Data ss:Type="String">EF936GW</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA RENAULT/NOVARINI PAT.B - EF936GW</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-02-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-12-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">16.00</Data></Cell>
+  <Cell><Data ss:Type="Number">69.00</Data></Cell>
+  <Cell><Data ss:Type="Number">533.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">157</Data></Cell>
+  <Cell><Data ss:Type="String">EF935GW</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EF935GW</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-02-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO+FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">55.00</Data></Cell>
+  <Cell><Data ss:Type="Number">242.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3067.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">159</Data></Cell>
+  <Cell><Data ss:Type="String">DH153NC</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO MULTIPLA MULTIPOWER BENZ./METANO PAT.B - DH153NC</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">PIT</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-05-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">163</Data></Cell>
+  <Cell><Data ss:Type="String">DN280MS</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO MAGIRUS PAT.C - DN280MS</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">66.00</Data></Cell>
+  <Cell><Data ss:Type="Number">289.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6076.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">165</Data></Cell>
+  <Cell><Data ss:Type="String">EK848GV</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO STRALIS PAT.C - EK848GV</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-11-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">76.00</Data></Cell>
+  <Cell><Data ss:Type="Number">332.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6354.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">170</Data></Cell>
+  <Cell><Data ss:Type="String">DM977HT</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION FIAT DUCATO CASSONE TRILATERALE PAT.B - DM977HT</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-03-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2050-08-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-03-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">72.00</Data></Cell>
+  <Cell><Data ss:Type="Number">319.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1752.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">171</Data></Cell>
+  <Cell><Data ss:Type="String">DX050GL</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE FIAT DUCATO BENZ/METANO ADR PAT.B - DX050GL</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-08-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2062-07-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">13.00</Data></Cell>
+  <Cell><Data ss:Type="Number">58.00</Data></Cell>
+  <Cell><Data ss:Type="Number">620.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">179</Data></Cell>
+  <Cell><Data ss:Type="String">GY765MS</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - GY765MS  (EX EP789RM)</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-05-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO+FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-04-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">76.00</Data></Cell>
+  <Cell><Data ss:Type="Number">335.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4723.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">180</Data></Cell>
+  <Cell><Data ss:Type="String">EP790RM</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EP790RM</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-05-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO+FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-12-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">48.00</Data></Cell>
+  <Cell><Data ss:Type="Number">212.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3473.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">181</Data></Cell>
+  <Cell><Data ss:Type="String">DY243NT</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO VOLKSWAGEN CADDY BENZ/METANO PAT.B - DY243NT</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-12-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2045-01-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-01-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">26.00</Data></Cell>
+  <Cell><Data ss:Type="Number">116.00</Data></Cell>
+  <Cell><Data ss:Type="Number">802.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">183</Data></Cell>
+  <Cell><Data ss:Type="String">CN776JR</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA RENAULT MIDLUM/ANTEO PAT.C - CN776JR</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-05-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2006/51/CE RIF.2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2133-01-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2075-06-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">8.00</Data></Cell>
+  <Cell><Data ss:Type="Number">37.00</Data></Cell>
+  <Cell><Data ss:Type="Number">434.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">184</Data></Cell>
+  <Cell><Data ss:Type="String">DM337ZK</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT DOBLO&apos; MAXY CARGO PAT.B - DM337ZK</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2008-03-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">13.00</Data></Cell>
+  <Cell><Data ss:Type="Number">58.00</Data></Cell>
+  <Cell><Data ss:Type="Number">170.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">186</Data></Cell>
+  <Cell><Data ss:Type="String">EV927ZL</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/PORCELLI PAT.C - EV927ZL</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-04-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECO+FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2043-06-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-07-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">26.00</Data></Cell>
+  <Cell><Data ss:Type="Number">113.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1787.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">189</Data></Cell>
+  <Cell><Data ss:Type="String">EW515GB</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA MITSUBISHI/NOVARINI PAT.C - EW515GB</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-06-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2008/74/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2066-08-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2044-05-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">12.00</Data></Cell>
+  <Cell><Data ss:Type="Number">53.00</Data></Cell>
+  <Cell><Data ss:Type="Number">714.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">190</Data></Cell>
+  <Cell><Data ss:Type="String">EW516GB</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA MITSUBISHI/NOVARINI PAT.C - EW516GB</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-06-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2008/74/CE RIF. 2005/55/CE RIGA C ECO MI)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-12-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-11-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">42.00</Data></Cell>
+  <Cell><Data ss:Type="Number">186.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2249.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">191</Data></Cell>
+  <Cell><Data ss:Type="String">EW554GB</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO PICK-UP FIAT STRADA PAT.B - EW554GB</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-06-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2054-02-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-03-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">25.00</Data></Cell>
+  <Cell><Data ss:Type="Number">109.00</Data></Cell>
+  <Cell><Data ss:Type="Number">978.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">194</Data></Cell>
+  <Cell><Data ss:Type="String">EY038CM</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EY038CM</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-01-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-01-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">87.00</Data></Cell>
+  <Cell><Data ss:Type="Number">382.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5320.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">195</Data></Cell>
+  <Cell><Data ss:Type="String">EY037CM</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EY037CM</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2035-10-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-08-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">72.00</Data></Cell>
+  <Cell><Data ss:Type="Number">316.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3878.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">196</Data></Cell>
+  <Cell><Data ss:Type="String">EY036CM</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EY036CM</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-02-26T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-05-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">102.00</Data></Cell>
+  <Cell><Data ss:Type="Number">450.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5776.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">197</Data></Cell>
+  <Cell><Data ss:Type="String">EY035CM</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - EY035CM</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-06-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-12-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">80.00</Data></Cell>
+  <Cell><Data ss:Type="Number">351.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4572.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">198</Data></Cell>
+  <Cell><Data ss:Type="String">DV815RG</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA DAF / ELEFANTCAR PAT.C ADR - DV815RG</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-05-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2006/51/CE RIF.2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2048-04-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-11-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">52.00</Data></Cell>
+  <Cell><Data ss:Type="Number">231.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2196.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">199</Data></Cell>
+  <Cell><Data ss:Type="String">EZ040BX</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE MERCEDES ACTROS PAT.C - EZ040BX</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2006-08-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E3     (1999/96/CE RIGA A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">29.00</Data></Cell>
+  <Cell><Data ss:Type="Number">127.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2546.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">201</Data></Cell>
+  <Cell><Data ss:Type="String">EY838ST</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA MITSUBISHI/NOVARINI PAT.C - EY838ST</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-04-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2072-12-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2050-12-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">8.00</Data></Cell>
+  <Cell><Data ss:Type="Number">34.00</Data></Cell>
+  <Cell><Data ss:Type="Number">722.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">202</Data></Cell>
+  <Cell><Data ss:Type="String">EY837ST</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA MITSUBISHI/NOVARINI PAT.C - EY837ST</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-04-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2048-07-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-11-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">25.00</Data></Cell>
+  <Cell><Data ss:Type="Number">108.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1491.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">203</Data></Cell>
+  <Cell><Data ss:Type="String">DY724WY</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT DOBLO&apos; BENZ/METANO PAT.B - DY724WY</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">MAG</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2009-11-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-09-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">15.00</Data></Cell>
+  <Cell><Data ss:Type="Number">66.00</Data></Cell>
+  <Cell><Data ss:Type="Number">613.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">205</Data></Cell>
+  <Cell><Data ss:Type="String">FC860SP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - FC860SP</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-10-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">93.00</Data></Cell>
+  <Cell><Data ss:Type="Number">411.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3448.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">206</Data></Cell>
+  <Cell><Data ss:Type="String">FC861SP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - FC861SP</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">98.00</Data></Cell>
+  <Cell><Data ss:Type="Number">429.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7046.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">207</Data></Cell>
+  <Cell><Data ss:Type="String">FD938EL</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - FD938EL</Data></Cell>
+  <Cell><Data ss:Type="String">C755</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-02-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">71.00</Data></Cell>
+  <Cell><Data ss:Type="Number">314.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4271.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">208</Data></Cell>
+  <Cell><Data ss:Type="String">FD939EL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FD939EL</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (136/2014 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">93.00</Data></Cell>
+  <Cell><Data ss:Type="Number">407.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3859.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">209</Data></Cell>
+  <Cell><Data ss:Type="String">FD940EL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FD940EL</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (136/2014 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">107.00</Data></Cell>
+  <Cell><Data ss:Type="Number">472.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4461.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">210</Data></Cell>
+  <Cell><Data ss:Type="String">FD941EL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FD941EL</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (136/2014 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">109.00</Data></Cell>
+  <Cell><Data ss:Type="Number">478.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5189.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">211</Data></Cell>
+  <Cell><Data ss:Type="String">FD942EL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FD942EL</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-03-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (136/2014 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">90.00</Data></Cell>
+  <Cell><Data ss:Type="Number">396.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4097.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">212</Data></Cell>
+  <Cell><Data ss:Type="String">FD806VH</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA IVECO / DHOLLANDIA PAT.C - FD806VH</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-06-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA B2)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2204-06-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2128-06-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">5.00</Data></Cell>
+  <Cell><Data ss:Type="Number">23.00</Data></Cell>
+  <Cell><Data ss:Type="Number">329.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">213</Data></Cell>
+  <Cell><Data ss:Type="String">ET757AJ</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - ET757AJ</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2049-02-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-04-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">65.00</Data></Cell>
+  <Cell><Data ss:Type="Number">285.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2044.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">214</Data></Cell>
+  <Cell><Data ss:Type="String">ET772AJ</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - ET772AJ</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2045-11-26T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-05-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">77.00</Data></Cell>
+  <Cell><Data ss:Type="Number">337.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2141.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">215</Data></Cell>
+  <Cell><Data ss:Type="String">ET776AJ</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - ET776AJ</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2044-12-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-09-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">76.00</Data></Cell>
+  <Cell><Data ss:Type="Number">333.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2515.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">216</Data></Cell>
+  <Cell><Data ss:Type="String">FE315CR</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA FIAT PUNTO BENZ./METANO PAT.B - FE315CR</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">SGR</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-06-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (195/2013)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2080-04-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2053-08-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">6.00</Data></Cell>
+  <Cell><Data ss:Type="Number">27.00</Data></Cell>
+  <Cell><Data ss:Type="Number">512.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">218</Data></Cell>
+  <Cell><Data ss:Type="String">EL520BB</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA FIAT DOBLO PAT.B - EL520BB</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">SGR</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-11-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">219</Data></Cell>
+  <Cell><Data ss:Type="String">DZ444VL</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO VOLKSWAGEN CADDY BENZ/METANO PAT.B - DZ444VL</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-01-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">220</Data></Cell>
+  <Cell><Data ss:Type="String">EF633TS</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO MAXXI/NOVARINI BENZ/GPL PAT.B - EF633TS</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-05-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (CEE 2003/76/CE-B)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">35.00</Data></Cell>
+  <Cell><Data ss:Type="Number">154.00</Data></Cell>
+  <Cell><Data ss:Type="Number">698.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">222</Data></Cell>
+  <Cell><Data ss:Type="String">EL600BB</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE FIAT DUCATO PAT.B - EL600BB</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-11-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2085-11-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-08-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">15.00</Data></Cell>
+  <Cell><Data ss:Type="Number">67.00</Data></Cell>
+  <Cell><Data ss:Type="Number">547.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">223</Data></Cell>
+  <Cell><Data ss:Type="String">EL608BB</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE FIAT DUCATO PAT.B - EL608BB</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-11-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (715/2007*692/2008 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2084-05-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-01-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">26.00</Data></Cell>
+  <Cell><Data ss:Type="Number">115.00</Data></Cell>
+  <Cell><Data ss:Type="Number">563.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">224</Data></Cell>
+  <Cell><Data ss:Type="String">EV547NR</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE PEUGEOT BOXER PER OFFICINA PAT.B - EV547NR</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">OFF</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-05-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    (195/2013 CON FAP)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">225</Data></Cell>
+  <Cell><Data ss:Type="String">EH561RR</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO FIAT DOBLO&apos; BENZ./METANO PAT.B - EH561RR</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2011-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5A    (715/2007*692/2008)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2344-12-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2144-08-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2.00</Data></Cell>
+  <Cell><Data ss:Type="Number">68.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">227</Data></Cell>
+  <Cell><Data ss:Type="String">DK438ZK</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE MAN TGA 26.400 PAT.C - DK438ZK</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2007-10-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E4     (2005/78/CE RIF. 2005/55/CE RIGA B1)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-05-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">77.00</Data></Cell>
+  <Cell><Data ss:Type="Number">337.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5489.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">228</Data></Cell>
+  <Cell><Data ss:Type="String">FJ160CN</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO 4X4 / NOVARINI PAT.B - FJ160CN</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-06-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (195/2013)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-05-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">53.00</Data></Cell>
+  <Cell><Data ss:Type="Number">235.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2160.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">229</Data></Cell>
+  <Cell><Data ss:Type="String">FJ161CN</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE BIVASCA ISUZU/NOVARINI PAT.C - FJ161CN</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-06-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*2016/1718C)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-07-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-10-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">87.00</Data></Cell>
+  <Cell><Data ss:Type="Number">384.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5715.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">230</Data></Cell>
+  <Cell><Data ss:Type="String">FK978YW</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FK978YW</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-10-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*2016/1718C)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2043-01-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-10-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">91.00</Data></Cell>
+  <Cell><Data ss:Type="Number">399.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2605.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">231</Data></Cell>
+  <Cell><Data ss:Type="String">FL414YG</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO GPL/TORCHIO PAT.B - FL414YG</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-11-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (195/2013)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-08-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-09-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">47.00</Data></Cell>
+  <Cell><Data ss:Type="Number">206.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1164.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">232</Data></Cell>
+  <Cell><Data ss:Type="String">FL415YG</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO GPL/TORCHIO PAT.B - FL415YG</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-11-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (195/2013)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-11-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-12-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">35.00</Data></Cell>
+  <Cell><Data ss:Type="Number">152.00</Data></Cell>
+  <Cell><Data ss:Type="Number">458.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">234</Data></Cell>
+  <Cell><Data ss:Type="String">FN416CB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FN416CB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B-1    (REG EU 2017/1347 Y)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-10-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">96.00</Data></Cell>
+  <Cell><Data ss:Type="Number">422.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4605.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">235</Data></Cell>
+  <Cell><Data ss:Type="String">FN417CB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FN417CB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B-1    (REG EU 2017/1347 Y)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">111.00</Data></Cell>
+  <Cell><Data ss:Type="Number">488.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5665.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">236</Data></Cell>
+  <Cell><Data ss:Type="String">FN418CB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/NOVARINI PAT.B - FN418CB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B-1    (REG EU 2017/1347 Y)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-04-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">103.00</Data></Cell>
+  <Cell><Data ss:Type="Number">451.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5442.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">237</Data></Cell>
+  <Cell><Data ss:Type="String">FN751RY</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA IVECO EUROCARGO PAT.C ADR - FN751RY</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-05-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     595/2009*627/2014C</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2148-09-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2119-06-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">12.00</Data></Cell>
+  <Cell><Data ss:Type="Number">53.00</Data></Cell>
+  <Cell><Data ss:Type="Number">853.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">238</Data></Cell>
+  <Cell><Data ss:Type="String">FN440CB</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA IVECO DAILY PAT.B ADR - FN440CB</Data></Cell>
+  <Cell><Data ss:Type="String">C670</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2055-03-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2045-11-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">29.00</Data></Cell>
+  <Cell><Data ss:Type="Number">127.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1933.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">239</Data></Cell>
+  <Cell><Data ss:Type="String">FN581CB</Data></Cell>
+  <Cell><Data ss:Type="String">IVECO DAILY CON CASSA PAT.B - FN581CB</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-04-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-09-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-02-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">77.00</Data></Cell>
+  <Cell><Data ss:Type="Number">338.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5086.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">240</Data></Cell>
+  <Cell><Data ss:Type="String">FN441CB</Data></Cell>
+  <Cell><Data ss:Type="String">IVECO DAILY CON CASSA PAT.B - FN441CB</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    (136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2482-02-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2372-02-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">2.00</Data></Cell>
+  <Cell><Data ss:Type="Number">8.00</Data></Cell>
+  <Cell><Data ss:Type="Number">165.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">241</Data></Cell>
+  <Cell><Data ss:Type="String">FN532RY</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO STRALIS PAT. C ADR - FN532RY</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2012-09-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     (2006/51/CE RIF. 2005/55/CE RIGA C ECOMILGI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-02-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">81.00</Data></Cell>
+  <Cell><Data ss:Type="Number">356.00</Data></Cell>
+  <Cell><Data ss:Type="Number">572421.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">242</Data></Cell>
+  <Cell><Data ss:Type="String">FN443CB</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO STRALIS HI-STREET/MEC PAT.C ADR - FN443CB</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-03-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (595/2009*136/2014C)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">108.00</Data></Cell>
+  <Cell><Data ss:Type="Number">475.00</Data></Cell>
+  <Cell><Data ss:Type="Number">8907.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">245</Data></Cell>
+  <Cell><Data ss:Type="String">FS029AA</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CON GRU CASSONE TRILATERALE PAT.C - FS029AA</Data></Cell>
+  <Cell><Data ss:Type="String">C780</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2010-12-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     2006/51/CE RIF. 2005/55/CE RIGA B2</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2066-05-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-04-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">45.00</Data></Cell>
+  <Cell><Data ss:Type="Number">198.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1775.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">246</Data></Cell>
+  <Cell><Data ss:Type="String">FP077TS</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA FIAT QUBO PAT.B - FP077TS</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">COM</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-05-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    195/2013</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">247</Data></Cell>
+  <Cell><Data ss:Type="String">FP078TS</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA FIAT PUNTO BENZ/METANO PAT.B - FP078TS</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">SGR</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-05-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    195/2013</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2201-07-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2139-02-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">3.00</Data></Cell>
+  <Cell><Data ss:Type="Number">13.00</Data></Cell>
+  <Cell><Data ss:Type="Number">218.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">248</Data></Cell>
+  <Cell><Data ss:Type="String">ET128JT</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO MERCEDES CITAN PAT.B - ET128JT</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-01-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    630/2012 CON FAP</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2056-06-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-09-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">39.00</Data></Cell>
+  <Cell><Data ss:Type="Number">172.00</Data></Cell>
+  <Cell><Data ss:Type="Number">868.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">249</Data></Cell>
+  <Cell><Data ss:Type="String">EZ865FA</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE RENAULT MASTER PAT.B - EZ865FA</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-04-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    136/2014</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2049-07-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2038-10-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">60.00</Data></Cell>
+  <Cell><Data ss:Type="Number">264.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1700.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">250</Data></Cell>
+  <Cell><Data ss:Type="String">FT410HP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT.B - FT410HP</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2019-03-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    REG EU 2017/1347</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-04-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">109.00</Data></Cell>
+  <Cell><Data ss:Type="Number">478.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6547.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">251</Data></Cell>
+  <Cell><Data ss:Type="String">FT411HP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT.B - FT411HP</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2019-03-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B    REG EU 2017/1347</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-05-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-06-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">74.00</Data></Cell>
+  <Cell><Data ss:Type="Number">327.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7152.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">252</Data></Cell>
+  <Cell><Data ss:Type="String">FT698HP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT.B - FT698HP</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2019-04-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   UE 2017/1347 Y</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-08-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-08-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">44.00</Data></Cell>
+  <Cell><Data ss:Type="Number">194.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2731.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">253</Data></Cell>
+  <Cell><Data ss:Type="String">FT699HP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT.B - FT699HP</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2019-04-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   UE 2017/1347 Y</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-11-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-07-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">100.00</Data></Cell>
+  <Cell><Data ss:Type="Number">441.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5775.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">254</Data></Cell>
+  <Cell><Data ss:Type="String">FB903MD</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - FB903MD BENZ/METANO CASSIANI</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     595/2009*136/2014B</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2047-05-03T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-10-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">66.00</Data></Cell>
+  <Cell><Data ss:Type="Number">290.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1249.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">255</Data></Cell>
+  <Cell><Data ss:Type="String">FB904MD</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - FB904MD BENZ/METANO CASSIANI</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-12-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     595/2009*136/2014B</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2047-07-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-06-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">47.00</Data></Cell>
+  <Cell><Data ss:Type="Number">207.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1210.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">257</Data></Cell>
+  <Cell><Data ss:Type="String">FZ548MD</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/PORCELLI PAT.B - FZ548MD</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-02-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B (REG EU 2017/1347 Y)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2041-02-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-01-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">80.00</Data></Cell>
+  <Cell><Data ss:Type="Number">351.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3311.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">258</Data></Cell>
+  <Cell><Data ss:Type="String">DT271ME</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION IVECO CASSONE TRILATERALE PAT.B - DT271ME BENZ/METANO</Data></Cell>
+  <Cell><Data ss:Type="String">C770</Data></Cell>
+  <Cell><Data ss:Type="String">VER</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2012-05-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     2008/74/CE RIF. 2005/55/CERIGA C ECOL. MIGL</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2047-08-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-01-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">58.00</Data></Cell>
+  <Cell><Data ss:Type="Number">256.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1245.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">259</Data></Cell>
+  <Cell><Data ss:Type="String">ER936TL</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 2 ASSI MERCEDES ECONIC A METANO TARGATO ER936TL</Data></Cell>
+  <Cell><Data ss:Type="String">C720</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2013-07-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5     2008/74/CE RIF. 2005/55/CE RIGA C</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2067-12-26T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-06-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">10.00</Data></Cell>
+  <Cell><Data ss:Type="Number">44.00</Data></Cell>
+  <Cell><Data ss:Type="Number">504.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">260</Data></Cell>
+  <Cell><Data ss:Type="String">EY264LV</Data></Cell>
+  <Cell><Data ss:Type="String">COMPATTATORE 3 ASSI IVECO STRALIS 260E330 TARGATO EY264LV</Data></Cell>
+  <Cell><Data ss:Type="String">C730</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-03-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     595/2009*64/2012A</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-01-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-02-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">81.00</Data></Cell>
+  <Cell><Data ss:Type="Number">355.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3487.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">261</Data></Cell>
+  <Cell><Data ss:Type="String">EV994SB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA NISSAN/NOVARINI PAT.B - EV994SB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-04-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    715/2007*566/2011</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2035-01-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-05-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">52.00</Data></Cell>
+  <Cell><Data ss:Type="Number">230.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1772.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">262</Data></Cell>
+  <Cell><Data ss:Type="String">EV995SB</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA NISSAN/NOVARINI PAT.B - EV995SB</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-04-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E5B    715/2007*566/2011</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-01-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">90.00</Data></Cell>
+  <Cell><Data ss:Type="Number">397.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3741.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">263</Data></Cell>
+  <Cell><Data ss:Type="String">FF471XT</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO GPL/BENZ PAT.B - FF471XT</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-11-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   195/2013</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-01-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-10-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">53.00</Data></Cell>
+  <Cell><Data ss:Type="Number">234.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1401.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">264</Data></Cell>
+  <Cell><Data ss:Type="String">FG535HV</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO GPL/BENZINA PAT.B - FG535HV</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-11-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   195/2013</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-01-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">29.00</Data></Cell>
+  <Cell><Data ss:Type="Number">129.00</Data></Cell>
+  <Cell><Data ss:Type="Number">720.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">265</Data></Cell>
+  <Cell><Data ss:Type="String">GC578MK</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE IVECO DAILY 35 PAT. B. - GC578MK</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-11-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D    REG UE 2018/1832</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2041-07-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-06-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">86.00</Data></Cell>
+  <Cell><Data ss:Type="Number">377.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4459.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">266</Data></Cell>
+  <Cell><Data ss:Type="String">GC579MK</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE IVECO DAILY 35 PAT. B. - GC579MK</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-11-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D    REG UE 2018/1832</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-07-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-08-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">89.00</Data></Cell>
+  <Cell><Data ss:Type="Number">390.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4667.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">350000.00</Data></Cell>
+  <Cell><Data ss:Type="String">267</Data></Cell>
+  <Cell><Data ss:Type="String">FZ781MC</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU PAT. C - TARGATO FZ781MC</Data></Cell>
+  <Cell><Data ss:Type="String">C750</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-05-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6 (REG. 595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-10-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">120.00</Data></Cell>
+  <Cell><Data ss:Type="Number">527.00</Data></Cell>
+  <Cell><Data ss:Type="Number">9899.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">268</Data></Cell>
+  <Cell><Data ss:Type="String">GD868GX</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/PORCELLI PAT.B - GD868GX</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-04-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6  (REG. EU 2018/1832 CI EURO6D-TEMP-EVAP-ISC)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2035-10-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-03-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">85.00</Data></Cell>
+  <Cell><Data ss:Type="Number">374.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3802.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">269</Data></Cell>
+  <Cell><Data ss:Type="String">GD684GX</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT.B - GD684GX - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-04-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D  (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-07-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-03-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">110.00</Data></Cell>
+  <Cell><Data ss:Type="Number">484.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5939.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">270</Data></Cell>
+  <Cell><Data ss:Type="String">GD461GX</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE IVECO DAILY 35S16 PAT. B. - GD461GX</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-12-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B  (ERG. 136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-06-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2035-10-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">88.00</Data></Cell>
+  <Cell><Data ss:Type="Number">388.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3878.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">271</Data></Cell>
+  <Cell><Data ss:Type="String">GE251ZZ</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/PORCELLI PAT.B - GE251ZZ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-08-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-07-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-03-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">130.00</Data></Cell>
+  <Cell><Data ss:Type="Number">572.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5973.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">272</Data></Cell>
+  <Cell><Data ss:Type="String">GE250ZZ</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/PORCELLI PAT.B - GE250ZZ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-08-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-07-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-07-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">79.00</Data></Cell>
+  <Cell><Data ss:Type="Number">347.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3401.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">273</Data></Cell>
+  <Cell><Data ss:Type="String">GH024AR</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI  PAT. B - TARGATO GH024AR - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-01-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-03-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">130.00</Data></Cell>
+  <Cell><Data ss:Type="Number">572.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6853.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">274</Data></Cell>
+  <Cell><Data ss:Type="String">GH023AR</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT. B TARGATO GH023AR - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-01-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-03-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-05-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">151.00</Data></Cell>
+  <Cell><Data ss:Type="Number">666.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7466.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">275</Data></Cell>
+  <Cell><Data ss:Type="String">GY785MS</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT. B  TARGATO GY785MS  (EX GH230AS) - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-01-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D (REG. 595/2009/2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2042-12-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-04-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">46.00</Data></Cell>
+  <Cell><Data ss:Type="Number">203.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2400.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">276</Data></Cell>
+  <Cell><Data ss:Type="String">GH245AR</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT. B  - TARGATO GH245AR</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-03-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D  (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-09-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-10-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">140.00</Data></Cell>
+  <Cell><Data ss:Type="Number">616.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7127.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">277</Data></Cell>
+  <Cell><Data ss:Type="String">GH246AR</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI PAT. B - TARGATO GH246AR</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-03-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D  (REG. 595/2009*2018/932D)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-12-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-02-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">147.00</Data></Cell>
+  <Cell><Data ss:Type="Number">647.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7633.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">278</Data></Cell>
+  <Cell><Data ss:Type="String">GF080AJ</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION CON PEDANA FORD TRANSIT / DHOLANDIA PAT.B - GF080AJ</Data></Cell>
+  <Cell><Data ss:Type="String">C670</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-11-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   (REG. 2016/646/UE Y)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-10-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-06-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">79.00</Data></Cell>
+  <Cell><Data ss:Type="Number">347.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7716.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">279</Data></Cell>
+  <Cell><Data ss:Type="String">EX985HM</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE IVECO STRALIS A260SY PAT.C - EX985HM</Data></Cell>
+  <Cell><Data ss:Type="String">C700</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2014-11-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6     (REG. 595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-08-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-11-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">88.00</Data></Cell>
+  <Cell><Data ss:Type="Number">387.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6151.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">280</Data></Cell>
+  <Cell><Data ss:Type="String">FR506KF</Data></Cell>
+  <Cell><Data ss:Type="String">IVECO DAILY CON CASSA PAT. B - FR506KF</Data></Cell>
+  <Cell><Data ss:Type="String">C650</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-06-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B   (REG.136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2043-06-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-09-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">62.00</Data></Cell>
+  <Cell><Data ss:Type="Number">272.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2711.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">550000.00</Data></Cell>
+  <Cell><Data ss:Type="String">281</Data></Cell>
+  <Cell><Data ss:Type="String">GH909AR</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION  TELONATO CON PEDANA - IVECO EUROCARGO - PAT C - GH909AR</Data></Cell>
+  <Cell><Data ss:Type="String">C680</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2015-04-02T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6  (REG. 595/2009*64/2012A)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-01-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-03-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">57.00</Data></Cell>
+  <Cell><Data ss:Type="Number">253.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6466.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">282</Data></Cell>
+  <Cell><Data ss:Type="String">GK513VN</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO GK513VN</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-10-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D  ISC-FCM  (REG. UE 2018/1832 AQ)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-11-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">92.00</Data></Cell>
+  <Cell><Data ss:Type="Number">407.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2153.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">283</Data></Cell>
+  <Cell><Data ss:Type="String">GK514VN</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO GK514VN</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-10-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D  ISC-FCM  (REG. UE 2018/1832 AQ)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-12-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-11-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">94.00</Data></Cell>
+  <Cell><Data ss:Type="Number">414.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2207.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">284</Data></Cell>
+  <Cell><Data ss:Type="String">GE791GL</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA ELETTRICA RENAULT ZOE TARGATA - GE791GL</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">COM</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2021-06-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">ELETTRICA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">285</Data></Cell>
+  <Cell><Data ss:Type="String">FM485JT</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOCARRO VOLKSWAGEN CADDY TGI  BENZ/METANO PAT. B - FM485JT</Data></Cell>
+  <Cell><Data ss:Type="String">C620</Data></Cell>
+  <Cell><Data ss:Type="String">OFF</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2017-12-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6B (REG 2015/45)</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">286</Data></Cell>
+  <Cell><Data ss:Type="String">FF150YM</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE FIAT DUCATO - PAT. B - TARGATO FF150YM</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2016-01-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO 6B (REG 136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2041-05-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-02-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">90.00</Data></Cell>
+  <Cell><Data ss:Type="Number">397.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4317.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">287</Data></Cell>
+  <Cell><Data ss:Type="String">GM081XJ</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO GM081XJSENZA ALZA VOLTA BIDONI</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-05-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-03-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-12-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">80.00</Data></Cell>
+  <Cell><Data ss:Type="Number">352.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2042.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">288</Data></Cell>
+  <Cell><Data ss:Type="String">GM082XJ</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO: GM082XJCON ALZA VOLTA BIDONI</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-05-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-04-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-08-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">89.00</Data></Cell>
+  <Cell><Data ss:Type="Number">391.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2668.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">289</Data></Cell>
+  <Cell><Data ss:Type="String">GM083XJ</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO GM083XJCON ALZA VOLTA BIDONI</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-05-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2030-04-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2028-12-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">95.00</Data></Cell>
+  <Cell><Data ss:Type="Number">419.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3273.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">290</Data></Cell>
+  <Cell><Data ss:Type="String">GM356XJ</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU/TECNOINDUSTRIE MERLO - PAT.B - TARGA GM356XJ</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-06-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI (595/2009*2019/1939E)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2060-01-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2052-02-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">37.00</Data></Cell>
+  <Cell><Data ss:Type="Number">162.00</Data></Cell>
+  <Cell><Data ss:Type="Number">1725.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">291</Data></Cell>
+  <Cell><Data ss:Type="String">GM573XJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/TECNOINDUSTRIE MERLO PAT. B - TARGATO GM573XJ</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-06-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI (595/2009*2019/1939E)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2051-10-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2045-12-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">30.00</Data></Cell>
+  <Cell><Data ss:Type="Number">134.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2344.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">292</Data></Cell>
+  <Cell><Data ss:Type="String">GM574XJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/TECNOINDUSTRIE MERLO PAT. B - TARGATO GM574XJ</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-06-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI (595/2009*2019/1939E)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2039-05-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-05-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">57.00</Data></Cell>
+  <Cell><Data ss:Type="Number">250.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4516.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">293</Data></Cell>
+  <Cell><Data ss:Type="String">GM542XJ</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE IVECO DAILY 35S14 CON SPONDA - PAT. B - TARGATO GM542XJ</Data></Cell>
+  <Cell><Data ss:Type="String">C670</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2018-04-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO 6B (REG. 136/2014)</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-01-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2029-12-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">67.00</Data></Cell>
+  <Cell><Data ss:Type="Number">297.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5869.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">294</Data></Cell>
+  <Cell><Data ss:Type="String">GA005TE</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA ELETTRICA RENAULT ZOE TARGATA - GA005TE</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">DIR</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-02-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">ELETTRICA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">15000.00</Data></Cell>
+  <Cell><Data ss:Type="String">295</Data></Cell>
+  <Cell><Data ss:Type="String">GM898XJ</Data></Cell>
+  <Cell><Data ss:Type="String">CAMION SCARRABILE STRALIS  X-WAY 4 ASSI  - PAT C. GM898XJ LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C705</Data></Cell>
+  <Cell><Data ss:Type="String">TRA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-12-31T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-06-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-06-27T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">78.00</Data></Cell>
+  <Cell><Data ss:Type="Number">343.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6978.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">296</Data></Cell>
+  <Cell><Data ss:Type="String">GS602AL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU-NOVARINI PAT. B   TARGATO GS602AL LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-12-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-03-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">155.00</Data></Cell>
+  <Cell><Data ss:Type="Number">681.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7911.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">297</Data></Cell>
+  <Cell><Data ss:Type="String">GS642AL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU-NOVARINI PAT. B TARGATO GS642AL LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-10-15T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-02-08T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">154.00</Data></Cell>
+  <Cell><Data ss:Type="Number">676.00</Data></Cell>
+  <Cell><Data ss:Type="Number">8088.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">298</Data></Cell>
+  <Cell><Data ss:Type="String">GS643AL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU - NOVARINI PAT. B   TARGATO GS643AL LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-10-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-01-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">76.00</Data></Cell>
+  <Cell><Data ss:Type="Number">332.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3655.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">299</Data></Cell>
+  <Cell><Data ss:Type="String">GS644AL</Data></Cell>
+  <Cell><Data ss:Type="String">VASCA ISUZU - NOVARINI PAT. B TARGATO GS644AL LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-02-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-05-23T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">152.00</Data></Cell>
+  <Cell><Data ss:Type="Number">667.00</Data></Cell>
+  <Cell><Data ss:Type="Number">7724.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">300</Data></Cell>
+  <Cell><Data ss:Type="String">GV000DJ</Data></Cell>
+  <Cell><Data ss:Type="String">BIVASCA ISUZU/NOVARINI PAT. B  - TARGATO GV000DJ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-01-28T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-06-05T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">150.00</Data></Cell>
+  <Cell><Data ss:Type="Number">660.00</Data></Cell>
+  <Cell><Data ss:Type="Number">8260.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">301</Data></Cell>
+  <Cell><Data ss:Type="String">GV002DJ</Data></Cell>
+  <Cell><Data ss:Type="String">BIVASCA ISUZU/NOVARINI - PAT. B TARGATO GV002DJ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C810</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-10-10T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2031-03-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">154.00</Data></Cell>
+  <Cell><Data ss:Type="Number">677.00</Data></Cell>
+  <Cell><Data ss:Type="Number">8612.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">302</Data></Cell>
+  <Cell><Data ss:Type="String">GT737MP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI  - PAT. B - TARGATO GT737MP - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-05-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-03-09T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2033-11-13T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">111.00</Data></Cell>
+  <Cell><Data ss:Type="Number">487.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5874.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">303</Data></Cell>
+  <Cell><Data ss:Type="String">GS822AP</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI - PAT. B - TARGATO GS822AP - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-01-04T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-08-14T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">110.00</Data></Cell>
+  <Cell><Data ss:Type="Number">482.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5698.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">304</Data></Cell>
+  <Cell><Data ss:Type="String">GV091DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI - PAT. B - TARGATO GV091DJ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2036-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-01-29T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">99.00</Data></Cell>
+  <Cell><Data ss:Type="Number">437.00</Data></Cell>
+  <Cell><Data ss:Type="Number">5698.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">305</Data></Cell>
+  <Cell><Data ss:Type="String">GV007DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI  - PAT. B - TARGATO GV007DJ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAE</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-18T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-08-26T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-08-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">134.00</Data></Cell>
+  <Cell><Data ss:Type="Number">589.00</Data></Cell>
+  <Cell><Data ss:Type="Number">6804.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">306</Data></Cell>
+  <Cell><Data ss:Type="String">GV055DJ</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/PORCELLI - PAT. B - TARGATO GV055DJ - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-06-21T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2040-12-16T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2037-08-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">89.00</Data></Cell>
+  <Cell><Data ss:Type="Number">392.00</Data></Cell>
+  <Cell><Data ss:Type="Number">4137.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">100000.00</Data></Cell>
+  <Cell><Data ss:Type="String">307</Data></Cell>
+  <Cell><Data ss:Type="String">GS657AP</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON VASCA NEOH3 PAT.B -  TARGATO GS657AP CON VOLTA BIDONI</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2024-05-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO 6D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2034-01-12T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2032-02-20T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">94.00</Data></Cell>
+  <Cell><Data ss:Type="Number">415.00</Data></Cell>
+  <Cell><Data ss:Type="Number">2399.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">308</Data></Cell>
+  <Cell><Data ss:Type="String">GC626CN</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA ELETTRICA RENAULT ZOE TARGATA - GC626CN</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2020-10-19T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">ELETTRICA</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-03-25T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2027-06-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">309</Data></Cell>
+  <Cell><Data ss:Type="String">GR548CZ</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE RENAULT MASTER H2L3 - PATENTE B - TARGATO GR548CZ</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-11-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6 D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2050-03-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2045-02-06T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">87.00</Data></Cell>
+  <Cell><Data ss:Type="Number">383.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3559.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">400000.00</Data></Cell>
+  <Cell><Data ss:Type="String">310</Data></Cell>
+  <Cell><Data ss:Type="String">GR551CZ</Data></Cell>
+  <Cell><Data ss:Type="String">FURGONE RENAULT MASTER H2L3 - PATENTE B - TARGATO GR551CZ</Data></Cell>
+  <Cell><Data ss:Type="String">C760</Data></Cell>
+  <Cell><Data ss:Type="String">MSV</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2023-11-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">E6 D</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2049-07-30T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2044-08-07T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">97.00</Data></Cell>
+  <Cell><Data ss:Type="Number">427.00</Data></Cell>
+  <Cell><Data ss:Type="Number">3652.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">311</Data></Cell>
+  <Cell><Data ss:Type="String">GY031GG</Data></Cell>
+  <Cell><Data ss:Type="String">AUTOVETTURA ELETTRICA TESLA MODEL 3 TARGATA GY031GG</Data></Cell>
+  <Cell><Data ss:Type="String">C610</Data></Cell>
+  <Cell><Data ss:Type="String">DIR</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2025-03-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">ELETTRICA</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">312</Data></Cell>
+  <Cell><Data ss:Type="String">GJ031NC</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6  CON CASSONE E SPONDE TARGATO GJ031NC</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-06-01T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">313</Data></Cell>
+  <Cell><Data ss:Type="String">GC770KB</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6 CON VASCA E VOLTABIDONI TARGATO GC770KB</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAN</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-03-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="String">314</Data></Cell>
+  <Cell><Data ss:Type="String">GC767KB</Data></Cell>
+  <Cell><Data ss:Type="String">PORTER PIAGGIO NP6 CON VASCA E VOLTABIDONI TARGATO GC767KB</Data></Cell>
+  <Cell><Data ss:Type="String">C805</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2022-03-17T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">315</Data></Cell>
+  <Cell><Data ss:Type="String">HB573NL</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/OMB - PAT. B - TARGATO HB573NL - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-01-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2285-02-11T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-03-24T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="Number">5.00</Data></Cell>
+  <Cell><Data ss:Type="Number">20.00</Data></Cell>
+  <Cell><Data ss:Type="Number">263.00</Data></Cell>
+ </Row>
+
+ <Row>
+  <Cell><Data ss:Type="Number">300000.00</Data></Cell>
+  <Cell><Data ss:Type="String">316</Data></Cell>
+  <Cell><Data ss:Type="String">HB574NL</Data></Cell>
+  <Cell><Data ss:Type="String">COSTIPATORE ISUZU/OMB - PAT. B - TARGATO HB574NL - LEASING</Data></Cell>
+  <Cell><Data ss:Type="String">C740</Data></Cell>
+  <Cell><Data ss:Type="String">IGUAO</Data></Cell>
+  <Cell><Data ss:Type="DateTime">2026-01-22T00:00:00.000</Data></Cell>
+  <Cell><Data ss:Type="String">EURO VI</Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="String"></Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+  <Cell><Data ss:Type="Number">0.00</Data></Cell>
+ </Row>
+
+</Table>
+</Worksheet>
+</Workbook>
