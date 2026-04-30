@@ -21,7 +21,7 @@ export default function CruscottoModule({onSelectVehicle}){
     if(e.km>vFuel[e.vehicle].lastKm)vFuel[e.vehicle].lastKm=e.km;
   });
   const vOrders={};orders?.forEach(o=>{vOrders[o.vehicle]=(vOrders[o.vehicle]||0)+1;});
-  const rows=(vehicles||[]).map(v=>({...v,f:vFuel[v.name]||null,ordersCount:vOrders[v.name]||0}));
+  const rows=(vehicles||[]).map(v=>({...v,f:vFuel[v.plate]||null,ordersCount:vOrders[v.plate]||0}));
   const totalLiters=Object.values(vFuel).reduce((s,f)=>s+f.liters,0);
   const totalFuelCost=Object.values(vFuel).reduce((s,f)=>s+f.cost,0);
   const totalOrders=orders?.length||0;

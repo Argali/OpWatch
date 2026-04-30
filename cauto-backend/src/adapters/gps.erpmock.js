@@ -2,7 +2,7 @@
  * ERP-seeded mock GPS adapter
  *
  * Reads the real vehicle list from the ERP connector (Elenco Mezzi XML) and
- * assigns simulated positions around Ferrara so the map shows actual Cauto
+ * assigns simulated positions around Brescia so the map shows actual Cauto
  * trucks instead of placeholder names.
  *
  * Use while VisiRun IP registration is pending:
@@ -61,7 +61,7 @@ module.exports = {
 
         return {
           id:        v.external_id,
-          name:      v.license_plate,          // plate as display name (matches VisiRun behaviour)
+          name:      v.external_id,            // numero articolo (e.g. 209, N25) as display name
           plate:     v.license_plate,
           status,
           speed_kmh: speed,
