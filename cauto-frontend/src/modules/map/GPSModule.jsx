@@ -1,4 +1,53 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+
+function getPhotonIcon(osmValue) {
+  switch (osmValue) {
+    case "house": case "apartments": case "residential": case "detached": return "🏠";
+    case "road": case "path": case "footway": case "living_street": return "🛣️";
+    case "city": case "town": case "village": case "hamlet": case "suburb": return "🏙️";
+    case "industrial": case "warehouse": case "factory": return "🏭";
+    case "fuel": return "⛽";
+    case "hospital": case "clinic": return "🏥";
+    case "school": case "university": case "college": return "🎓";
+    case "restaurant": case "cafe": case "bar": case "fast_food": return "🍽️";
+    case "supermarket": case "convenience": return "🛒";
+    case "parking": return "🅿️";
+    case "park": case "garden": return "🌳";
+    default: return "📍";
+  }
+}
+
+function formatPhotonResult(feature) {
+  const p = feature.properties;
+  const [lon, lat] = feature.geometry.coordinates;
+  const title = [p.street || p.name, p.housenumber].filter(Boolean).join(" ");
+  const subtitle = [p.city || p.town || p.village, p.state, p.country].filter(Boolean).join(" • ");
+  const display_name = [title, subtitle].filter(Boolean).join(", ");
+  return {
+    lat: String(lat),
+    lon: String(lon),
+    display_name: display_name || `${lat},${lon}`,
+    title: title || p.name || display_name,
+    subtitle,
+    icon: getPhotonIcon(p.osm_value),
+  };
+}
+
+// Keep alias for existing call sites
+const photonToNominatim = formatPhotonResult;
+
+function highlightMatch(text, query) {
+  if (!text || !query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    <span>
+      {text.slice(0, idx)}
+      <strong style={{color:"inherit",fontWeight:700}}>{text.slice(idx, idx + query.length)}</strong>
+      {text.slice(idx + query.length)}
+    </span>
+  );
+}
 import L from "leaflet";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { API } from "@/api";
@@ -8,6 +57,7 @@ import { usePerms } from "@/core/permissions/PermContext";
 import { useApi } from "@/hooks/useApi";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { useDebounce } from "@/hooks/useDebounce";
 import { distanceM, fmtDist, fmtTime, NAV_ARROW } from "@/utils/geoUtils";
 import Spinner from "@/shared/ui/Spinner";
 import ApiError from "@/shared/ui/ApiError";
@@ -47,6 +97,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const [navDestQuery,setNavDestQuery]=useState("");
   const [navDestResults,setNavDestResults]=useState([]);
   const [navDestLoading,setNavDestLoading]=useState(false);
+  const debouncedNavDestQuery=useDebounce(navDestQuery,350);
   const [navDest,setNavDest]=useState(null);       // {lat,lng,name}
   const [navError,setNavError]=useState(null);
   const navPolyRef=useRef(null);
@@ -132,6 +183,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const [searchAddr,setSearchAddr]=useState("");
   const [searchResults,setSearchResults]=useState([]);
   const [searchLoading,setSearchLoading]=useState(false);
+  const debouncedSearchAddr=useDebounce(searchAddr,350);
   const [selectedSearchResult,setSelectedSearchResult]=useState(null); // {lat,lng,address}
   const [segTerritorio,setSegTerritorio]=useState({tipo:"",note:""});
   const [segTerritorioMsg,setSegTerritorioMsg]=useState(null);
@@ -214,9 +266,9 @@ function GPSModule({onSelectVehicle,mode="live"}){
     cdrGeoAbortRef.current=new AbortController();
     setCdrGeoLoading(true);
     try{
-      const res=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`,{headers:{"Accept-Language":"it"},signal:cdrGeoAbortRef.current.signal});
+      const res=await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=1&lang=it`,{signal:cdrGeoAbortRef.current.signal});
       const data=await res.json();
-      if(data.length>0)setCdrMeta(m=>({...m,lat:parseFloat(data[0].lat),lng:parseFloat(data[0].lon)}));
+      if(data.features?.length>0){const r=photonToNominatim(data.features[0]);setCdrMeta(m=>({...m,lat:parseFloat(r.lat),lng:parseFloat(r.lon)}));}
     }catch(e){if(e.name!=="AbortError")setCdrMeta(m=>({...m,lat:null,lng:null}));}
     setCdrGeoLoading(false);
   },[cdrMeta.address]);
@@ -228,14 +280,11 @@ function GPSModule({onSelectVehicle,mode="live"}){
     navAbortRef.current=new AbortController();
     setNavDestLoading(true);
     try{
-      // Bias results toward the user's current position (±0.3° ≈ 30 km box)
-      const vb=myPos
-        ?`&viewbox=${myPos[1]-0.3},${myPos[0]+0.3},${myPos[1]+0.3},${myPos[0]-0.3}&bounded=0`
-        :"";
-      const url=`https://nominatim.openstreetmap.org/search?format=json&limit=8&countrycodes=it${vb}&q=${encodeURIComponent(q)}`;
-      const r=await fetch(url,{headers:{"Accept-Language":"it"},signal:navAbortRef.current.signal});
+      const lb=myPos?`&lat=${myPos[0]}&lon=${myPos[1]}`:"";
+      const url=`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=8&lang=it${lb}`;
+      const r=await fetch(url,{signal:navAbortRef.current.signal});
       const d=await r.json();
-      if(!navAbortRef.current?.signal.aborted)setNavDestResults(d);
+      if(!navAbortRef.current?.signal.aborted)setNavDestResults((d.features||[]).map(photonToNominatim));
     }catch(e){if(e.name!=="AbortError")setNavDestResults([]);}
     setNavDestLoading(false);
   },[myPos]);
@@ -293,12 +342,23 @@ function GPSModule({onSelectVehicle,mode="live"}){
     const signal=nominatimAbortRef.current.signal;
     setSearchLoading(true);
     try{
-      const res=await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(q)}`,{headers:{"Accept-Language":"it"},signal});
+      const res=await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=5&lang=it`,{signal});
       const data=await res.json();
-      if(!signal.aborted) setSearchResults(data);
+      if(!signal.aborted) setSearchResults((data.features||[]).map(photonToNominatim));
     }catch(e){ if(e.name!=="AbortError") setSearchResults([]); }
     if(!signal.aborted) setSearchLoading(false);
   },[]);
+
+  // Debounced auto-search for the address bar (min 2 chars)
+  useEffect(()=>{
+    if(debouncedSearchAddr.length>=2) searchAddress(debouncedSearchAddr);
+    else setSearchResults([]);
+  },[debouncedSearchAddr,searchAddress]);
+
+  // Debounced auto-search for nav destination
+  useEffect(()=>{
+    searchNavDest(debouncedNavDestQuery);
+  },[debouncedNavDestQuery,searchNavDest]);
 
   const flyToResult=useCallback((r)=>{
     if(!liveMapRef.current)return;
@@ -306,10 +366,12 @@ function GPSModule({onSelectVehicle,mode="live"}){
     const lat=parseFloat(r.lat),lng=parseFloat(r.lon);
     map.flyTo([lat,lng],16,{animate:true,duration:1.2});
     if(searchPinRef.current){searchPinRef.current.remove();searchPinRef.current=null;}
-    searchPinRef.current=L.marker([lat,lng],{icon:L.divIcon({className:"",html:`<div style="width:22px;height:22px;background:#f87171;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(0,0,0,0.6)"></div>`,iconSize:[22,22],iconAnchor:[11,11]})})
-      .addTo(map).bindPopup(`<b style="font-size:12px">${r.display_name}</b>`).openPopup();
-    setSearchResults([]);setSearchAddr(r.display_name);
-    setSelectedSearchResult({lat,lng,address:r.display_name});
+    const pinHtml=`<div style="display:flex;flex-direction:column;align-items:center"><div style="width:26px;height:26px;background:#f87171;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;font-size:14px">${r.icon||"📍"}</div><div style="width:2px;height:8px;background:#f87171;margin-top:-1px"></div></div>`;
+    const popupHtml=`<div style="font-family:sans-serif;min-width:150px"><div style="font-weight:700;font-size:13px;color:#0f172a">${r.title||r.display_name}</div>${r.subtitle?`<div style="font-size:11px;color:#64748b;margin-top:3px">${r.subtitle}</div>`:""}</div>`;
+    searchPinRef.current=L.marker([lat,lng],{icon:L.divIcon({className:"",html:pinHtml,iconSize:[26,34],iconAnchor:[13,34]})})
+      .addTo(map).bindPopup(popupHtml).openPopup();
+    setSearchResults([]);setSearchAddr(r.title||r.display_name);
+    setSelectedSearchResult({lat,lng,address:r.title||r.display_name});
     setSegTerritorio({tipo:"",note:""});setSegTerritorioMsg(null);
   },[]);
 
@@ -695,24 +757,57 @@ function GPSModule({onSelectVehicle,mode="live"}){
               {/* address search */}
               <div style={{marginBottom:8,position:"relative"}}>
                 <div style={{display:"flex",gap:0,background:T.bg,border:`1px solid ${T.border}`,borderRadius:7,overflow:"hidden"}}>
-                  <input value={searchAddr} onChange={e=>{setSearchAddr(e.target.value);if(e.target.value.length<2)setSearchResults([]);}}
+                  <input value={searchAddr} onChange={e=>setSearchAddr(e.target.value)}
                     onKeyDown={e=>{if(e.key==="Enter")searchAddress(searchAddr);}}
                     placeholder="Cerca indirizzo..." style={{flex:1,background:"transparent",border:"none",color:T.text,padding:"7px 10px",fontSize:12,fontFamily:T.font,outline:"none"}}/>
                   <button onClick={()=>searchAddress(searchAddr)} style={{background:T.navActive,border:"none",borderLeft:`1px solid ${T.border}`,color:T.blue,padding:"7px 11px",cursor:"pointer",fontSize:13}}>
                     {searchLoading?"…":"🔍"}
                   </button>
                 </div>
-                {searchResults.length>0&&(
-                  <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2000,background:T.card,border:`1px solid ${T.border}`,borderRadius:7,boxShadow:"0 6px 20px rgba(0,0,0,0.4)",marginTop:3,maxHeight:200,overflowY:"auto"}}>
-                    {searchResults.map((r,i)=>(
-                      <div key={i} onClick={()=>flyToResult(r)} style={{padding:"8px 12px",cursor:"pointer",borderBottom:`1px solid ${T.border}`,fontSize:11,color:T.text,lineHeight:1.4}}
-                        onMouseEnter={e=>e.currentTarget.style.background=T.bg}
-                        onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-                        {r.display_name}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {(searchResults.length>0||searchAddr.length>=2)&&(()=>{
+                  const q=searchAddr.toLowerCase();
+                  const internal=[
+                    ...cdr.filter(c=>c.lat&&c.lng&&(c.name?.toLowerCase().includes(q)||c.comune?.toLowerCase().includes(q))).map(c=>({lat:String(c.lat),lon:String(c.lng),title:c.name||"CDR",subtitle:`CDR • ${c.comune||""}`,icon:"⭐",display_name:c.name})),
+                    ...punti.filter(p=>p.lat&&p.lng&&(p.nome?.toLowerCase().includes(q)||p.comune?.toLowerCase().includes(q))).map(p=>({lat:String(p.lat),lon:String(p.lng),title:p.nome||"Punto",subtitle:`Punto • ${p.comune||""}`,icon:"⭐",display_name:p.nome})),
+                  ];
+                  if(!internal.length&&!searchResults.length) return null;
+                  return(
+                    <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2000,background:T.card,border:`1px solid ${T.border}`,borderRadius:7,boxShadow:"0 6px 20px rgba(0,0,0,0.4)",marginTop:3,maxHeight:260,overflowY:"auto"}}>
+                      {internal.length>0&&<>
+                        <div style={{padding:"5px 12px 3px",fontSize:10,fontWeight:700,color:T.textDim,textTransform:"uppercase",letterSpacing:0.8}}>★ Posizioni FleetCC</div>
+                        {internal.map((r,i)=>(
+                          <div key={`int-${i}`} onClick={()=>flyToResult(r)} style={{padding:"8px 12px",cursor:"pointer",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"flex-start",gap:8}}
+                            onMouseEnter={e=>e.currentTarget.style.background=T.bg}
+                            onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                            <span style={{fontSize:13,marginTop:1,flexShrink:0}}>⭐</span>
+                            <div style={{flex:1,minWidth:0}}>
+                              <div style={{fontSize:12,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{highlightMatch(r.title,searchAddr)}</div>
+                              <div style={{fontSize:10,color:T.textDim,marginTop:1}}>{r.subtitle}</div>
+                            </div>
+                          </div>
+                        ))}
+                        {searchResults.length>0&&<div style={{margin:"0 12px",borderTop:`1px solid ${T.border}`}}/>}
+                      </>}
+                      {searchResults.length>0&&<>
+                        {internal.length>0&&<div style={{padding:"5px 12px 3px",fontSize:10,fontWeight:700,color:T.textDim,textTransform:"uppercase",letterSpacing:0.8}}>📍 Risultati ricerca</div>}
+                        {searchResults.map((r,i)=>{
+                          const dist=myPos?distanceM(myPos,[parseFloat(r.lat),parseFloat(r.lon)]):null;
+                          return(
+                            <div key={i} onClick={()=>flyToResult(r)} style={{padding:"8px 12px",cursor:"pointer",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"flex-start",gap:8}}
+                              onMouseEnter={e=>e.currentTarget.style.background=T.bg}
+                              onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                              <span style={{fontSize:13,marginTop:1,flexShrink:0}}>{r.icon}</span>
+                              <div style={{flex:1,minWidth:0}}>
+                                <div style={{fontSize:12,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{highlightMatch(r.title,searchAddr)}</div>
+                                <div style={{fontSize:10,color:T.textDim,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.subtitle}{dist!=null?` • ${fmtDist(dist/1000)}`:""}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>}
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* ── Segnalazione territorio (visible after address picked) ── */}
@@ -1082,7 +1177,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
               <div style={{position:"relative",marginBottom:8}}>
                 <input
                   value={navDestQuery}
-                  onChange={e=>{setNavDestQuery(e.target.value);searchNavDest(e.target.value);}}
+                  onChange={e=>setNavDestQuery(e.target.value)}
                   placeholder="Cerca indirizzo di destinazione…"
                   autoFocus
                   style={{width:"100%",background:T.card,border:`1px solid ${T.border}`,borderRadius:10,color:T.text,padding:"12px 44px 12px 14px",fontSize:14,fontFamily:T.font,outline:"none",boxSizing:"border-box"}}/>
@@ -1096,13 +1191,16 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 <div style={{maxHeight:220,overflowY:"auto",borderRadius:10,border:`1px solid ${T.border}`,background:T.card}}>
                   {navDestResults.map((r,i)=>(
                     <button key={i} onClick={()=>{
-                      const dest={lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.display_name};
-                      setNavDestQuery(r.display_name);setNavDestResults([]);
+                      const dest={lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name};
+                      setNavDestQuery(r.title||r.display_name);setNavDestResults([]);
                       startNavigation(dest);
                     }}
-                      style={{display:"block",width:"100%",padding:"12px 14px",background:"transparent",border:"none",borderBottom:`1px solid ${T.border}`,color:T.text,textAlign:"left",cursor:"pointer",fontSize:13,fontFamily:T.font,lineHeight:1.4}}>
-                      <div style={{fontWeight:600,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.display_name.split(",")[0]}</div>
-                      <div style={{fontSize:11,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginTop:2}}>{r.display_name.split(",").slice(1).join(",").trim()}</div>
+                      style={{display:"flex",alignItems:"flex-start",gap:10,width:"100%",padding:"11px 14px",background:"transparent",border:"none",borderBottom:`1px solid ${T.border}`,color:T.text,textAlign:"left",cursor:"pointer",fontFamily:T.font}}>
+                      <span style={{fontSize:16,marginTop:1,flexShrink:0}}>{r.icon}</span>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontWeight:600,fontSize:13,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{highlightMatch(r.title,navDestQuery)}</div>
+                        <div style={{fontSize:11,color:T.textSub,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginTop:2}}>{r.subtitle}{myPos?` • ${fmtDist(distanceM(myPos,[parseFloat(r.lat),parseFloat(r.lon)])/1000)}`:""}</div>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -1825,7 +1923,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
               <div style={{fontSize:14,fontWeight:700,color:T.yellow}}>⚠ Indirizzi non geocodificati</div>
               <button onClick={()=>setExcelPopup(null)} style={{background:"none",border:"none",color:T.textSub,cursor:"pointer",fontSize:18,lineHeight:1}}>×</button>
             </div>
-            <div style={{fontSize:12,color:T.textSub}}>I seguenti indirizzi non sono stati trovati su Nominatim e sono stati saltati:</div>
+            <div style={{fontSize:12,color:T.textSub}}>I seguenti indirizzi non sono stati trovati e sono stati saltati:</div>
             <div style={{overflowY:"auto",display:"flex",flexDirection:"column",gap:6}}>
               {excelPopup.map((u,i)=>(
                 <div key={i} style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:7,padding:"8px 12px"}}>
