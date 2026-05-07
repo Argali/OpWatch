@@ -1,6 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "leaflet.markercluster";
 import T, { statusColor, statusLabel } from "@/theme";
 import Icon from "@/shared/ui/Icon";
 
@@ -61,7 +64,12 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     zoneLayerRef.current=L.layerGroup().addTo(map);
     puntiLayerRef.current=L.layerGroup().addTo(map);
     annotLayerRef.current=L.layerGroup().addTo(map);
-    vehicleLayerRef.current=L.layerGroup().addTo(map);
+    vehicleLayerRef.current=L.markerClusterGroup({
+      maxClusterRadius:60,
+      showCoverageOnHover:false,
+      spiderfyOnMaxZoom:true,
+      disableClusteringAtZoom:16,
+    }).addTo(map);
     myPosLayerRef.current=L.layerGroup().addTo(map);
     driverLocsLayerRef.current=L.layerGroup().addTo(map);
     editLayerRef.current=L.layerGroup().addTo(map);
@@ -139,7 +147,13 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     if(editMode)return;
     vehicles.forEach(v=>{
       const color=statusColor[v.status]||T.green;
-      const m=L.circleMarker([v.lat,v.lng],{radius:9,fillColor:color,fillOpacity:1,color:"#000",weight:1.5});
+      const m=L.marker([v.lat,v.lng],{
+        icon:L.divIcon({
+          className:"",
+          html:`<div style="width:18px;height:18px;background:${color};border:2px solid rgba(0,0,0,0.7);border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,0.55)"></div>`,
+          iconSize:[18,18],iconAnchor:[9,9],
+        }),
+      });
       m.bindPopup(`<div style="font-family:system-ui;font-size:12px;min-width:160px"><div style="font-weight:700;margin-bottom:4px">${v.name}</div><div style="color:#666;margin-bottom:6px">${v.plate} · ${v.sector}</div>${v.speed_kmh>0?`<div style="margin-bottom:4px">${v.speed_kmh} km/h</div>`:""}<div style="height:4px;background:#eee;border-radius:2px;margin-bottom:2px"><div style="height:100%;width:${v.fuel_pct}%;background:${v.fuel_pct<20?"#f87171":"#4ade80"};border-radius:2px"></div></div><div style="font-size:10px;color:#888">Carburante: ${v.fuel_pct}%</div></div>`);
       vehicleLayerRef.current.addLayer(m);
     });

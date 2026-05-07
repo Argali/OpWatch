@@ -36,6 +36,29 @@ function formatPhotonResult(feature) {
 // Keep alias for existing call sites
 const photonToNominatim = formatPhotonResult;
 
+// ── Recent searches ────────────────────────────────────────────────────────
+const RECENT_KEY = 'fleetcc_recent_searches';
+function saveRecentSearch(r) {
+  try {
+    const prev = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+    const deduped = prev.filter(x => x.display_name !== r.display_name);
+    localStorage.setItem(RECENT_KEY, JSON.stringify([{ ...r, ts: Date.now() }, ...deduped].slice(0, 6)));
+  } catch {}
+}
+function loadRecentSearches() {
+  try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch { return []; }
+}
+
+// ── Nav profiles ────────────────────────────────────────────────────────────
+const NAV_PROFILES = [
+  { id: 'auto',         icon: '🚗', label: 'Auto'     },
+  { id: 'truck',        icon: '🚛', label: 'Camion'   },
+  { id: 'bicycle',      icon: '🚲', label: 'Bici'     },
+  { id: 'pedestrian',   icon: '🚶', label: 'A piedi'  },
+  { id: 'motor_scooter',icon: '🛵', label: 'Moto'     },
+  { id: 'bus',          icon: '🚌', label: 'Bus'      },
+];
+
 function highlightMatch(text, query) {
   if (!text || !query) return text;
   const idx = text.toLowerCase().indexOf(query.toLowerCase());
@@ -100,7 +123,11 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const debouncedNavDestQuery=useDebounce(navDestQuery,350);
   const [navDest,setNavDest]=useState(null);       // {lat,lng,name}
   const [navError,setNavError]=useState(null);
+  const [navPreviewDest,setNavPreviewDest]=useState(null);   // {lat,lng,name}
+  const [navPreviewInfo,setNavPreviewInfo]=useState(null);   // {distance,duration}
+  const [navPreviewLoading,setNavPreviewLoading]=useState(false);
   const navPolyRef=useRef(null);
+  const previewPolyRef=useRef(null);
   const navAbortRef=useRef(null);
   const {data:vehicles,loading,error,refetch}=useApi("/gps/vehicles",{pollMs:10000});
   const [routes,setRoutes]=useState(null);
@@ -183,6 +210,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const [searchAddr,setSearchAddr]=useState("");
   const [searchResults,setSearchResults]=useState([]);
   const [searchLoading,setSearchLoading]=useState(false);
+  const [searchFocused,setSearchFocused]=useState(false);
   const debouncedSearchAddr=useDebounce(searchAddr,350);
   const [selectedSearchResult,setSelectedSearchResult]=useState(null); // {lat,lng,address}
   const [segTerritorio,setSegTerritorio]=useState({tipo:"",note:""});
@@ -303,6 +331,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
       else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
       // Draw route on map
       if(liveMapRef.current){
+        if(previewPolyRef.current){previewPolyRef.current.remove();previewPolyRef.current=null;}
         if(navPolyRef.current){navPolyRef.current.remove();navPolyRef.current=null;}
         navPolyRef.current=L.polyline(d.data.shape,{color:"#3b82f6",weight:7,opacity:0.85}).addTo(liveMapRef.current);
         liveMapRef.current.fitBounds(navPolyRef.current.getBounds(),{padding:[60,60]});
@@ -313,12 +342,36 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const stopNavigation=useCallback(()=>{
     setNavStatus("idle");setNavRoute(null);setNavStep(0);setNavDest(null);setNavError(null);
     setNavDestQuery("");setNavDestResults([]);
+    setNavPreviewDest(null);setNavPreviewInfo(null);
     if(navPolyRef.current){navPolyRef.current.remove();navPolyRef.current=null;}
-    // Exit fullscreen if active
+    if(previewPolyRef.current){previewPolyRef.current.remove();previewPolyRef.current=null;}
     if(document.fullscreenElement||document.webkitFullscreenElement){
       (document.exitFullscreen||document.webkitExitFullscreen)?.call(document).catch(()=>{});
     }
   },[]);
+
+  const cancelPreview=useCallback(()=>{
+    setNavPreviewDest(null);setNavPreviewInfo(null);
+    if(previewPolyRef.current){previewPolyRef.current.remove();previewPolyRef.current=null;}
+  },[]);
+
+  const previewRoute=useCallback(async(dest)=>{
+    setNavPreviewDest(dest);setNavPreviewInfo(null);setNavPreviewLoading(true);
+    if(!myPos||!liveMapRef.current){setNavPreviewLoading(false);return;}
+    try{
+      const r=await fetch(`${API}/gps/navigate`,{method:"POST",
+        headers:{Authorization:`Bearer ${auth?.token}`,"Content-Type":"application/json"},
+        body:JSON.stringify({from:myPos,to:[dest.lat,dest.lng],costing:navCosting})});
+      const d=await r.json();
+      if(d.ok){
+        setNavPreviewInfo({distance:d.data.distance,duration:d.data.duration});
+        if(previewPolyRef.current){previewPolyRef.current.remove();previewPolyRef.current=null;}
+        previewPolyRef.current=L.polyline(d.data.shape,{color:"#3b82f6",weight:5,opacity:0.55,dashArray:"12 8"}).addTo(liveMapRef.current);
+        liveMapRef.current.fitBounds(previewPolyRef.current.getBounds(),{padding:[70,70]});
+      }
+    }catch{}
+    setNavPreviewLoading(false);
+  },[myPos,auth?.token,navCosting]);
 
   // Auto-advance nav step as user moves
   useEffect(()=>{
@@ -370,6 +423,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
     const popupHtml=`<div style="font-family:sans-serif;min-width:150px"><div style="font-weight:700;font-size:13px;color:#0f172a">${r.title||r.display_name}</div>${r.subtitle?`<div style="font-size:11px;color:#64748b;margin-top:3px">${r.subtitle}</div>`:""}</div>`;
     searchPinRef.current=L.marker([lat,lng],{icon:L.divIcon({className:"",html:pinHtml,iconSize:[26,34],iconAnchor:[13,34]})})
       .addTo(map).bindPopup(popupHtml).openPopup();
+    saveRecentSearch(r);
     setSearchResults([]);setSearchAddr(r.title||r.display_name);
     setSelectedSearchResult({lat,lng,address:r.title||r.display_name});
     setSegTerritorio({tipo:"",note:""});setSegTerritorioMsg(null);
@@ -758,19 +812,43 @@ function GPSModule({onSelectVehicle,mode="live"}){
               <div style={{marginBottom:8,position:"relative"}}>
                 <div style={{display:"flex",gap:0,background:T.bg,border:`1px solid ${T.border}`,borderRadius:7,overflow:"hidden"}}>
                   <input value={searchAddr} onChange={e=>setSearchAddr(e.target.value)}
+                    onFocus={()=>setSearchFocused(true)}
+                    onBlur={()=>setTimeout(()=>setSearchFocused(false),150)}
                     onKeyDown={e=>{if(e.key==="Enter")searchAddress(searchAddr);}}
                     placeholder="Cerca indirizzo..." style={{flex:1,background:"transparent",border:"none",color:T.text,padding:"7px 10px",fontSize:12,fontFamily:T.font,outline:"none"}}/>
                   <button onClick={()=>searchAddress(searchAddr)} style={{background:T.navActive,border:"none",borderLeft:`1px solid ${T.border}`,color:T.blue,padding:"7px 11px",cursor:"pointer",fontSize:13}}>
                     {searchLoading?"…":"🔍"}
                   </button>
                 </div>
-                {(searchResults.length>0||searchAddr.length>=2)&&(()=>{
+                {searchFocused&&(()=>{
+                  // ── Empty input: show recent searches ────────────────────
+                  if(searchAddr.length<2){
+                    const recent=loadRecentSearches();
+                    if(!recent.length)return null;
+                    return(
+                      <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2000,background:T.card,border:`1px solid ${T.border}`,borderRadius:7,boxShadow:"0 6px 20px rgba(0,0,0,0.4)",marginTop:3,overflow:"hidden"}}>
+                        <div style={{padding:"5px 12px 3px",fontSize:10,fontWeight:700,color:T.textDim,textTransform:"uppercase",letterSpacing:0.8}}>🕐 Recenti</div>
+                        {recent.map((r,i)=>(
+                          <div key={i} onClick={()=>flyToResult(r)} style={{padding:"8px 12px",cursor:"pointer",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"flex-start",gap:8}}
+                            onMouseEnter={e=>e.currentTarget.style.background=T.bg}
+                            onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                            <span style={{fontSize:13,marginTop:1,flexShrink:0}}>{r.icon||"🕐"}</span>
+                            <div style={{flex:1,minWidth:0}}>
+                              <div style={{fontSize:12,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.title||r.display_name}</div>
+                              <div style={{fontSize:10,color:T.textDim,marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.subtitle||""}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  // ── Has query: show FleetCC + Photon results ─────────────
                   const q=searchAddr.toLowerCase();
                   const internal=[
                     ...cdr.filter(c=>c.lat&&c.lng&&(c.name?.toLowerCase().includes(q)||c.comune?.toLowerCase().includes(q))).map(c=>({lat:String(c.lat),lon:String(c.lng),title:c.name||"CDR",subtitle:`CDR • ${c.comune||""}`,icon:"⭐",display_name:c.name})),
                     ...punti.filter(p=>p.lat&&p.lng&&(p.nome?.toLowerCase().includes(q)||p.comune?.toLowerCase().includes(q))).map(p=>({lat:String(p.lat),lon:String(p.lng),title:p.nome||"Punto",subtitle:`Punto • ${p.comune||""}`,icon:"⭐",display_name:p.nome})),
                   ];
-                  if(!internal.length&&!searchResults.length) return null;
+                  if(!internal.length&&!searchResults.length)return null;
                   return(
                     <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2000,background:T.card,border:`1px solid ${T.border}`,borderRadius:7,boxShadow:"0 6px 20px rgba(0,0,0,0.4)",marginTop:3,maxHeight:260,overflowY:"auto"}}>
                       {internal.length>0&&<>
@@ -1133,10 +1211,20 @@ function GPSModule({onSelectVehicle,mode="live"}){
                       </div>
                       <div style={{fontSize:11,color:T.blue,marginTop:3,fontFamily:T.mono}}>{fmtDist(navRoute.maneuvers[navStep]?.length||0)} · poi {navRoute.maneuvers[navStep+1]?NAV_ARROW[navRoute.maneuvers[navStep+1].type]||"↑":"🏁"}</div>
                     </div>
-                    <div style={{fontSize:10,color:T.textSub,textAlign:"right",flexShrink:0}}>
-                      <div style={{fontWeight:600,color:T.text}}>{fmtDist(navRoute.distance)}</div>
-                      <div>{fmtTime(navRoute.duration)}</div>
-                    </div>
+                    {(()=>{
+                      const rem=navRoute.maneuvers.slice(navStep);
+                      const remDist=rem.reduce((s,m)=>s+(m.length||0),0);
+                      const remSec=rem.reduce((s,m)=>s+(m.time||0),0);
+                      const eta=new Date(Date.now()+remSec*1000);
+                      const etaStr=`${String(eta.getHours()).padStart(2,"0")}:${String(eta.getMinutes()).padStart(2,"0")}`;
+                      return(
+                        <div style={{fontSize:10,color:T.textSub,textAlign:"right",flexShrink:0}}>
+                          <div style={{fontWeight:700,color:T.text,fontSize:12}}>{fmtDist(remDist)}</div>
+                          <div>{fmtTime(remSec)}</div>
+                          <div style={{color:T.blue,fontWeight:600,marginTop:1}}>ETA {etaStr}</div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               )}
@@ -1164,12 +1252,13 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 <div style={{fontSize:16,fontWeight:700,color:T.text}}>🧭 Navigazione</div>
                 <button onClick={()=>setShowNavPanel(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
               </div>
-              {/* Costing toggle */}
-              <div style={{display:"flex",gap:6,marginBottom:14}}>
-                {[["auto","🚗 Auto"],["truck","🚛 Camion"]].map(([v,l])=>(
-                  <button key={v} onClick={()=>setNavCosting(v)}
-                    style={{flex:1,padding:"8px",borderRadius:10,border:`1px solid ${navCosting===v?T.blue:T.border}`,background:navCosting===v?T.navActive:"transparent",color:navCosting===v?T.blue:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:navCosting===v?700:400}}>
-                    {l}
+              {/* Routing profiles — 3-column grid */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginBottom:14}}>
+                {NAV_PROFILES.map(p=>(
+                  <button key={p.id} onClick={()=>setNavCosting(p.id)}
+                    style={{padding:"7px 4px",borderRadius:9,border:`1px solid ${navCosting===p.id?T.blue:T.border}`,background:navCosting===p.id?T.navActive:"transparent",color:navCosting===p.id?T.blue:T.textSub,cursor:"pointer",fontFamily:T.font,display:"flex",flexDirection:"column",alignItems:"center",gap:2,transition:"all 0.12s"}}>
+                    <span style={{fontSize:18,lineHeight:1}}>{p.icon}</span>
+                    <span style={{fontSize:10,fontWeight:navCosting===p.id?700:400}}>{p.label}</span>
                   </button>
                 ))}
               </div>
@@ -1193,7 +1282,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
                     <button key={i} onClick={()=>{
                       const dest={lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name};
                       setNavDestQuery(r.title||r.display_name);setNavDestResults([]);
-                      startNavigation(dest);
+                      previewRoute(dest);
                     }}
                       style={{display:"flex",alignItems:"flex-start",gap:10,width:"100%",padding:"11px 14px",background:"transparent",border:"none",borderBottom:`1px solid ${T.border}`,color:T.text,textAlign:"left",cursor:"pointer",fontFamily:T.font}}>
                       <span style={{fontSize:16,marginTop:1,flexShrink:0}}>{r.icon}</span>
@@ -1203,6 +1292,24 @@ function GPSModule({onSelectVehicle,mode="live"}){
                       </div>
                     </button>
                   ))}
+                </div>
+              )}
+              {/* Route preview confirm panel */}
+              {navPreviewDest&&(
+                <div style={{marginTop:10,background:T.card,border:`1px solid ${alpha(T.blue,35)}`,borderRadius:12,padding:"12px 14px"}}>
+                  <div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:4,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>📍 {navPreviewDest.name}</div>
+                  {navPreviewLoading&&<div style={{fontSize:11,color:T.textSub}}>Calcolo percorso…</div>}
+                  {navPreviewInfo&&<div style={{fontSize:11,color:T.blue,marginBottom:10,fontWeight:600}}>{fmtDist(navPreviewInfo.distance)} · {fmtTime(navPreviewInfo.duration)}</div>}
+                  <div style={{display:"flex",gap:8}}>
+                    <button onClick={()=>startNavigation(navPreviewDest)}
+                      style={{flex:1,padding:"10px",borderRadius:10,border:"none",background:T.blue,color:"#fff",fontFamily:T.font,fontWeight:700,fontSize:13,cursor:"pointer"}}>
+                      🚀 Avvia
+                    </button>
+                    <button onClick={cancelPreview}
+                      style={{padding:"10px 14px",borderRadius:10,border:`1px solid ${T.border}`,background:"transparent",color:T.textSub,fontFamily:T.font,cursor:"pointer",fontSize:13}}>
+                      ✕
+                    </button>
+                  </div>
                 </div>
               )}
               {!myPos&&<div style={{fontSize:12,color:T.orange,marginTop:8,textAlign:"center"}}>⚠ Attiva il GPS prima di navigare</div>}
