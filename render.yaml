@@ -24,3 +24,9 @@ services:
         sync: false                  # Strong password — never use the default
       - key: SEED_ADMIN_PASSWORD
         sync: false                  # Strong password — never use the default
+      - key: PLANNING_DATA_DIR
+        value: /var/data/planning    # Persistent disk mount path — see Disks section below
+    disk:
+      name: planning-data
+      mountPath: /var/data
+      sizeGB: 1

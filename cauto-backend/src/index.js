@@ -8,6 +8,12 @@ if (!process.env.JWT_SECRET) {
 // Start ERP ingestion scheduler (no-op when ERP_SOURCE=mock)
 require("./jobs/ingestionScheduler").start();
 
+// Start planning execution tick (auto-progresses event status from GPS reality)
+const planningExecution = require("./services/planningExecutionService");
+const PLANNING_TICK_MS  = 60_000;
+const planningTick = setInterval(() => planningExecution.tickAllTenants(), PLANNING_TICK_MS);
+if (planningTick.unref) planningTick.unref(); // don't block process exit
+
 const express   = require("express");
 const cors      = require("cors");
 const path      = require("path");
@@ -67,6 +73,7 @@ app.use("/api/segnalazioni-territorio",require("./routes/segnalazioni-territorio
 app.use("/api/reports",     require("./routes/reports"));
 app.use("/api/superadmin",  require("./routes/superadmin"));
 app.use("/api/bugs",        require("./routes/bugs"));
+app.use("/api/planning",    require("./routes/planning"));
 
 // Centralized error handler — must be registered AFTER all routes
 app.use(errorHandler);

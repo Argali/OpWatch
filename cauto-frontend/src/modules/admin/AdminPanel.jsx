@@ -21,7 +21,7 @@ export default function AdminPanel(){
   // Only show modules that the SuperAdmin has enabled for this tenant.
   // Fall back to all modules when no config is present so the table is never empty.
   const tenantModules = auth?.tenant?.modules || {};
-  const ALL_MODULES   = ["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","fuel","suppliers","costs"];
+  const ALL_MODULES   = ["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","fuel","suppliers","costs","planning"];
   const hasModuleConfig = Object.keys(tenantModules).length > 0;
   const modules         = hasModuleConfig ? ALL_MODULES.filter(m => tenantModules[m]) : ALL_MODULES;
 

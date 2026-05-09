@@ -98,7 +98,7 @@ function BugReportsPanel({auth}){
   );
 }
 
-const PERM_MODULES=["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","fuel","suppliers","costs"];
+const PERM_MODULES=["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","fuel","suppliers","costs","planning"];
 
 function PermissionsPanel({auth}){
   const {matrix,roles,levels,loadPerms}=usePerms();
