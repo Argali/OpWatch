@@ -72,7 +72,7 @@ export default function PlanningModule() {
       )}
       <iframe
         ref={iframeRef}
-        src={`${import.meta.env.BASE_URL}planning.html`}
+        src={`${import.meta.env.BASE_URL}/planning.html`.replace(/\/+/g, "/")}
         title="Pianificazione"
         onError={handleIframeError}
         style={{
