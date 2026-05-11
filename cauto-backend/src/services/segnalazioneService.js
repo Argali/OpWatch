@@ -6,7 +6,7 @@ const segnalazioneService = {
     return segnalazioneRepo.findAll();
   },
 
-  create({ reporter_name, settore, vehicle, plate, description, tipo, available_from, photo_url }, user) {
+  create({ reporter_name, settore, vehicle, plate, description, tipo, available_from, photo_url, ponte }, user) {
     if (!reporter_name || !settore || !vehicle || !description)
       throw new AppError("Campi obbligatori: nome, settore, veicolo, descrizione", 400);
     const validTipo = segnalazioneRepo.VALID_TIPI;
@@ -22,6 +22,7 @@ const segnalazioneService = {
       tipo:           tipo || "guasto",
       available_from: available_from || null,
       photo_url:      photo_url || null,
+      ponte:          ponte || null,
       status:         "aperta",
       created_by:     user.id,
       created_by_name:user.name,
@@ -33,6 +34,12 @@ const segnalazioneService = {
     if (!segnalazioneRepo.VALID_STATUS.includes(status))
       throw new AppError("Stato non valido", 400);
     const updated = segnalazioneRepo.updateStatus(id, status);
+    if (!updated) throw new AppError("Segnalazione non trovata", 404);
+    return updated;
+  },
+
+  updatePonte(id, ponte) {
+    const updated = segnalazioneRepo.updatePonte(id, ponte);
     if (!updated) throw new AppError("Segnalazione non trovata", 404);
     return updated;
   },

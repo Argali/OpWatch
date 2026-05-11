@@ -28,6 +28,13 @@ const segnalazioneRepository = {
     segnalazioni = segnalazioni.map(s => s.id === id ? { ...s, status } : s);
     return segnalazioni.find(s => s.id === id);
   },
+
+  updatePonte(id, ponte) {
+    const idx = segnalazioni.findIndex(s => s.id === id);
+    if (idx === -1) return null;
+    segnalazioni = segnalazioni.map(s => s.id === id ? { ...s, ponte: ponte || null } : s);
+    return segnalazioni.find(s => s.id === id);
+  },
 };
 
 module.exports = segnalazioneRepository;

@@ -10,6 +10,7 @@ let tenants = [
     plan: "enterprise",
     active: true,
     modules: { gps: true, navigation: true, foto_timbrata: true, cdr: true, zone: true, punti: true, percorsi: true, pdf_export: true },
+    ponti: ["Ponte 1", "Ponte 2", "Ponte 3", "Ponte 4"],
     created_at: "2024-01-15T09:00:00.000Z",
     last_active: new Date().toISOString(),
   },
@@ -19,6 +20,7 @@ let tenants = [
     plan: "standard",
     active: true,
     modules: { gps: true, navigation: true, foto_timbrata: false, cdr: false, zone: true, punti: false, percorsi: true, pdf_export: false },
+    ponti: ["Ponte A", "Ponte B"],
     created_at: "2024-03-10T08:00:00.000Z",
     last_active: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -28,6 +30,7 @@ let tenants = [
     plan: "starter",
     active: true,
     modules: { gps: true, navigation: false, foto_timbrata: false, cdr: false, zone: false, punti: false, percorsi: false, pdf_export: false },
+    ponti: [],
     created_at: "2024-06-01T10:00:00.000Z",
     last_active: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -37,6 +40,7 @@ let tenants = [
     plan: "standard",
     active: false,
     modules: { gps: false, navigation: false, foto_timbrata: false, cdr: false, zone: false, punti: false, percorsi: false, pdf_export: false },
+    ponti: [],
     created_at: "2023-11-20T11:00:00.000Z",
     last_active: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(),
   },
@@ -50,6 +54,12 @@ module.exports = {
     const idx = tenants.findIndex(t => t.id === id);
     if (idx === -1) return null;
     tenants[idx] = { ...tenants[idx], modules: { ...tenants[idx].modules, ...modules } };
+    return tenants[idx];
+  },
+  updateTenantPonti: (id, ponti) => {
+    const idx = tenants.findIndex(t => t.id === id);
+    if (idx === -1) return null;
+    tenants[idx] = { ...tenants[idx], ponti };
     return tenants[idx];
   },
   updateTenantActive: (id, active) => {

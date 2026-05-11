@@ -29,7 +29,7 @@ const NAV_DEF = [
   { id: "home",       label: "Dashboard",  short: "Home",      icon: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10", module: null },
   { id: "gps",        label: "GPS Live",   short: "GPS",       icon: "M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7z M9 4v13 M15 7v13",          module: "gps" },
   { id: "editors",    label: "Editori",    short: "Editori",   icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",        module: "gps" },
-  { id: "operativo",  label: "Operativo",  short: "Operativo", icon: "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01", module: null },
+  { id: "operativo",  label: "Officina",   short: "Officina",  icon: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z", module: null },
   { id: "analytics",  label: "Analytics",  short: "Analytics", icon: "M18 20V10 M12 20V4 M6 20v-6",                                    module: null },
   { id: "fleet",      label: "Flotta",     short: "Flotta",    icon: "M3 22V8l9-6 9 6v14H3z M9 22v-6h6v6",                             modules: ["fuel", "suppliers", "costs"] },
   { id: "territorio", label: "Territorio", short: "Territorio",icon: "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01", module: "gps" },

@@ -14,13 +14,15 @@ function SegnalazioniModule(){
   const {auth}=useAuth();
   const {can}=usePerms();
   const {data:vehicles}=useApi("/gps/vehicles",{skip:!can("gps")});
+  const {data:pontiData}=useApi("/workshop/ponti");
+  const ponti=pontiData??[];
   const [list,setList]=useState([]);
   const [loading,setLoading]=useState(true);
   const [showForm,setShowForm]=useState(false);
   const [submitting,setSubmitting]=useState(false);
   const [msg,setMsg]=useState(null);
   const isManager=auth.user.role==="fleet_manager";
-  const emptyForm={reporter_name:auth.user.name,settore:"",vehicle:"",plate:"",description:"",tipo:"guasto",available_from:"",photo:null};
+  const emptyForm={reporter_name:auth.user.name,settore:"",vehicle:"",plate:"",description:"",tipo:"guasto",available_from:"",ponte:"",photo:null};
   const [form,setForm]=useState(emptyForm);
   const set=k=>v=>setForm(f=>({...f,[k]:v}));
   const [photoPreview,setPhotoPreview]=useState(null);
@@ -40,7 +42,7 @@ function SegnalazioniModule(){
     setSubmitting(true);setMsg(null);
     try{
       const fd=new FormData();
-      ["reporter_name","settore","vehicle","plate","description","tipo","available_from"].forEach(k=>fd.append(k,form[k]||""));
+      ["reporter_name","settore","vehicle","plate","description","tipo","available_from","ponte"].forEach(k=>fd.append(k,form[k]||""));
       if(form.photo)fd.append("photo",form.photo);
       const r=await fetch(`${API}/segnalazioni`,{method:"POST",headers:{Authorization:`Bearer ${auth.token}`},body:fd});
       const d=await r.json();
@@ -50,6 +52,7 @@ function SegnalazioniModule(){
     setSubmitting(false);setTimeout(()=>setMsg(null),4000);
   };
   const updateStatus=async(id,status)=>{await fetch(`${API}/segnalazioni/${id}/status`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({status})});loadList();};
+  const updatePonte=async(id,ponte)=>{await fetch(`${API}/segnalazioni/${id}/ponte`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({ponte})});loadList();};
   const inp={width:"100%",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,padding:"10px 14px",color:T.text,fontSize:13,outline:"none",boxSizing:"border-box",fontFamily:T.font};
   const lbl={fontSize:11,color:T.textSub,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5,fontWeight:600};
   const openSeg=list.filter(s=>s.status!=="chiusa");
@@ -96,6 +99,13 @@ function SegnalazioniModule(){
             <div><label style={lbl}>Disponibile dal</label><input type="date" value={form.available_from} onChange={e=>set("available_from")(e.target.value)} style={{...inp,colorScheme:"dark"}}/></div>
           </div>
           <div>
+            <label style={lbl}>Ponte sollevatore (opzionale)</label>
+            <select value={form.ponte} onChange={e=>set("ponte")(e.target.value)} style={inp}>
+              <option value="">— Nessun ponte assegnato —</option>
+              {PONTI.map(p=><option key={p} value={p}>{p}</option>)}
+            </select>
+          </div>
+          <div>
             <label style={lbl}>Foto (opzionale)</label>
             {!photoPreview
               ?<label style={{display:"flex",alignItems:"center",gap:10,padding:"13px 18px",background:T.bg,border:`2px dashed ${T.border}`,borderRadius:8,cursor:"pointer"}}>
@@ -134,13 +144,21 @@ function SegnalazioniModule(){
                       <option value="aperta">Aperta</option><option value="in_lavorazione">In lavorazione</option><option value="chiusa">Chiusa</option>
                     </select>
                   )}
+                  {isManager&&(
+                    <select value={s.ponte||""} onChange={e=>updatePonte(s.id,e.target.value||null)} style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,padding:"4px 8px",color:s.ponte?T.blue:T.textDim,fontSize:11,outline:"none",cursor:"pointer",fontFamily:T.font}}>
+                      <option value="">🔩 Assegna ponte…</option>
+                      {PONTI.map(p=><option key={p} value={p}>{p}</option>)}
+                    </select>
+                  )}
+                  {!isManager&&s.ponte&&<span style={{fontSize:11,padding:"3px 10px",borderRadius:10,background:T.blue+"22",color:T.blue,fontWeight:600,border:`1px solid ${T.blue}44`}}>{s.ponte}</span>}
                 </div>
               </div>
               <div style={{fontSize:13,color:T.text+"aa",lineHeight:1.6,marginBottom:10}}>{s.description}</div>
               {s.photo_url&&<div style={{marginBottom:10}}><img src={`${BASE_URL}${s.photo_url}`} alt="foto" style={{maxHeight:220,maxWidth:"100%",borderRadius:8,border:`1px solid ${T.border}`,display:"block",cursor:"pointer"}} onClick={()=>window.open(`${BASE_URL}${s.photo_url}`,"_blank")}/></div>}
               <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
                 <div style={{fontSize:11,color:T.textDim}}>👤 {s.reporter_name}</div>
-                {s.available_from&&<div style={{fontSize:11,color:T.textDim}}>🔧 Disponibile dal {s.available_from}</div>}
+                {s.available_from&&<div style={{fontSize:11,color:T.textDim}}>📅 Disponibile dal {s.available_from}</div>}
+                {s.ponte&&<div style={{fontSize:11,color:T.blue,fontWeight:600}}>🔩 {s.ponte}</div>}
                 <div style={{fontSize:11,color:T.textDim,marginLeft:"auto"}}>{new Date(s.created_at).toLocaleString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}</div>
               </div>
             </div>

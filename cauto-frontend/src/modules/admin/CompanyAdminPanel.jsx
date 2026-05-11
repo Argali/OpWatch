@@ -3,6 +3,7 @@ import T, { alpha, roleLabel } from "@/theme";
 import { useAuth } from "@/core/auth/AuthContext";
 import { usePerms } from "@/core/permissions/PermContext";
 import { API } from "@/api";
+import { useApi } from "@/hooks/useApi";
 import { MODULE_META } from "@/constants/moduleMeta";
 import Spinner from "@/shared/ui/Spinner";
 
@@ -15,6 +16,35 @@ export default function CompanyAdminPanel(){
   const [newUser,setNewUser]=useState({name:"",email:"",password:"",role:"coordinatore_operativo"});
   const [msg,setMsg]=useState(null);
   const [tenantModules,setTenantModules]=useState(null);
+
+  // ── Ponti configurator ────────────────────────────────────────────────────
+  const {data:pontiRemote,refetch:refetchPonti}=useApi("/workshop/ponti");
+  const [ponti,setPonti]=useState(null);
+  const [newPonte,setNewPonte]=useState("");
+  const [editIdx,setEditIdx]=useState(null);
+  const [editVal,setEditVal]=useState("");
+  const [pontiMsg,setPontiMsg]=useState(null);
+  const [savingPonti,setSavingPonti]=useState(false);
+  useEffect(()=>{if(pontiRemote!==null&&ponti===null)setPonti(pontiRemote);},[pontiRemote]);
+
+  const savePonti=async(next)=>{
+    setSavingPonti(true);setPontiMsg(null);
+    try{
+      const r=await fetch(`${API}/workshop/ponti`,{method:"PUT",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({ponti:next})});
+      const d=await r.json();
+      if(d.ok){setPonti(d.data);refetchPonti();setPontiMsg({ok:true,text:"Ponti aggiornati"});}
+      else setPontiMsg({ok:false,text:d.error});
+    }catch{setPontiMsg({ok:false,text:"Errore di rete"});}
+    setSavingPonti(false);setTimeout(()=>setPontiMsg(null),3000);
+  };
+  const addPonte=()=>{const v=newPonte.trim();if(!v)return;const next=[...(ponti??[]),v];setPonti(next);setNewPonte("");savePonti(next);};
+  const removePonte=i=>{const next=(ponti??[]).filter((_,idx)=>idx!==i);setPonti(next);savePonti(next);};
+  const startEdit=(i,v)=>{setEditIdx(i);setEditVal(v);};
+  const confirmEdit=()=>{
+    if(!editVal.trim()){setEditIdx(null);return;}
+    const next=(ponti??[]).map((p,i)=>i===editIdx?editVal.trim():p);
+    setPonti(next);setEditIdx(null);savePonti(next);
+  };
 
   const assignableRoles=roles.filter(r=>!["superadmin","company_admin"].includes(r));
 
@@ -74,6 +104,48 @@ export default function CompanyAdminPanel(){
           <div style={{fontSize:10,color:T.textDim,marginTop:8}}>Contatta il supporto per modificare i moduli abilitati</div>
         </div>
       )}
+
+      {/* ── Ponti sollevatori ─────────────────────────────────────────────── */}
+      <div style={{background:T.card,border:`1px solid ${T.cardBorder}`,borderRadius:10,padding:"16px 20px",display:"flex",flexDirection:"column",gap:14}}>
+        <div>
+          <div style={{fontSize:14,fontWeight:700,color:T.text}}>Ponti sollevatori</div>
+          <div style={{fontSize:11,color:T.textSub,marginTop:2}}>Configura i ponti disponibili in officina. Saranno assegnabili alle segnalazioni.</div>
+        </div>
+
+        {pontiMsg&&<div style={{fontSize:12,padding:"8px 12px",borderRadius:7,background:pontiMsg.ok?T.card:"#1a0808",border:`1px solid ${pontiMsg.ok?T.border:"#4a1a1a"}`,color:pontiMsg.ok?T.green:T.red}}>{pontiMsg.text}</div>}
+
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {(ponti??[]).length===0&&<div style={{fontSize:12,color:T.textDim,fontStyle:"italic"}}>Nessun ponte configurato</div>}
+          {(ponti??[]).map((p,i)=>(
+            <div key={i} style={{display:"flex",alignItems:"center",gap:8,background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,padding:"7px 12px"}}>
+              <span style={{fontSize:13,color:T.blue,flexShrink:0}}>🔩</span>
+              {editIdx===i
+                ?<input autoFocus value={editVal} onChange={e=>setEditVal(e.target.value)}
+                    onKeyDown={e=>{if(e.key==="Enter")confirmEdit();if(e.key==="Escape")setEditIdx(null);}}
+                    style={{flex:1,background:"transparent",border:"none",outline:"none",color:T.text,fontSize:13,fontFamily:T.font}}/>
+                :<span style={{flex:1,fontSize:13,color:T.text}}>{p}</span>
+              }
+              {editIdx===i
+                ?<button onClick={confirmEdit} style={{fontSize:11,padding:"3px 10px",background:"transparent",border:`1px solid ${T.green}`,borderRadius:5,color:T.green,cursor:"pointer",fontFamily:T.font}}>✓ Salva</button>
+                :<button onClick={()=>startEdit(i,p)} style={{fontSize:11,padding:"3px 10px",background:"transparent",border:`1px solid ${T.border}`,borderRadius:5,color:T.textSub,cursor:"pointer",fontFamily:T.font}}>Rinomina</button>
+              }
+              <button onClick={()=>removePonte(i)} disabled={savingPonti}
+                style={{fontSize:11,padding:"3px 10px",background:"transparent",border:`1px solid ${alpha(T.red,40)}`,borderRadius:5,color:T.red,cursor:"pointer",fontFamily:T.font}}>✕</button>
+            </div>
+          ))}
+        </div>
+
+        <div style={{display:"flex",gap:8}}>
+          <input value={newPonte} onChange={e=>setNewPonte(e.target.value)}
+            onKeyDown={e=>{if(e.key==="Enter")addPonte();}}
+            placeholder="Nome nuovo ponte…"
+            style={{flex:1,background:T.bg,border:`1px solid ${T.border}`,borderRadius:7,padding:"8px 12px",color:T.text,fontSize:13,outline:"none",fontFamily:T.font}}/>
+          <button onClick={addPonte} disabled={!newPonte.trim()||savingPonti}
+            style={{padding:"8px 16px",background:T.navActive,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:7,color:T.blue,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:600,opacity:!newPonte.trim()?0.5:1}}>
+            + Aggiungi
+          </button>
+        </div>
+      </div>
 
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>

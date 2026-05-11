@@ -36,6 +36,13 @@ const segnalazioneController = {
       res.json({ ok: true, data: updated });
     } catch (err) { next(err); }
   },
+
+  updatePonte(req, res, next) {
+    try {
+      const updated = segnalazioneService.updatePonte(req.params.id, req.body.ponte);
+      res.json({ ok: true, data: updated });
+    } catch (err) { next(err); }
+  },
 };
 
 module.exports = segnalazioneController;

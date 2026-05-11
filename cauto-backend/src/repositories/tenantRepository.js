@@ -4,6 +4,7 @@ const tenantRepository = {
   findAll:         ()            => store.getAllTenants(),
   findById:        (id)          => store.findTenantById(id) || null,
   updateModules:   (id, modules) => store.updateTenantModules(id, modules) || null,
+  updatePonti:     (id, ponti)   => store.updateTenantPonti(id, ponti)    || null,
   updateActive:    (id, active)  => store.updateTenantActive(id, active)   || null,
   touch:           (id)          => store.touchTenant(id),
   ALL_MODULES:     store.ALL_MODULES,
