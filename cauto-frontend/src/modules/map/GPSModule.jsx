@@ -101,6 +101,118 @@ const EMPTY_PUNTO_CFG={nome:"",comune:"",materiale:"",sector:"",color:"#f87171"}
 const EMPTY_GRUPPO_CFG={name:"",color:"#60a5fa",routeIds:[],zoneIds:[],puntiIds:[]};
 const EMPTY_CDR_META={name:"",comune:"",materiale:"",sector:"",address:"",lat:null,lng:null,color:"#60a5fa",opacity:0.5};
 
+// ── Mobile floating search overlay ───────────────────────────────────────────
+function MobileSearchOverlay({ searchAddr, setSearchAddr, searchLoading, searchFocused, setSearchFocused, searchResults, searchAddress, flyToResult, cdr, punti, myPos, loadRecentSearches, highlightMatch }) {
+  const [expanded, setExpanded] = React.useState(false);
+  const inputRef = React.useRef(null);
+
+  const open = () => { setExpanded(true); setTimeout(() => inputRef.current?.focus(), 80); };
+  const close = () => { setExpanded(false); setSearchFocused(false); };
+
+  const handleSelect = (r) => { flyToResult(r); close(); };
+
+  const recent = loadRecentSearches();
+  const q = searchAddr.toLowerCase();
+  const internal = searchAddr.length >= 2 ? [
+    ...cdr.filter(c => c.lat && c.lng && (c.name?.toLowerCase().includes(q) || c.comune?.toLowerCase().includes(q)))
+      .map(c => ({ lat: String(c.lat), lon: String(c.lng), title: c.name || "CDR", subtitle: `CDR • ${c.comune || ""}`, icon: "⭐", display_name: c.name })),
+    ...punti.filter(p => p.lat && p.lng && (p.nome?.toLowerCase().includes(q) || p.comune?.toLowerCase().includes(q)))
+      .map(p => ({ lat: String(p.lat), lon: String(p.lng), title: p.nome || "Punto", subtitle: `Punto • ${p.comune || ""}`, icon: "⭐", display_name: p.nome })),
+  ] : [];
+
+  const showDropdown = expanded && searchFocused && (searchAddr.length < 2 ? recent.length > 0 : internal.length > 0 || searchResults.length > 0);
+
+  return (
+    <div style={{ position: "absolute", top: 12, left: 12, right: 12, zIndex: 900 }}>
+      {!expanded ? (
+        /* Compact search button */
+        <button onClick={open} style={{
+          display: "flex", alignItems: "center", gap: 8,
+          padding: "10px 14px", borderRadius: 24,
+          background: "rgba(13,27,42,0.85)", border: "1px solid rgba(255,255,255,0.12)",
+          backdropFilter: "blur(10px)", boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+          color: "#94a3b8", cursor: "pointer", fontFamily: "inherit", fontSize: 13,
+          width: "100%", textAlign: "left",
+        }}>
+          <span style={{ fontSize: 15 }}>🔍</span>
+          <span>{searchAddr || "Cerca indirizzo…"}</span>
+        </button>
+      ) : (
+        /* Expanded search */
+        <div style={{ background: "rgba(13,27,42,0.95)", borderRadius: 14, border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(14px)", boxShadow: "0 8px 32px rgba(0,0,0,0.5)", overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px" }}>
+            <span style={{ fontSize: 15, flexShrink: 0 }}>🔍</span>
+            <input ref={inputRef}
+              value={searchAddr}
+              onChange={e => setSearchAddr(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+              onKeyDown={e => { if (e.key === "Enter") searchAddress(searchAddr); if (e.key === "Escape") close(); }}
+              placeholder="Cerca indirizzo…"
+              style={{ flex: 1, background: "transparent", border: "none", color: "#e2e8f0", fontSize: 14, fontFamily: "inherit", outline: "none" }}
+            />
+            {searchLoading && <span style={{ fontSize: 12, color: "#94a3b8" }}>…</span>}
+            <button onClick={close} style={{ background: "transparent", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 18, lineHeight: 1, padding: "0 2px" }}>✕</button>
+          </div>
+          {showDropdown && (
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", maxHeight: "55dvh", overflowY: "auto" }}>
+              {searchAddr.length < 2 ? (
+                <>
+                  <div style={{ padding: "6px 14px 4px", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 0.8 }}>🕐 Recenti</div>
+                  {recent.map((r, i) => (
+                    <div key={i} onClick={() => handleSelect(r)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderTop: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
+                      <span style={{ fontSize: 18, flexShrink: 0 }}>{r.icon || "🕐"}</span>
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.title || r.display_name}</div>
+                        <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{r.subtitle || ""}</div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {internal.length > 0 && (
+                    <>
+                      <div style={{ padding: "6px 14px 4px", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 0.8 }}>★ FleetCC</div>
+                      {internal.map((r, i) => (
+                        <div key={`i${i}`} onClick={() => handleSelect(r)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderTop: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
+                          <span style={{ fontSize: 18, flexShrink: 0 }}>⭐</span>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.title}</div>
+                            <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{r.subtitle}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {searchResults.length > 0 && (
+                    <>
+                      {internal.length > 0 && <div style={{ margin: "0 14px", borderTop: "1px solid rgba(255,255,255,0.08)" }} />}
+                      <div style={{ padding: "6px 14px 4px", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 0.8 }}>📍 Risultati</div>
+                      {searchResults.map((r, i) => {
+                        const dist = myPos ? distanceM(myPos, [parseFloat(r.lat), parseFloat(r.lon)]) : null;
+                        return (
+                          <div key={i} onClick={() => handleSelect(r)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderTop: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
+                            <span style={{ fontSize: 18, flexShrink: 0 }}>{r.icon}</span>
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontSize: 13, fontWeight: 600, color: "#e2e8f0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.title}</div>
+                              <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{r.subtitle}{dist != null ? ` • ${fmtDist(dist / 1000)}` : ""}</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GPSModule({onSelectVehicle,mode="live"}){
   const {auth}=useAuth();
   const {can}=usePerms();
@@ -995,7 +1107,17 @@ function GPSModule({onSelectVehicle,mode="live"}){
           />
         )}
 
-        <div ref={mapContainerRef} style={{flex:1,borderRadius:12,border:`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
+        <div ref={mapContainerRef} style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
+          {/* ── Mobile floating address search bar ── */}
+          {mobileFullscreen&&(
+            <MobileSearchOverlay
+              searchAddr={searchAddr} setSearchAddr={setSearchAddr}
+              searchLoading={searchLoading} searchFocused={searchFocused} setSearchFocused={setSearchFocused}
+              searchResults={searchResults} searchAddress={searchAddress}
+              flyToResult={flyToResult} cdr={cdr} punti={punti}
+              myPos={myPos} loadRecentSearches={loadRecentSearches} highlightMatch={highlightMatch}
+            />
+          )}
           {(tab==="live"||tab==="editor")&&<FleetMap
             vehicles={vehicles} routes={routes||[]} visibleRoutes={visibleRoutes}
             zones={tab==="live"?zones.filter(z=>visibleZones[z.id]!==false):[]} punti={tab==="live"?punti.filter(p=>visiblePunti[p.id]!==false):[]}

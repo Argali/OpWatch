@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 900);
   const [showBugModal, setShowBugModal] = useState(false);
+  const [showMoreDrawer, setShowMoreDrawer] = useState(false);
   const { data: vehicles } = useApi("/gps/vehicles", { pollMs: 10000, skip: !can("gps") });
 
   const role = auth.user?.role;
@@ -107,7 +108,13 @@ export default function Dashboard() {
   // ── Mobile layout ──────────────────────────────────────────────────────────
   if (isMobile) {
     const mobileNav = nav.filter(n => n.id !== "editors");
-    const activeIdx = mobileNav.findIndex(n => n.id === active);
+    const MAX_TABS = 4;
+    const showMore = mobileNav.length > MAX_TABS;
+    const visibleTabs = showMore ? mobileNav.slice(0, MAX_TABS) : mobileNav;
+    const overflowTabs = showMore ? mobileNav.slice(MAX_TABS) : [];
+    const activeInOverflow = overflowTabs.some(n => n.id === active);
+    const activeIdx = visibleTabs.findIndex(n => n.id === active);
+    const totalSlots = visibleTabs.length + (showMore ? 1 : 0);
 
     return (
       <div style={{ display: "flex", flexDirection: "column", height: "100dvh", background: T.bg, fontFamily: T.font, color: T.text, overflow: "hidden", paddingTop: "env(safe-area-inset-top)" }}>
@@ -121,9 +128,9 @@ export default function Dashboard() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {currentNav && <span style={{ fontSize: 13, fontWeight: 600, color: T.textSub }}>{selectedVehicle ? selectedVehicle.name : currentNav.label}</span>}
             <ThemeToggle collapsed />
-            <div style={{ width: 30, height: 30, borderRadius: "50%", background: `linear-gradient(135deg,${T.blue},${T.green})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+            <button onClick={() => setShowMoreDrawer(true)} style={{ width: 30, height: 30, borderRadius: "50%", background: `linear-gradient(135deg,${T.blue},${T.green})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0, border: "none", cursor: "pointer" }}>
               {auth.user.name.charAt(0).toUpperCase()}
-            </div>
+            </button>
           </div>
         </div>
 
@@ -138,33 +145,102 @@ export default function Dashboard() {
 
         {/* Bottom tab bar */}
         <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: T.sidebar, borderTop: `1px solid ${T.border}`, display: "flex", alignItems: "stretch", zIndex: 200, paddingBottom: "env(safe-area-inset-bottom)" }}>
-          {/* Sliding indicator */}
+          {/* Sliding indicator on visible tabs */}
           {activeIdx >= 0 && (
             <div style={{
-              position: "absolute",
-              top: 0,
-              left: `${(activeIdx / mobileNav.length) * 100}%`,
-              width: `${(1 / mobileNav.length) * 100}%`,
-              height: 2,
-              background: T.blue,
+              position: "absolute", top: 0,
+              left: `${(activeIdx / totalSlots) * 100}%`,
+              width: `${(1 / totalSlots) * 100}%`,
+              height: 2, background: T.blue,
               borderRadius: "0 0 2px 2px",
               transition: "left 280ms cubic-bezier(.4,0,.2,1)",
             }} />
           )}
-          {mobileNav.map(n => {
+          {visibleTabs.map(n => {
             const isActive = active === n.id;
             return (
               <button key={n.id} onClick={() => handleSetActive(n.id)}
                 className="fcc-tab-btn"
-                style={{ flex: 1, minHeight: 60, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, border: "none", background: "transparent", color: isActive ? T.blue : T.textDim, cursor: "pointer", fontFamily: T.font, padding: "4px 2px", transition: "color 180ms, transform 120ms" }}>
-                <span style={{ transform: isActive ? "scale(1.1)" : "scale(1)", transition: "transform 180ms" }}>
+                style={{ flex: 1, minHeight: 60, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, border: "none", background: "transparent", color: isActive ? T.blue : T.textDim, cursor: "pointer", fontFamily: T.font, padding: "4px 2px", transition: "color 180ms" }}>
+                <span style={{ transform: isActive ? "scale(1.15)" : "scale(1)", transition: "transform 180ms" }}>
                   <Icon d={n.icon} size={18} />
                 </span>
                 <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 400, letterSpacing: 0.2, whiteSpace: "nowrap" }}>{n.short}</span>
               </button>
             );
           })}
+          {/* More button */}
+          {showMore && (
+            <button onClick={() => setShowMoreDrawer(true)}
+              className="fcc-tab-btn"
+              style={{ flex: 1, minHeight: 60, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, border: "none", background: "transparent", color: activeInOverflow ? T.blue : T.textDim, cursor: "pointer", fontFamily: T.font, padding: "4px 2px", transition: "color 180ms", position: "relative" }}>
+              {activeInOverflow && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: T.blue, borderRadius: "0 0 2px 2px" }} />}
+              <span style={{ fontSize: 20, lineHeight: 1, fontWeight: 700 }}>···</span>
+              <span style={{ fontSize: 9, fontWeight: activeInOverflow ? 700 : 400, letterSpacing: 0.2 }}>
+                {activeInOverflow ? currentNav?.short : "Altro"}
+              </span>
+            </button>
+          )}
         </div>
+
+        {/* More drawer */}
+        {showMoreDrawer && (
+          <div onClick={() => setShowMoreDrawer(false)} style={{ position: "fixed", inset: 0, zIndex: 300, background: "rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+            <div onClick={e => e.stopPropagation()} style={{
+              background: T.sidebar, borderTop: `1px solid ${T.border}`, borderRadius: "16px 16px 0 0",
+              paddingBottom: "calc(16px + env(safe-area-inset-bottom))",
+              animation: "slideUp 220ms cubic-bezier(.4,0,.2,1)",
+            }}>
+              {/* Handle */}
+              <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 8px" }}>
+                <div style={{ width: 36, height: 4, borderRadius: 2, background: T.border }} />
+              </div>
+              {/* User info */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 20px 16px", borderBottom: `1px solid ${T.border}` }}>
+                <div style={{ width: 40, height: 40, borderRadius: "50%", background: `linear-gradient(135deg,${T.blue},${T.green})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+                  {auth.user.name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: T.text }}>{auth.user.name}</div>
+                  <div style={{ fontSize: 11, color: T.textDim }}>{roleLabel[auth.user.role] || auth.user.role} · {auth.tenant?.name}</div>
+                </div>
+              </div>
+              {/* Overflow nav items */}
+              {overflowTabs.length > 0 && (
+                <div style={{ padding: "8px 12px" }}>
+                  <div style={{ fontSize: 10, color: T.textDim, textTransform: "uppercase", letterSpacing: 1, fontWeight: 700, padding: "4px 8px 8px" }}>Menu</div>
+                  {overflowTabs.map(n => {
+                    const isActive = active === n.id;
+                    return (
+                      <button key={n.id} onClick={() => { handleSetActive(n.id); setShowMoreDrawer(false); }}
+                        style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 12px", borderRadius: 10, border: "none", background: isActive ? T.navActive : "transparent", color: isActive ? T.blue : T.text, cursor: "pointer", fontFamily: T.font, fontSize: 14, fontWeight: isActive ? 700 : 400, marginBottom: 2, textAlign: "left" }}>
+                        <span style={{ color: isActive ? T.blue : T.textDim }}><Icon d={n.icon} size={20} /></span>
+                        {n.label}
+                        {isActive && <div style={{ marginLeft: "auto", width: 6, height: 6, borderRadius: "50%", background: T.blue }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              {/* Actions */}
+              <div style={{ padding: "8px 12px", borderTop: `1px solid ${T.border}`, display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px" }}>
+                  <span style={{ fontSize: 14, color: T.text }}>Tema</span>
+                  <ThemeToggle collapsed={false} />
+                </div>
+                <button onClick={() => { setShowMoreDrawer(false); setShowBugModal(true); }}
+                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 12px", borderRadius: 10, border: "none", background: "transparent", color: T.red, cursor: "pointer", fontFamily: T.font, fontSize: 14, width: "100%", textAlign: "left" }}>
+                  <span>🐛</span> Segnala un bug
+                </button>
+                <button onClick={handleLogout}
+                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 12px", borderRadius: 10, border: "none", background: "transparent", color: T.textSub, cursor: "pointer", fontFamily: T.font, fontSize: 14, width: "100%", textAlign: "left" }}>
+                  <Icon d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9" size={18} />
+                  Esci
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {showBugModal && <Suspense fallback={null}><BugReportModal auth={auth} onClose={() => setShowBugModal(false)} /></Suspense>}
       </div>
