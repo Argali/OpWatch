@@ -10,7 +10,7 @@ const workshopController = {
 
   getPonti(req, res, next) {
     try {
-      const tenant = tenantRepo.findById(req.user.tenantId);
+      const tenant = tenantRepo.findById(req.tenant.id);
       res.json({ ok: true, data: tenant?.ponti ?? [] });
     } catch (err) { next(err); }
   },
@@ -20,7 +20,7 @@ const workshopController = {
       const { ponti } = req.body;
       if (!Array.isArray(ponti)) return res.status(400).json({ ok: false, error: "ponti deve essere un array" });
       const clean = ponti.map(p => String(p).trim()).filter(Boolean);
-      const updated = tenantRepo.updatePonti(req.user.tenantId, clean);
+      const updated = tenantRepo.updatePonti(req.tenant.id, clean);
       if (!updated) return res.status(404).json({ ok: false, error: "Tenant non trovato" });
       res.json({ ok: true, data: updated.ponti });
     } catch (err) { next(err); }
