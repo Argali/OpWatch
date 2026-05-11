@@ -33,6 +33,119 @@ function shiftDate(iso, days) {
   return d.toISOString().slice(0, 10);
 }
 
+// ── Order detail modal ────────────────────────────────────────────────────────
+const ORDER_STATUS_LABELS = {
+  waiting_parts: "In Attesa",
+  in_progress:   "In Lavorazione",
+  done:          "Completato",
+};
+const ORDER_STATUS_STYLE = {
+  waiting_parts: { bg: "#1a1f2e", border: "#4a5568",  text: "#a0aec0" },
+  in_progress:   { bg: "#1e3a5f", border: "#3b82f6",  text: "#93c5fd" },
+  done:          { bg: "#052e16", border: "#22c55e",  text: "#86efac" },
+};
+
+function OrderModal({ order, asgn, onClose, onSave }) {
+  const [status, setStatus] = React.useState(order.status);
+  const [saving, setSaving] = React.useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    await onSave(order.id, status);
+    setSaving(false);
+    onClose();
+  };
+
+  const c = colorFor(order.type);
+  const unchanged = status === order.status;
+
+  return (
+    <div onClick={onClose} style={{
+      position: "fixed", inset: 0, zIndex: 1100,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      background: "rgba(0,0,0,0.6)",
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: "#1a1f2e", border: `1px solid ${c.border}`, borderRadius: 14,
+        padding: "24px 28px", width: 380, display: "flex", flexDirection: "column", gap: 16,
+        boxShadow: "0 12px 40px rgba(0,0,0,0.5)", fontFamily: "inherit",
+      }}>
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: c.text }}>{order.vehicle}</div>
+            <div style={{ fontSize: 12, color: c.text, opacity: 0.6, fontFamily: "monospace" }}>{order.plate}</div>
+          </div>
+          <button onClick={onClose} style={{
+            background: "transparent", border: "none", color: "#a0aec0",
+            cursor: "pointer", fontSize: 18, lineHeight: 1, padding: "2px 6px",
+          }}>✕</button>
+        </div>
+
+        {/* Type + slot */}
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+          <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 10, background: c.bg, border: `1px solid ${c.border}`, color: c.text, fontWeight: 700 }}>
+            {order.type}
+          </span>
+          {asgn && (
+            <span style={{ fontSize: 11, color: "#a0aec0" }}>
+              🔩 {asgn.ponte} · {String(asgn.startHour).padStart(2, "0")}:00 – {String(asgn.startHour + asgn.duration).padStart(2, "0")}:00
+            </span>
+          )}
+        </div>
+
+        {/* Notes */}
+        {order.notes && (
+          <div style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.6, background: "#0f1117", borderRadius: 8, padding: "10px 14px" }}>
+            {order.notes}
+          </div>
+        )}
+
+        {/* Mechanic / ETA */}
+        {(order.mechanic || order.eta) && (
+          <div style={{ display: "flex", gap: 16, fontSize: 12, color: "#718096" }}>
+            {order.mechanic && <span>👤 {order.mechanic}</span>}
+            {order.eta && <span>📅 ETA {order.eta}</span>}
+          </div>
+        )}
+
+        {/* Status selector */}
+        <div>
+          <div style={{ fontSize: 11, color: "#718096", fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Stato</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            {Object.entries(ORDER_STATUS_LABELS).map(([key, label]) => {
+              const s = ORDER_STATUS_STYLE[key];
+              const active = status === key;
+              return (
+                <button key={key} onClick={() => setStatus(key)} style={{
+                  flex: 1, padding: "8px 6px", borderRadius: 8, cursor: "pointer",
+                  fontFamily: "inherit", fontSize: 12, fontWeight: active ? 700 : 400,
+                  background: active ? s.bg : "transparent",
+                  border: `1px solid ${active ? s.border : "#2d3748"}`,
+                  color: active ? s.text : "#718096",
+                  transition: "all 0.15s",
+                }}>{label}</button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Save */}
+        <button onClick={handleSave} disabled={saving || unchanged} style={{
+          padding: "10px 20px", borderRadius: 8, fontFamily: "inherit", fontSize: 13, fontWeight: 600,
+          cursor: saving || unchanged ? "not-allowed" : "pointer",
+          background: unchanged ? "transparent" : "#1e3a5f",
+          border: `1px solid ${unchanged ? "#2d3748" : "#3b82f6"}`,
+          color: unchanged ? "#4a5568" : "#93c5fd",
+          transition: "all 0.15s",
+        }}>
+          {saving ? "Salvataggio…" : unchanged ? "Nessuna modifica" : "Salva stato"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Duration selector popover ─────────────────────────────────────────────────
 function DurationPicker({ onSelect, onCancel }) {
   return (
@@ -75,8 +188,9 @@ export default function PontiPlannerModule() {
   const [date, setDate] = useState(todayISO);
   const [assignments, setAssignments] = useState([]);
   const [loadingPlan, setLoadingPlan] = useState(false);
-  const [pending, setPending] = useState(null); // { ponte, hour } waiting for duration
-  const dragRef = useRef(null); // { type:"order"|"assignment", id, orderId? }
+  const [pending, setPending] = useState(null);
+  const [selected, setSelected] = useState(null); // { asgn, order }
+  const dragRef = useRef(null);
 
   const loadPlan = useCallback(async () => {
     setLoadingPlan(true);
@@ -147,6 +261,15 @@ export default function PontiPlannerModule() {
     await fetch(`${API}/workshop/planning/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${auth.token}` },
+    });
+    loadPlan();
+  }, [auth.token, loadPlan]);
+
+  const updateOrderStatus = useCallback(async (orderId, status) => {
+    await fetch(`${API}/workshop/orders/${orderId}`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${auth.token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
     });
     loadPlan();
   }, [auth.token, loadPlan]);
@@ -289,6 +412,7 @@ export default function PontiPlannerModule() {
                             <div
                               draggable
                               onDragStart={e => onDragStart(e, { type: "assignment", id: asgn.id, orderId: asgn.orderId })}
+                              onClick={() => setSelected({ asgn, order })}
                               style={{
                                 height: "100%", background: c.bg,
                                 border: `1px solid ${c.border}`, borderRadius: 6,
@@ -342,6 +466,16 @@ export default function PontiPlannerModule() {
         <DurationPicker
           onSelect={confirmDuration}
           onCancel={() => { setPending(null); loadPlan(); }}
+        />
+      )}
+
+      {/* ── Order detail modal ── */}
+      {selected && (
+        <OrderModal
+          order={selected.order}
+          asgn={selected.asgn}
+          onClose={() => setSelected(null)}
+          onSave={updateOrderStatus}
         />
       )}
     </div>

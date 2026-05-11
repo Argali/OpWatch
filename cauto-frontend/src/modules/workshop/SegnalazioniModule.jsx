@@ -102,7 +102,7 @@ function SegnalazioniModule(){
             <label style={lbl}>Ponte sollevatore (opzionale)</label>
             <select value={form.ponte} onChange={e=>set("ponte")(e.target.value)} style={inp}>
               <option value="">— Nessun ponte assegnato —</option>
-              {PONTI.map(p=><option key={p} value={p}>{p}</option>)}
+              {ponti.map(p=><option key={p} value={p}>{p}</option>)}
             </select>
           </div>
           <div>
@@ -139,7 +139,7 @@ function SegnalazioniModule(){
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:8}}>
                   <span style={{fontSize:11,padding:"3px 10px",borderRadius:10,background:SEG_STATUS[s.status]?.color+"22",color:SEG_STATUS[s.status]?.color,fontWeight:600,border:`1px solid ${SEG_STATUS[s.status]?.color}44`}}>{SEG_STATUS[s.status]?.label}</span>
-                  {isManager&&s.status!=="chiusa"&&(
+                  {isManager&&(
                     <select value={s.status} onChange={e=>updateStatus(s.id,e.target.value)} style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,padding:"4px 8px",color:T.text,fontSize:11,outline:"none",cursor:"pointer",fontFamily:T.font}}>
                       <option value="aperta">Aperta</option><option value="in_lavorazione">In lavorazione</option><option value="chiusa">Chiusa</option>
                     </select>
@@ -147,7 +147,7 @@ function SegnalazioniModule(){
                   {isManager&&(
                     <select value={s.ponte||""} onChange={e=>updatePonte(s.id,e.target.value||null)} style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,padding:"4px 8px",color:s.ponte?T.blue:T.textDim,fontSize:11,outline:"none",cursor:"pointer",fontFamily:T.font}}>
                       <option value="">🔩 Assegna ponte…</option>
-                      {PONTI.map(p=><option key={p} value={p}>{p}</option>)}
+                      {ponti.map(p=><option key={p} value={p}>{p}</option>)}
                     </select>
                   )}
                   {!isManager&&s.ponte&&<span style={{fontSize:11,padding:"3px 10px",borderRadius:10,background:T.blue+"22",color:T.blue,fontWeight:600,border:`1px solid ${T.blue}44`}}>{s.ponte}</span>}
@@ -168,10 +168,15 @@ function SegnalazioniModule(){
               <summary style={{fontSize:13,color:T.textSub,cursor:"pointer",userSelect:"none"}}>Segnalazioni chiuse ({closedSeg.length})</summary>
               <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
                 {closedSeg.map(s=>(
-                  <div key={s.id} style={{background:T.bg,borderRadius:8,padding:"10px 14px",opacity:0.6}}>
-                    <div style={{display:"flex",justifyContent:"space-between",gap:8}}>
+                  <div key={s.id} style={{background:T.bg,borderRadius:8,padding:"10px 14px",opacity:isManager?1:0.6}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
                       <div><span style={{fontSize:13,fontWeight:600,color:T.text}}>{s.vehicle}</span><span style={{fontSize:11,color:T.textDim}}> · {s.settore}</span></div>
-                      <span style={{fontSize:11,color:T.green}}>Chiusa</span>
+                      {isManager
+                        ?<select value={s.status} onChange={e=>updateStatus(s.id,e.target.value)} style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:6,padding:"4px 8px",color:T.text,fontSize:11,outline:"none",cursor:"pointer",fontFamily:T.font}}>
+                            <option value="aperta">Aperta</option><option value="in_lavorazione">In lavorazione</option><option value="chiusa">Chiusa</option>
+                          </select>
+                        :<span style={{fontSize:11,color:T.green}}>Chiusa</span>
+                      }
                     </div>
                     <div style={{fontSize:12,color:T.textSub,marginTop:4}}>{s.description}</div>
                   </div>
