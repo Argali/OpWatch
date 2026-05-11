@@ -271,10 +271,27 @@ function GPSModule({onSelectVehicle,mode="live"}){
     setPdfPanel(false);
   };
 
+  // ── Weather (leaflet-openweathermap) ──────────────────────────────────────
+  const owmApiKey=import.meta.env.VITE_OWM_API_KEY||"";
+  const [weatherLayers,setWeatherLayers]=useState({temp:false,rain:false,wind:false});
+  const [showWeatherPanel,setShowWeatherPanel]=useState(false);
+  const toggleWeather=k=>setWeatherLayers(prev=>({...prev,[k]:!prev[k]}));
+
   // ── annotation state ──────────────────────────────────────────────────────
   const [editAnnotations,setEditAnnotations]=useState([]);
   const [annotMode,setAnnotMode]=useState(false);
   const [annotEditId,setAnnotEditId]=useState(null);
+  // ── Illustrate mode (rich text annotations) ───────────────────────────────
+  const [illustrateMode,setIllustrateMode]=useState(false);
+
+  // ── Toolbar callbacks ref (stable object, updated each render) ────────────
+  const toolbarCbRef=useRef({});
+  toolbarCbRef.current={
+    undo:()=>setEditWaypoints(prev=>prev.slice(0,-1)),
+    clear:()=>{setEditWaypoints([]);setSnappedSegments(null);},
+    annotate:()=>{setAnnotMode(m=>!m);setAnnotEditId(null);setIllustrateMode(false);},
+    illustrate:()=>{setIllustrateMode(m=>!m);setAnnotMode(false);},
+  };
 
   // ── zone editor state ─────────────────────────────────────────────────────
   const [zones,setZones]=useState(()=>{ try{return JSON.parse(localStorage.getItem("fleetcc_zones")||"[]");}catch{return[];} });
@@ -708,6 +725,13 @@ function GPSModule({onSelectVehicle,mode="live"}){
   };
 
   const handleMapClick=useCallback((latlng)=>{
+    if(editingId!==null&&illustrateMode){
+      const id=crypto.randomUUID();
+      setEditAnnotations(prev=>[...prev,{id,lat:latlng[0],lng:latlng[1],text:"",color:"#60a5fa",type:"rich",fontSize:14}]);
+      setAnnotEditId(id);
+      setIllustrateMode(false);
+      return;
+    }
     if(editingId!==null&&annotMode){
       const id=crypto.randomUUID();
       setEditAnnotations(prev=>[...prev,{id,lat:latlng[0],lng:latlng[1],text:"",color:"#facc15"}]);
@@ -716,7 +740,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
       return;
     }
     if(editingId!==null&&!snapMode)setEditWaypoints(prev=>[...prev,latlng]);
-  },[editingId,annotMode,snapMode]);
+  },[editingId,annotMode,illustrateMode,snapMode]);
   const handleWaypointMove=useCallback((idx,latlng)=>{
     const newPts=editWaypoints.map((wp,i)=>i===idx?latlng:wp);
     setEditWaypoints(newPts);
@@ -1107,6 +1131,10 @@ function GPSModule({onSelectVehicle,mode="live"}){
             onMapClick={handleMapClick} onWaypointMove={handleWaypointMove} onWaypointDelete={handleWaypointDelete} onPathClick={handleInsertControlPoint}
             searchMarkerRef={tab==="live"?liveMapRef:null}
             easyPrintRef={easyPrintRef}
+            owmApiKey={owmApiKey}
+            weatherLayers={weatherLayers}
+            editorActive={tab==="editor"&&editingId!==null}
+            toolbarCbRef={toolbarCbRef}
             annotations={visibleAnnotations}
             cdr={tab==="live"?cdr.filter(c=>c.lat&&c.lng):[]}
             onCdrClick={tab==="live"?(c)=>{setTab("cdr");editCdrItem(c);}:null}
@@ -1468,6 +1496,27 @@ function GPSModule({onSelectVehicle,mode="live"}){
             </div>
           )}
 
+          {/* ── Weather toggle button (hidden on mobile fullscreen, only when key set) ── */}
+          {owmApiKey&&(tab==="live"||tab==="editor")&&!mobileFullscreen&&(
+            <button onClick={()=>{setShowWeatherPanel(p=>!p);setPdfPanel(false);}}
+              style={{position:"absolute",bottom:10,right:70,zIndex:1001,background:showWeatherPanel||Object.values(weatherLayers).some(Boolean)?"rgba(30,58,90,0.95)":"rgba(13,27,42,0.9)",border:`1px solid ${showWeatherPanel||Object.values(weatherLayers).some(Boolean)?T.blue+"99":T.border}`,borderRadius:8,color:showWeatherPanel||Object.values(weatherLayers).some(Boolean)?T.blue:T.textSub,padding:"6px 12px",cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600,backdropFilter:"blur(6px)"}}>
+              🌤 Meteo
+            </button>
+          )}
+          {showWeatherPanel&&(
+            <div style={{position:"absolute",bottom:46,right:70,zIndex:1002,background:"rgba(13,27,42,0.96)",border:`1px solid ${T.border}`,borderRadius:10,padding:14,width:200,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",fontFamily:T.font}} onClick={e=>e.stopPropagation()}>
+              <div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:10}}>Livelli meteo</div>
+              {[["temp","🌡","Temperatura (°C)"],["rain","🌧","Pioggia"],["wind","💨","Vento"]].map(([k,icon,label])=>(
+                <button key={k} onClick={()=>toggleWeather(k)}
+                  style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"8px 10px",marginBottom:6,background:weatherLayers[k]?"rgba(30,58,90,0.8)":T.bg,border:`1px solid ${weatherLayers[k]?T.blue+"66":T.border}`,borderRadius:7,color:weatherLayers[k]?T.blue:T.textSub,cursor:"pointer",fontSize:12,fontFamily:T.font,textAlign:"left"}}>
+                  <span style={{fontSize:16}}>{icon}</span>
+                  <span style={{flex:1}}>{label}</span>
+                  <span style={{fontSize:10,opacity:0.6}}>{weatherLayers[k]?"ON":"OFF"}</span>
+                </button>
+              ))}
+              {!owmApiKey&&<div style={{fontSize:10,color:T.orange,marginTop:6}}>Imposta VITE_OWM_API_KEY</div>}
+            </div>
+          )}
           {/* ── PDF Export button (hidden on mobile fullscreen) ── */}
           {(tab==="live"||tab==="editor"||tab==="zone"||tab==="punti")&&!mobileFullscreen&&(
             <button onClick={()=>setPdfPanel(p=>!p)}
@@ -2137,21 +2186,47 @@ function GPSModule({onSelectVehicle,mode="live"}){
               <div style={{marginTop:14,borderTop:`1px solid ${T.border}`,paddingTop:14}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
                   <div style={{fontSize:12,fontWeight:700,color:T.text}}>📌 Annotazioni ({editAnnotations.length})</div>
-                  <button onClick={()=>{setAnnotMode(m=>!m);setAnnotEditId(null);}}
-                    style={{padding:"4px 10px",background:annotMode?"#0d2010":T.bg,border:`1px solid ${annotMode?T.green+"66":T.border}`,borderRadius:6,color:annotMode?T.green:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:600}}>
-                    {annotMode?"✓ Clicca mappa":"+ Annota"}
-                  </button>
+                  <div style={{display:"flex",gap:5}}>
+                    <button onClick={()=>{setAnnotMode(m=>!m);setAnnotEditId(null);setIllustrateMode(false);}}
+                      style={{padding:"4px 8px",background:annotMode?"#0d2010":T.bg,border:`1px solid ${annotMode?T.green+"66":T.border}`,borderRadius:6,color:annotMode?T.green:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:600}}>
+                      {annotMode?"✓ Clicca":"📌"}
+                    </button>
+                    <button onClick={()=>{setIllustrateMode(m=>!m);setAnnotMode(false);setAnnotEditId(null);}}
+                      style={{padding:"4px 8px",background:illustrateMode?"#0d1b2a":T.bg,border:`1px solid ${illustrateMode?T.blue+"66":T.border}`,borderRadius:6,color:illustrateMode?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:600}}
+                      title="Rich text illustrate (testo grande, multi-riga)">
+                      {illustrateMode?"✓ Clicca":"📝"}
+                    </button>
+                  </div>
                 </div>
+                {(annotMode||illustrateMode)&&<div style={{fontSize:10,color:annotMode?T.green:T.blue,marginBottom:8,padding:"5px 8px",background:annotMode?"#0d2010":"#0d1b2a",borderRadius:5,border:`1px solid ${annotMode?T.green+"44":T.blue+"44"}`}}>
+                  {annotMode?"📌 Clicca sulla mappa per aggiungere un pin":"📝 Clicca sulla mappa per aggiungere un testo ricco (Illustrate)"}
+                </div>}
                 {editAnnotations.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"8px 0"}}>Nessuna annotazione</div>}
                 {editAnnotations.map(a=>(
                   <div key={a.id} style={{background:T.bg,border:`1px solid ${annotEditId===a.id?a.color:T.border}`,borderRadius:7,padding:"8px 10px",marginBottom:6}}>
                     {annotEditId===a.id?(
                       <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                        <input autoFocus value={a.text} onChange={e=>setEditAnnotations(prev=>prev.map(x=>x.id===a.id?{...x,text:e.target.value}:x))}
-                          placeholder="Testo annotazione…"
-                          style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:5,color:T.text,padding:"5px 8px",fontSize:12,fontFamily:T.font,outline:"none"}}/>
+                        {a.type==="rich"
+                          ?<textarea autoFocus value={a.text} onChange={e=>setEditAnnotations(prev=>prev.map(x=>x.id===a.id?{...x,text:e.target.value}:x))}
+                              placeholder="Testo illustrato…" rows={3}
+                              style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:5,color:T.text,padding:"5px 8px",fontSize:12,fontFamily:T.font,outline:"none",resize:"vertical",lineHeight:1.5}}/>
+                          :<input autoFocus value={a.text} onChange={e=>setEditAnnotations(prev=>prev.map(x=>x.id===a.id?{...x,text:e.target.value}:x))}
+                              placeholder="Testo annotazione…"
+                              style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:5,color:T.text,padding:"5px 8px",fontSize:12,fontFamily:T.font,outline:"none"}}/>
+                        }
+                        {a.type==="rich"&&(
+                          <div style={{display:"flex",alignItems:"center",gap:8}}>
+                            <span style={{fontSize:10,color:T.textSub,flexShrink:0}}>Dim: {a.fontSize||14}px</span>
+                            <input type="range" min={10} max={32} step={1} value={a.fontSize||14}
+                              onChange={e=>setEditAnnotations(prev=>prev.map(x=>x.id===a.id?{...x,fontSize:Number(e.target.value)}:x))}
+                              style={{flex:1,accentColor:T.blue}}/>
+                          </div>
+                        )}
                         <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
-                          {["#facc15","#4ade80","#60a5fa","#f87171","#fb923c","#c084fc","#ffffff"].map(c=>(
+                          {(a.type==="rich"
+                            ?["#60a5fa","#4ade80","#fb923c","#f87171","#c084fc","#facc15","#ffffff"]
+                            :["#facc15","#4ade80","#60a5fa","#f87171","#fb923c","#c084fc","#ffffff"]
+                          ).map(c=>(
                             <div key={c} onClick={()=>setEditAnnotations(prev=>prev.map(x=>x.id===a.id?{...x,color:c}:x))}
                               style={{width:18,height:18,borderRadius:"50%",background:c,cursor:"pointer",border:a.color===c?"2.5px solid #fff":"2px solid transparent",flexShrink:0}}/>
                           ))}
@@ -2163,7 +2238,10 @@ function GPSModule({onSelectVehicle,mode="live"}){
                       </div>
                     ):(
                       <div style={{display:"flex",alignItems:"center",gap:7,cursor:"pointer"}} onClick={()=>setAnnotEditId(a.id)}>
-                        <div style={{width:10,height:10,borderRadius:"50%",background:a.color,flexShrink:0,border:"1.5px solid rgba(255,255,255,0.4)"}}/>
+                        {a.type==="rich"
+                          ?<span style={{fontSize:13,flexShrink:0}}>📝</span>
+                          :<div style={{width:10,height:10,borderRadius:"50%",background:a.color,flexShrink:0,border:"1.5px solid rgba(255,255,255,0.4)"}}/>
+                        }
                         <span style={{fontSize:12,color:T.text,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.text||"(senza testo)"}</span>
                         <span style={{fontSize:10,color:T.textDim,flexShrink:0}}>✏</span>
                       </div>

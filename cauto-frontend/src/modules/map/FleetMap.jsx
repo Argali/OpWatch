@@ -5,6 +5,12 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster";
 import "leaflet-easyprint";
+import "leaflet-toolbar";
+import "leaflet-toolbar/dist/leaflet.toolbar.css";
+import "leaflet-openweathermap";
+import "leaflet-openweathermap/leaflet-openweathermap.css";
+import { BurgerMenuControl } from "leaflet-burgermenu";
+import "leaflet-burgermenu/dist/leaflet-burgermenu.css";
 import T, { statusColor, statusLabel } from "@/theme";
 import Icon from "@/shared/ui/Icon";
 
@@ -32,11 +38,35 @@ function injectGeoCss() {
       background: #60a5fa; border: 2.5px solid #fff;
       box-shadow: 0 0 8px rgba(96,165,250,0.9);
     }
+    /* ── Toolbar overrides for dark theme ── */
+    .leaflet-control-toolbar ul { background: #0d1b2a; border: 1px solid #1e3a5a; border-radius: 8px; }
+    .leaflet-toolbar-icon { background: transparent !important; color: #e2eaf5; font-size: 16px; line-height: 30px; width: 32px !important; height: 32px !important; }
+    .leaflet-toolbar-icon:hover { background: #1e3a5a !important; border-radius: 4px; }
+    /* ── Burger menu dark theme ── */
+    .leaflet-control-burgermenu .burger-button { background: #0d1b2a; border: 1px solid #1e3a5a; color: #e2eaf5; font-size: 18px; padding: 6px 9px; border-radius: 6px; }
+    .leaflet-control-burgermenu .burger-menu, .leaflet-control-burgermenu .burger-menu-item { background: #0d1b2a; border-color: #1e3a5a; color: #e2eaf5; font-size: 12px; }
+    .leaflet-control-burgermenu .burger-menu-item:hover { background: #1e3a5a; }
+    .leaflet-control-burgermenu .burger-menu.level-0 { max-height: 320px; overflow-y: auto; min-width: 200px; }
   `;
   document.head.appendChild(s);
 }
 
-function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColor,zones,punti,onMapClick,onWaypointMove,onWaypointDelete,searchMarkerRef,easyPrintRef,snappedSegments,snapMode,onPathClick,annotations=[],myPosition,driverLocations}){
+// ── Toolbar action factory ────────────────────────────────────────────────────
+function makeAction(html, tooltip, cbRef, cbKey) {
+  return L.Toolbar2.Action.extend({
+    options: { toolbarIcon: { html, tooltip } },
+    addHooks() { cbRef.current?.[cbKey]?.(); this.disable(); },
+  });
+}
+
+function FleetMap({
+  vehicles, routes, visibleRoutes, editMode, editWaypoints, editColor,
+  zones, punti, onMapClick, onWaypointMove, onWaypointDelete,
+  searchMarkerRef, easyPrintRef, snappedSegments, snapMode,
+  onPathClick, annotations=[], myPosition, driverLocations,
+  // new plugin props
+  owmApiKey, weatherLayers, editorActive, toolbarCbRef,
+}) {
   const containerRef=useRef(null);
   const mapRef=useRef(null);
   const routeLayerRef=useRef(null);
@@ -47,6 +77,9 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
   const annotLayerRef=useRef(null);
   const myPosLayerRef=useRef(null);
   const driverLocsLayerRef=useRef(null);
+  const owmLayersRef=useRef({temp:null,rain:null,wind:null});
+  const burgerMenuRef=useRef(null);
+  const toolbarCtrlRef=useRef(null);
   const cbClick=useRef(onMapClick);
   const cbMove=useRef(onWaypointMove);
   const cbDel=useRef(onWaypointDelete);
@@ -56,6 +89,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
   useEffect(()=>{cbDel.current=onWaypointDelete;},[onWaypointDelete]);
   useEffect(()=>{cbPathClick.current=onPathClick;},[onPathClick]);
 
+  // ── Map init ────────────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!containerRef.current||mapRef.current)return;
     injectGeoCss();
@@ -76,19 +110,104 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     editLayerRef.current=L.layerGroup().addTo(map);
     map.on("click",(e)=>{ if(cbClick.current)cbClick.current([e.latlng.lat,e.latlng.lng]); });
     mapRef.current=map;
+
+    // easyPrint
     if(searchMarkerRef)searchMarkerRef.current=map;
     if(easyPrintRef){
       const ep=L.easyPrint({hidden:true,sizeModes:["A4Portrait","A4Landscape"],filename:"FleetCC_map",hideControlContainer:true}).addTo(map);
       easyPrintRef.current=ep;
     }
-    return()=>{map.remove();mapRef.current=null;if(searchMarkerRef)searchMarkerRef.current=null;if(easyPrintRef)easyPrintRef.current=null;};
+
+    // OWM weather layers (created but not added — toggled via weatherLayers prop)
+    if(owmApiKey){
+      try{
+        owmLayersRef.current.temp=L.OWM.temperature({appId:owmApiKey,temperatureUnit:"C",opacity:0.65,showLegend:false});
+        owmLayersRef.current.rain=L.OWM.rain({appId:owmApiKey,opacity:0.65,showLegend:false});
+        owmLayersRef.current.wind=L.OWM.wind({appId:owmApiKey,opacity:0.65,showLegend:false});
+      }catch(e){ console.warn("OWM init error",e); }
+    }
+
+    return()=>{
+      map.remove();
+      mapRef.current=null;
+      if(searchMarkerRef)searchMarkerRef.current=null;
+      if(easyPrintRef)easyPrintRef.current=null;
+      owmLayersRef.current={temp:null,rain:null,wind:null};
+      burgerMenuRef.current=null;
+      toolbarCtrlRef.current=null;
+    };
   },[]);// eslint-disable-line
 
+  // ── Weather layer toggle ────────────────────────────────────────────────────
+  useEffect(()=>{
+    if(!mapRef.current)return;
+    const map=mapRef.current;
+    const{temp,rain,wind}=owmLayersRef.current;
+    const toggle=(layer,on)=>{
+      if(!layer)return;
+      if(on&&!map.hasLayer(layer))layer.addTo(map);
+      else if(!on&&map.hasLayer(layer))map.removeLayer(layer);
+    };
+    toggle(temp,weatherLayers?.temp);
+    toggle(rain,weatherLayers?.rain);
+    toggle(wind,weatherLayers?.wind);
+  },[weatherLayers]);
+
+  // ── Burger menu: truck list (rebuilt when vehicles change) ──────────────────
+  useEffect(()=>{
+    if(!mapRef.current)return;
+    const map=mapRef.current;
+    if(burgerMenuRef.current){
+      try{ burgerMenuRef.current.remove(); }catch{}
+      burgerMenuRef.current=null;
+    }
+    const located=(vehicles||[]).filter(v=>v.lat&&v.lng);
+    const items=located.map(v=>{
+      const color=statusColor[v.status]||"#4ade80";
+      return{
+        title:`${v.name}  ·  ${v.plate}`,
+        onClick:()=>{ map.flyTo([v.lat,v.lng],16); },
+      };
+    });
+    burgerMenuRef.current=new BurgerMenuControl({
+      position:"topright",
+      title:"Camion",
+      menuIcon:"🚛",
+      menuItems:items,
+    }).addTo(map);
+  },[vehicles]);
+
+  // ── Editor toolbar (shown only while editing a route) ──────────────────────
+  useEffect(()=>{
+    if(!mapRef.current)return;
+    const map=mapRef.current;
+    if(editorActive){
+      if(!toolbarCtrlRef.current&&toolbarCbRef){
+        const actions=[
+          makeAction("↩","Annulla ultimo punto",toolbarCbRef,"undo"),
+          makeAction("🗑","Cancella tutti i punti",toolbarCbRef,"clear"),
+          makeAction("📌","Aggiungi annotazione",toolbarCbRef,"annotate"),
+          makeAction("📝","Aggiungi testo ricco (Illustrate)",toolbarCbRef,"illustrate"),
+        ];
+        try{
+          toolbarCtrlRef.current=new L.Toolbar2.Control({position:"topleft",actions}).addTo(map);
+        }catch(e){ console.warn("Toolbar init error",e); }
+      }
+    } else {
+      if(toolbarCtrlRef.current){
+        try{ map.removeLayer(toolbarCtrlRef.current); }catch{}
+        toolbarCtrlRef.current=null;
+      }
+    }
+  },[editorActive,toolbarCbRef]);
+
+  // ── Cursor ─────────────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current)return;
     mapRef.current.getContainer().style.cursor=editMode?"crosshair":"";
   },[editMode]);
 
+  // ── Routes overlay ──────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!routes||!routeLayerRef.current)return;
     routeLayerRef.current.clearLayers();
@@ -101,7 +220,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[routes,visibleRoutes,editMode]);
 
-  // zones overlay
+  // ── Zones overlay ───────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!zoneLayerRef.current)return;
     zoneLayerRef.current.clearLayers();
@@ -116,7 +235,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[zones]);
 
-  // punti overlay
+  // ── Punti overlay ───────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!puntiLayerRef.current)return;
     puntiLayerRef.current.clearLayers();
@@ -128,17 +247,18 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[punti]);
 
+  // ── Annotations overlay (supports type="rich" from Illustrate) ──────────────
   useEffect(()=>{
     if(!mapRef.current||!annotLayerRef.current)return;
     annotLayerRef.current.clearLayers();
     (annotations||[]).forEach(a=>{
       if(!a.lat||!a.lng)return;
+      const isRich=a.type==="rich";
+      const html=isRich
+        ?`<div style="background:${a.color||"#60a5fa"}22;color:#fff;padding:8px 14px;border-radius:8px;font-size:${a.fontSize||14}px;font-weight:600;border:2px solid ${a.color||"#60a5fa"};max-width:220px;line-height:1.5;box-shadow:0 2px 12px rgba(0,0,0,0.55);backdrop-filter:blur(6px);white-space:pre-wrap;">${a.text||"📝"}</div>`
+        :`<div style="background:${a.color||"#facc15"};color:#000;padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5);border:1.5px solid rgba(0,0,0,0.3);max-width:160px;overflow:hidden;text-overflow:ellipsis;">${a.text||"📌"}</div>`;
       const m=L.marker([a.lat,a.lng],{
-        icon:L.divIcon({
-          className:"",
-          html:`<div style="background:${a.color||"#facc15"};color:#000;padding:3px 8px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.5);border:1.5px solid rgba(0,0,0,0.3);max-width:160px;overflow:hidden;text-overflow:ellipsis;">${a.text||"📌"}</div>`,
-          iconAnchor:[0,10],
-        }),
+        icon:L.divIcon({className:"",html,iconAnchor:[0,isRich?0:10]}),
         interactive:false,
         zIndexOffset:2000,
       });
@@ -146,6 +266,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[annotations]);
 
+  // ── Vehicles overlay ────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!vehicles||!vehicleLayerRef.current)return;
     vehicleLayerRef.current.clearLayers();
@@ -164,19 +285,18 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[vehicles,editMode]);
 
+  // ── Editor drawing overlay ──────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!editLayerRef.current)return;
     editLayerRef.current.clearLayers();
     if(!editMode||!editWaypoints||editWaypoints.length===0)return;
     const color=editColor||T.green;
-    // Draw path: snapped if available, else raw control points
     const pathPts=snappedSegments?snappedSegments.flat():editWaypoints;
     const line=L.polyline(pathPts,{color,weight:4,opacity:0.9,interactive:!!snappedSegments});
     if(snappedSegments&&cbPathClick.current){
       line.on("click",(e)=>{
         L.DomEvent.stopPropagation(e);
         const click=[e.latlng.lat,e.latlng.lng];
-        // Find closest control-point segment to determine insert position
         let bestSeg=0,bestDist=Infinity;
         for(let i=0;i<editWaypoints.length-1;i++){
           const a=editWaypoints[i],b=editWaypoints[i+1];
@@ -206,7 +326,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     });
   },[editMode,editWaypoints,editColor,snappedSegments,snapMode]);
 
-  // My position — pulsing blue dot
+  // ── My position — pulsing blue dot ─────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!myPosLayerRef.current)return;
     myPosLayerRef.current.clearLayers();
@@ -214,14 +334,13 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     const icon=L.divIcon({
       className:"",
       html:`<div style="position:relative;width:20px;height:20px"><div class="fleetcc-my-pos-ring"></div><div class="fleetcc-my-pos-dot"></div></div>`,
-      iconSize:[20,20],
-      iconAnchor:[10,10],
+      iconSize:[20,20],iconAnchor:[10,10],
     });
     const m=L.marker(myPosition,{icon,zIndexOffset:3000,interactive:false});
     myPosLayerRef.current.addLayer(m);
   },[myPosition]);
 
-  // Other drivers sharing their position
+  // ── Other drivers ───────────────────────────────────────────────────────────
   useEffect(()=>{
     if(!mapRef.current||!driverLocsLayerRef.current)return;
     driverLocsLayerRef.current.clearLayers();
@@ -229,8 +348,7 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
       const icon=L.divIcon({
         className:"",
         html:`<div style="position:relative;width:22px;height:22px;display:flex;align-items:center;justify-content:center"><div style="width:16px;height:16px;background:#4ade80;border:2.5px solid #fff;border-radius:50%;box-shadow:0 0 6px rgba(74,222,128,0.7)"></div></div>`,
-        iconSize:[22,22],
-        iconAnchor:[11,11],
+        iconSize:[22,22],iconAnchor:[11,11],
       });
       const m=L.marker([d.lat,d.lng],{icon,zIndexOffset:2500});
       m.bindTooltip(`<b>${d.name}</b><br><span style="font-size:10px;color:#888">Driver live</span>`,{sticky:false});
