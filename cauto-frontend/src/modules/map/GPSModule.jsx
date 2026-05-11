@@ -36,6 +36,36 @@ function formatPhotonResult(feature) {
 // Keep alias for existing call sites
 const photonToNominatim = formatPhotonResult;
 
+// ── html2canvas color-mix() fix ───────────────────────────────────────────────
+// html2canvas can't parse color-mix() — walk the subtree, replace every inline
+// style that contains "color-mix" with the browser-resolved rgb() value, then
+// return a function that restores the originals after the screenshot.
+function resolveColorMixStyles(root) {
+  const saved = [];
+  const walk = (el) => {
+    const style = el.style;
+    if (!style || !style.length) { for (const c of el.children) walk(c); return; }
+    const cs = window.getComputedStyle(el);
+    const toRestore = [];
+    for (let i = 0; i < style.length; i++) {
+      const prop = style[i];
+      const val = style.getPropertyValue(prop);
+      if (val.includes("color-mix")) {
+        const resolved = cs.getPropertyValue(prop);
+        toRestore.push([prop, val]);
+        style.setProperty(prop, resolved || "transparent");
+      }
+    }
+    if (toRestore.length) saved.push([el, toRestore]);
+    for (const c of el.children) walk(c);
+  };
+  walk(root);
+  return () => {
+    for (const [el, props] of saved)
+      for (const [prop, val] of props) el.style.setProperty(prop, val);
+  };
+}
+
 // ── Recent searches ────────────────────────────────────────────────────────
 const RECENT_KEY = 'fleetcc_recent_searches';
 function saveRecentSearch(r) {
@@ -277,7 +307,10 @@ function GPSModule({onSelectVehicle,mode="live"}){
         import("html2canvas").then(m=>m.default),
         import("jspdf"),
       ]);
+      // Resolve color-mix() → rgb() before html2canvas parses styles
+      const restoreStyles=resolveColorMixStyles(mapContainerRef.current);
       const canvas=await html2canvas(mapContainerRef.current,{useCORS:true,scale:2,logging:false});
+      restoreStyles();
       const imgData=canvas.toDataURL("image/jpeg",0.92);
       const pdf=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
       const pw=pdf.internal.pageSize.getWidth();
@@ -297,6 +330,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
       pdf.save(`${(pdfTitle||"fleetcc").replace(/\s+/g,"-").toLowerCase()}.pdf`);
       setPdfPanel(false);
     }catch(e){
+      if(typeof restoreStyles==="function")restoreStyles();
       alert("Errore export PDF: "+e.message);
     }finally{
       setPdfExporting(false);
