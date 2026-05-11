@@ -21,7 +21,7 @@ const router = Router();
 router.get(
   "/",
   requireAuth,
-  requireAnyRole(["fleet_manager", "company_admin", "superadmin"]),
+  requireAnyRole("fleet_manager", "company_admin", "superadmin"),
   (req, res, next) => {
     try {
       const clientId = req.tenant?.id || req.user?.tenant_id;
