@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Generic atomic JSON persistence helper.
  *
  * Usage:
@@ -45,7 +45,7 @@ function createStore(filename, defaultValue) {
   let flushTimer = null;
 
   async function flush() {
-    const tmp = path.join(os.tmpdir(), `fleetcc-${filename}-${process.pid}.tmp`);
+    const tmp = path.join(os.tmpdir(), `OpWatch-${filename}-${process.pid}.tmp`);
     try {
       await fs.promises.writeFile(tmp, JSON.stringify(cache, null, 2), "utf8");
       await fs.promises.rename(tmp, filePath);

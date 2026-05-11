@@ -1,4 +1,4 @@
-const multer     = require("multer");
+﻿const multer     = require("multer");
 const gpsService = require("../services/gpsService");
 const { makeCloudinaryStorage, photoUrl } = require("../utils/cloudinary");
 
@@ -10,7 +10,7 @@ const memUpload = multer({
 
 // Stamped photo — Cloudinary in production, local disk in dev
 const photoUpload = multer({
-  storage: makeCloudinaryStorage("fleetcc/gps", "gps_photo"),
+  storage: makeCloudinaryStorage("OpWatch/gps", "gps_photo"),
   limits:  { fileSize: 15 * 1024 * 1024 },
 });
 

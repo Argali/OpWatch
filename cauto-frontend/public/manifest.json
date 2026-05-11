@@ -1,6 +1,6 @@
-{
-  "name": "FleetCC",
-  "short_name": "FleetCC",
+﻿{
+  "name": "OpWatch",
+  "short_name": "OpWatch",
   "description": "Gestione flotta e territorio",
   "start_url": ".",
   "display": "standalone",

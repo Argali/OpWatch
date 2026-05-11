@@ -1,4 +1,4 @@
-name: Deploy Frontend to GitHub Pages
+﻿name: Deploy Frontend to GitHub Pages
 
 on:
   push:
@@ -61,7 +61,7 @@ jobs:
         working-directory: cauto-frontend
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          BASE_PATH: /FleetCC
+          BASE_PATH: /OpWatch
         run: npm run build
 
       - name: Validate build

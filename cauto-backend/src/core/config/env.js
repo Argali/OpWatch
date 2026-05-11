@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Centralized environment configuration.
  * Validates required vars at startup — fail fast, never silently.
  * Import this module early (before any service) so bad config is caught immediately.
@@ -41,7 +41,7 @@ const env = {
   FRONTEND_URL:    process.env.FRONTEND_URL    || null,
 
   // Seed credentials
-  SEED_SUPERADMIN_EMAIL:    process.env.SEED_SUPERADMIN_EMAIL    || "superadmin@fleetcc.dev",
+  SEED_SUPERADMIN_EMAIL:    process.env.SEED_SUPERADMIN_EMAIL    || "superadmin@OpWatch.dev",
   SEED_SUPERADMIN_PASSWORD: process.env.SEED_SUPERADMIN_PASSWORD || "change_me_superadmin",
   SEED_OFFICINA_EMAIL:      process.env.SEED_OFFICINA_EMAIL      || "officina@cauto.it",
   SEED_OFFICINA_PASSWORD:   process.env.SEED_OFFICINA_PASSWORD   || "change_me_officina",

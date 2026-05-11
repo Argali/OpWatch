@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+﻿const bcrypt = require("bcryptjs");
 const { randomUUID } = require("crypto");
 
 // Seed credentials are read from environment variables.
@@ -12,10 +12,10 @@ let users = [
   {
     id: "u0",
     name: "Super Admin",
-    email: process.env.SEED_SUPERADMIN_EMAIL || "superadmin@fleetcc.dev",
+    email: process.env.SEED_SUPERADMIN_EMAIL || "superadmin@OpWatch.dev",
     password_hash: bcrypt.hashSync(SEED_SUPERADMIN_PWD, 10),
     role: "superadmin",
-    tenant_id: "fleetcc",
+    tenant_id: "OpWatch",
     active: true,
   },
   {

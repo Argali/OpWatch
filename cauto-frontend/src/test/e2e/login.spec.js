@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test";
+﻿import { test, expect } from "@playwright/test";
 
 test.describe("Login screen", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
-  test("shows the FleetCC logo and title", async ({ page }) => {
-    await expect(page.getByText("FleetCC")).toBeVisible();
+  test("shows the OpWatch logo and title", async ({ page }) => {
+    await expect(page.getByText("OpWatch")).toBeVisible();
     await expect(page.getByText("Fleet Command Center")).toBeVisible();
   });
 

@@ -1,10 +1,10 @@
-const path    = require("path");
+﻿const path    = require("path");
 const multer  = require("multer");
 const segnalazioneTerritorioService = require("../services/segnalazioneTerritorioService");
 const { makeCloudinaryStorage, photoUrl } = require("../utils/cloudinary");
 
 const upload = multer({
-  storage:    makeCloudinaryStorage("fleetcc/territorio", "seg_int"),
+  storage:    makeCloudinaryStorage("OpWatch/territorio", "seg_int"),
   limits:     { fileSize: 15 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const allowed = [".jpg", ".jpeg", ".png", ".webp", ".heic"];

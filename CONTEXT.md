@@ -1,11 +1,11 @@
-# FleetCC — Project Context
+﻿# OpWatch — Project Context
 
-## What is FleetCC
+## What is OpWatch
 
 A fleet management web app (React + Node.js) deployed on GitHub Pages (frontend) and Render.com (backend).
 
-- **Repo:** https://github.com/Argali/FleetCC
-- **Live app:** https://argali.github.io/FleetCC/
+- **Repo:** https://github.com/Argali/OpWatch
+- **Live app:** https://argali.github.io/OpWatch/
 - **Backend:** Render.com (see `render.yaml`)
 - **Auth:** Microsoft Azure AD (MSAL), token stored in `sessionStorage`
 
@@ -20,7 +20,7 @@ A fleet management web app (React + Node.js) deployed on GitHub Pages (frontend)
 | Auth | Azure AD (MSAL) → JWT verified server-side |
 | Maps | Leaflet (direct imperative API, no react-leaflet) |
 | Geocoding | Nominatim (OpenStreetMap) — no API key needed |
-| Deploy | GitHub Actions → `actions/deploy-pages@v4`, `BASE_PATH: /FleetCC` |
+| Deploy | GitHub Actions → `actions/deploy-pages@v4`, `BASE_PATH: /OpWatch` |
 
 ---
 
@@ -170,7 +170,7 @@ const EMPTY_META = { name:"", color:"#4ade80", opacity:0.85, comune:"", material
 VITE_API_URL=https://<your-render-app>.onrender.com/api
 VITE_AZURE_CLIENT_ID=<azure-app-client-id>
 VITE_AZURE_TENANT_ID=<azure-tenant-id>
-VITE_AZURE_REDIRECT_URI=https://argali.github.io/FleetCC/
+VITE_AZURE_REDIRECT_URI=https://argali.github.io/OpWatch/
 ```
 
 ### Backend (`cauto-backend/.env`)

@@ -1,6 +1,6 @@
-services:
+﻿services:
   - type: web
-    name: fleetcc-backend
+    name: OpWatch-backend
     env: node
     plan: free
     rootDir: cauto-backend
@@ -15,7 +15,7 @@ services:
       - key: JWT_SECRET
         generateValue: true          # Render generates a secure random value
       - key: FRONTEND_URL
-        sync: false                  # Set manually: your GitHub Pages URL e.g. https://argali.github.io/FleetCC
+        sync: false                  # Set manually: your GitHub Pages URL e.g. https://argali.github.io/OpWatch
       - key: SEED_SUPERADMIN_EMAIL
         sync: false                  # e.g. superadmin@yourdomain.com
       - key: SEED_SUPERADMIN_PASSWORD

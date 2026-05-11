@@ -1,4 +1,4 @@
-const ExcelJS   = require("exceljs");
+﻿const ExcelJS   = require("exceljs");
 const { AppError } = require("../middleware/errorHandler");
 const vehicleRepo        = require("../repositories/vehicleRepository");
 const routeRepo          = require("../repositories/routeRepository");
@@ -47,7 +47,7 @@ async function geocodeAddress(street, civico, comune) {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=it`;
   try {
     const res = await fetch(url, {
-      headers: { "User-Agent": "FleetCC/1.0" },
+      headers: { "User-Agent": "OpWatch/1.0" },
       signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) return null;

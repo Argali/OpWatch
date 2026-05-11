@@ -1,7 +1,7 @@
-/**
+﻿/**
  * Canonical Vehicle schema.
  *
- * This is the FleetCC-internal representation of a vehicle.
+ * This is the OpWatch-internal representation of a vehicle.
  * ERP-specific field names (TARGA, ID_MEZZO, etc.) never appear here.
  *
  * Field rules:

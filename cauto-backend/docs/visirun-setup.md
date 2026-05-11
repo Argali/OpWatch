@@ -1,4 +1,4 @@
-# VisiRun Integration — Setup Guide
+﻿# VisiRun Integration — Setup Guide
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ Check: **Settings → Plan** — Static outbound IPs require a paid plan.
 Send an email to `helpdesk@visirun.com`:
 
 ```
-Subject: IP allowlisting request — FleetCC integration
+Subject: IP allowlisting request — OpWatch integration
 
 Hi,
 
@@ -64,7 +64,7 @@ After saving the env vars, Render will automatically redeploy.
 Verify with a quick curl (replace the token with a valid JWT):
 
 ```bash
-curl https://fleetcc-backend.onrender.com/api/gps/vehicles \
+curl https://OpWatch-backend.onrender.com/api/gps/vehicles \
   -H "Authorization: Bearer <your_token>"
 ```
 

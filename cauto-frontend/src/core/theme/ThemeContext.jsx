@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+﻿import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ThemeContext = createContext(null);
 
@@ -8,7 +8,7 @@ function applyTheme(mode) {
 }
 
 function getInitialMode() {
-  const saved = localStorage.getItem("fleetcc.theme");
+  const saved = localStorage.getItem("OpWatch.theme");
   if (saved === "light" || saved === "dark") return saved;
   return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 }
@@ -22,7 +22,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     applyTheme(mode);
-    localStorage.setItem("fleetcc.theme", mode);
+    localStorage.setItem("OpWatch.theme", mode);
   }, [mode]);
 
   const toggle = () => setModeState(m => (m === "dark" ? "light" : "dark"));

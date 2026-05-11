@@ -1,7 +1,7 @@
-/**
+﻿/**
  * Planning operator store.
  *
- * FleetCC users are identity source-of-truth (users.js).
+ * OpWatch users are identity source-of-truth (users.js).
  * This sidecar adds planning-specific metadata per user per tenant:
  *   patente, settore, workStart, workEnd, plannerEnabled
  *

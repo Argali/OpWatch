@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+﻿import { test, expect } from "@playwright/test";
 import { injectAuth } from "./fixtures";
 
 test.describe("Theme toggle", () => {
@@ -26,11 +26,11 @@ test.describe("Theme toggle", () => {
   test("persists theme choice after page reload", async ({ page }) => {
     await page.getByTestId("theme-toggle").click();
     // localStorage should now be "light"
-    const stored = await page.evaluate(() => localStorage.getItem("fleetcc.theme"));
+    const stored = await page.evaluate(() => localStorage.getItem("OpWatch.theme"));
     expect(stored).toBe("light");
 
     await page.reload();
-    const storedAfterReload = await page.evaluate(() => localStorage.getItem("fleetcc.theme"));
+    const storedAfterReload = await page.evaluate(() => localStorage.getItem("OpWatch.theme"));
     expect(storedAfterReload).toBe("light");
   });
 });

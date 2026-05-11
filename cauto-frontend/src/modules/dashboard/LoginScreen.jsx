@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { msalInstance, loginRequest } from "@/msalConfig.js";
 import { useAuth } from "@/core/auth/AuthContext";
 import { API } from "@/api";
@@ -75,7 +75,7 @@ function LoginScreen(){
             )}
           </div>
         </div>
-        <div style={{textAlign:"center",marginTop:20,fontSize:11,color:T.textDim}}>FleetCC · Ferrara · v0.2.0</div>
+        <div style={{textAlign:"center",marginTop:20,fontSize:11,color:T.textDim}}>OpWatch · Ferrara · v0.2.0</div>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="it" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pianificazione Settimanale — FleetCC</title>
+  <title>Pianificazione Settimanale — OpWatch</title>
   <style>
     /* ── Design tokens ──────────────────────────────────────────────────────── */
     :root {
@@ -1118,7 +1118,7 @@
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <!-- SSE connection dot — hidden until FleetCC auth received -->
+    <!-- SSE connection dot — hidden until OpWatch auth received -->
     <div id="sseDot" class="sse-dot sse-off" title="Sincronizzazione in tempo reale: non connesso" style="display:none"></div>
   </div>
 </header>
@@ -1384,24 +1384,24 @@
     </div>
   </div>
 
-  <!-- ── FleetCC sync column (visible only when embedded in FleetCC) ── -->
-  <div class="config-col" id="fleetccSyncCol" style="display:none">
+  <!-- ── OpWatch sync column (visible only when embedded in OpWatch) ── -->
+  <div class="config-col" id="OpWatchSyncCol" style="display:none">
     <div class="cc-hd">
       <div class="cc-icon" style="background:color-mix(in srgb,#4ade80 15%,transparent)">
         <svg width="13" height="13" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/></svg>
       </div>
-      <span class="cc-title">FleetCC Sync</span>
+      <span class="cc-title">OpWatch Sync</span>
     </div>
     <div style="padding:12px 16px;display:flex;flex-direction:column;gap:10px">
-      <div id="fleetccSyncStatus" style="font-size:12px;color:var(--t-text-dim)">Connesso a FleetCC</div>
+      <div id="OpWatchSyncStatus" style="font-size:12px;color:var(--t-text-dim)">Connesso a OpWatch</div>
       <div style="font-size:11px;color:var(--t-text-dim);line-height:1.5">
         Veicoli e operatori sono sincronizzati in tempo reale.<br>
         Gli eventi vengono salvati automaticamente sul server ogni 500 ms.
       </div>
-      <button id="fleetccImportBtn" class="btn btn-ghost" style="font-size:12px;margin-top:4px">
+      <button id="OpWatchImportBtn" class="btn btn-ghost" style="font-size:12px;margin-top:4px">
         📥 Importa eventi da questo browser
       </button>
-      <div id="fleetccImportMsg" style="font-size:11px;color:var(--t-text-dim);display:none"></div>
+      <div id="OpWatchImportMsg" style="font-size:11px;color:var(--t-text-dim);display:none"></div>
     </div>
   </div>
 
@@ -1683,12 +1683,12 @@ const EV_STATUS_NEXT = { pianificato:'in_corso', in_corso:'completato', completa
 // State
 // ═══════════════════════════════════════════════════════════════════════════
 let weekOffset  = 0;
-let events      = load('fleetcc-events',    []);
-let services    = load('fleetcc-services',  defaultServices());
-let operators   = load('fleetcc-operators', defaultOperators());
-let trucks      = load('fleetcc-trucks',    defaultTrucks());
-let absences    = load('fleetcc-absences',  []);
-let clients     = load('fleetcc-clients',   defaultClients());
+let events      = load('OpWatch-events',    []);
+let services    = load('OpWatch-services',  defaultServices());
+let operators   = load('OpWatch-operators', defaultOperators());
+let trucks      = load('OpWatch-trucks',    defaultTrucks());
+let absences    = load('OpWatch-absences',  []);
+let clients     = load('OpWatch-clients',   defaultClients());
 let hiddenCats  = new Set();
 let editState   = null;    // { id } or null
 let isDark      = true;
@@ -1705,9 +1705,9 @@ let briefDate      = (()=>{ const d=new Date(); d.setHours(0,0,0,0); return d; }
 let filterOpId     = '';
 let filterSettore  = '';
 let modalPhotos    = []; // base64 strings, max 3
-// FleetCC integration — set via postMessage from parent frame
-let fleetccToken     = null;
-let fleetccApiBase   = null;
+// OpWatch integration — set via postMessage from parent frame
+let OpWatchToken     = null;
+let OpWatchApiBase   = null;
 let eventsVersion    = 0;    // server-side version for optimistic-concurrency
 let _eventsSaveTimer = null; // debounce handle for pushEventsToAPI
 // Phase 3
@@ -1749,7 +1749,7 @@ function defaultTrucks() {
   ];
 }
 
-// ── FleetCC live vehicle sync ─────────────────────────────────────────────
+// ── OpWatch live vehicle sync ─────────────────────────────────────────────
 function mapVehicleStatus(s) {
   switch((s||'').toLowerCase()){
     case 'active':    return 'active';
@@ -1760,10 +1760,10 @@ function mapVehicleStatus(s) {
 }
 
 async function syncVehiclesFromAPI() {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
   try {
-    const res = await fetch(`${fleetccApiBase}/planning/vehicles`, {
-      headers: { Authorization: `Bearer ${fleetccToken}` }
+    const res = await fetch(`${OpWatchApiBase}/planning/vehicles`, {
+      headers: { Authorization: `Bearer ${OpWatchToken}` }
     });
     if(!res.ok) return;
     const json = await res.json();
@@ -1786,10 +1786,10 @@ async function syncVehiclesFromAPI() {
         settore: existing?.settore ?? '',
       };
     });
-    save('fleetcc-trucks', trucks);
+    save('OpWatch-trucks', trucks);
     renderTrucks();
   } catch(err) {
-    console.warn('[FleetCC] Vehicle sync failed:', err.message);
+    console.warn('[OpWatch] Vehicle sync failed:', err.message);
   }
 }
 
@@ -1807,14 +1807,14 @@ function defaultClients() {
 function load(key, fb) { try { return JSON.parse(localStorage.getItem(key)||'null')??fb; } catch { return fb; } }
 function save(key, v)  { localStorage.setItem(key, JSON.stringify(v)); }
 
-// ── FleetCC API sync helpers ──────────────────────────────────────────────
+// ── OpWatch API sync helpers ──────────────────────────────────────────────
 
 /** Sync operators from API; falls back silently to localStorage data on error. */
 async function syncOperatorsFromAPI() {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
   try {
-    const res = await fetch(`${fleetccApiBase}/planning/operators`, {
-      headers: { Authorization: `Bearer ${fleetccToken}` }
+    const res = await fetch(`${OpWatchApiBase}/planning/operators`, {
+      headers: { Authorization: `Bearer ${OpWatchToken}` }
     });
     if(!res.ok) return;
     const json = await res.json();
@@ -1823,49 +1823,49 @@ async function syncOperatorsFromAPI() {
     const apiIds = new Set(json.data.map(o=>o.id));
     const localOnly = operators.filter(o => !apiIds.has(o.id));
     operators = [...json.data, ...localOnly];
-    save('fleetcc-operators', operators);
+    save('OpWatch-operators', operators);
     renderOperators(); renderFilterBar();
   } catch(err) {
-    console.warn('[FleetCC] Operator sync failed:', err.message);
+    console.warn('[OpWatch] Operator sync failed:', err.message);
   }
 }
 
 /** Load events from API; replaces localStorage. */
 async function loadEventsFromAPI() {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
   try {
-    const res = await fetch(`${fleetccApiBase}/planning/events`, {
-      headers: { Authorization: `Bearer ${fleetccToken}` }
+    const res = await fetch(`${OpWatchApiBase}/planning/events`, {
+      headers: { Authorization: `Bearer ${OpWatchToken}` }
     });
     if(!res.ok) return;
     const json = await res.json();
     if(!json.ok || !json.data) return;
     events = json.data.events || [];
     eventsVersion = json.data.version || 0;
-    save('fleetcc-events', events);
+    save('OpWatch-events', events);
     render();
   } catch(err) {
-    console.warn('[FleetCC] Events load failed:', err.message);
+    console.warn('[OpWatch] Events load failed:', err.message);
   }
 }
 
 /** Push full events array to API (debounced). Uses optimistic-concurrency. */
 async function pushEventsToAPI(retryCount = 0) {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
   try {
-    const res = await fetch(`${fleetccApiBase}/planning/events`, {
+    const res = await fetch(`${OpWatchApiBase}/planning/events`, {
       method:  'PUT',
-      headers: { Authorization: `Bearer ${fleetccToken}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${OpWatchToken}`, 'Content-Type': 'application/json' },
       body:    JSON.stringify({ events, expectedVersion: eventsVersion }),
     });
     const json = await res.json();
     if(res.status === 409) {
       if(retryCount >= 1) {
-        console.warn('[FleetCC] Version mismatch after retry — giving up to avoid loop');
+        console.warn('[OpWatch] Version mismatch after retry — giving up to avoid loop');
         return;
       }
       // Version mismatch — another user saved; pull fresh and re-push only truly new events
-      console.warn('[FleetCC] Version mismatch — re-syncing events');
+      console.warn('[OpWatch] Version mismatch — re-syncing events');
       const serverEvents = json.data?.events || [];
       const serverVer    = json.data?.version || 0;
       // Merge: keep server state + append local events that don't exist on server
@@ -1876,13 +1876,13 @@ async function pushEventsToAPI(retryCount = 0) {
         // Nothing new locally — just accept server state
         events = serverEvents;
         eventsVersion = serverVer;
-        save('fleetcc-events', events);
+        save('OpWatch-events', events);
         render();
         return;
       }
       events = [...serverEvents, ...localNew];
       eventsVersion = serverVer;
-      save('fleetcc-events', events);
+      save('OpWatch-events', events);
       render();
       // Clear any pending debounced push before retrying to avoid a second race
       clearTimeout(_eventsSaveTimer);
@@ -1893,21 +1893,21 @@ async function pushEventsToAPI(retryCount = 0) {
     if(json.ok) {
       eventsVersion = json.data?.version ?? eventsVersion;
     } else {
-      console.warn('[FleetCC] Events push failed:', json.error);
+      console.warn('[OpWatch] Events push failed:', json.error);
     }
   } catch(err) {
-    console.warn('[FleetCC] Events push error:', err.message);
+    console.warn('[OpWatch] Events push error:', err.message);
   }
 }
 
 /**
- * saveEvents(key, data) — drop-in replacement for save('fleetcc-events', events).
+ * saveEvents(key, data) — drop-in replacement for save('OpWatch-events', events).
  * Always updates localStorage for offline/immediate access.
- * When connected to FleetCC, also queues a debounced API push.
+ * When connected to OpWatch, also queues a debounced API push.
  */
 function saveEvents() {
-  save('fleetcc-events', events);
-  if(!fleetccToken || !fleetccApiBase) return;
+  save('OpWatch-events', events);
+  if(!OpWatchToken || !OpWatchApiBase) return;
   clearTimeout(_eventsSaveTimer);
   _eventsSaveTimer = setTimeout(pushEventsToAPI, 500);
 }
@@ -1916,11 +1916,11 @@ function saveEvents() {
 
 /** Fetch vehicle availability (workshop blocks + GPS status) for the current week. */
 async function syncVehicleAvailability() {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
   try {
     const wk  = weekKey(weekOffset);
-    const res = await fetch(`${fleetccApiBase}/planning/vehicle-availability?weekKey=${wk}`, {
-      headers: { Authorization: `Bearer ${fleetccToken}` }
+    const res = await fetch(`${OpWatchApiBase}/planning/vehicle-availability?weekKey=${wk}`, {
+      headers: { Authorization: `Bearer ${OpWatchToken}` }
     });
     if(!res.ok) return;
     const json = await res.json();
@@ -1929,7 +1929,7 @@ async function syncVehicleAvailability() {
     // Re-render truck list to show/hide conflict badges
     renderTrucks();
   } catch(err) {
-    console.warn('[FleetCC] Vehicle availability sync failed:', err.message);
+    console.warn('[OpWatch] Vehicle availability sync failed:', err.message);
   }
 }
 
@@ -1956,7 +1956,7 @@ function setSseDot(state) { // 'ok' | 'poll' | 'off'
 
 /** Connect SSE stream. Falls back to polling if EventSource unavailable or fails. */
 function connectSSE() {
-  if(!fleetccToken || !fleetccApiBase) return;
+  if(!OpWatchToken || !OpWatchApiBase) return;
 
   // Cancel any pending reconnect attempt from a previous error
   clearTimeout(_sseReconnectTimer);
@@ -1971,7 +1971,7 @@ function connectSSE() {
   // Close existing connection if any
   if(_sseSource) { _sseSource.close(); _sseSource = null; }
 
-  const url = `${fleetccApiBase}/planning/stream?token=${encodeURIComponent(fleetccToken)}`;
+  const url = `${OpWatchApiBase}/planning/stream?token=${encodeURIComponent(OpWatchToken)}`;
   _sseSource = new EventSource(url);
 
   _sseSource.addEventListener('open', () => {
@@ -2563,7 +2563,7 @@ function renderServices(){
     el.innerHTML=`<div class="svc-swatch" style="background:${color}"></div><div class="res-body"><div class="res-name">${s.name}</div><div class="res-meta">${spMeta}</div></div>${DRAG_ICON}${RM_BTN(s.id)}`;
     el.addEventListener('dragstart',()=>{ dragPayload={type:'service',title:s.name,cat:s.cat,slots:s.slots}; el.classList.add('dragging'); });
     el.addEventListener('dragend',  ()=>{ el.classList.remove('dragging'); });
-    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); services=services.filter(x=>x.id!==s.id); save('fleetcc-services',services); renderServices(); });
+    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); services=services.filter(x=>x.id!==s.id); save('OpWatch-services',services); renderServices(); });
     list.appendChild(el);
   });
 }
@@ -2582,7 +2582,7 @@ function renderOperators(){
     el.innerHTML=`<div class="op-avatar" style="background:${avatarColor(op.name)}">${initials(op.name)}</div><div class="res-body"><div class="res-name">${op.name}</div><div class="res-meta">${opSpMeta}</div></div><span class="status-chip" style="background:color-mix(in srgb,${sc} 15%,transparent);color:${sc}">${STATUS_LABEL[op.status]||op.status}</span>${RM_BTN(op.id)}`;
     el.addEventListener('dragstart',()=>{ dragPayload={type:'operator',id:op.id,name:op.name,role:op.role}; el.classList.add('dragging'); setAssignDragMode(true); });
     el.addEventListener('dragend',  ()=>{ el.classList.remove('dragging'); setAssignDragMode(false); dragPayload=null; clearCompatibility(); });
-    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); operators=operators.filter(x=>x.id!==op.id); save('fleetcc-operators',operators); renderOperators(); });
+    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); operators=operators.filter(x=>x.id!==op.id); save('OpWatch-operators',operators); renderOperators(); });
     list.appendChild(el);
   });
 }
@@ -2612,7 +2612,7 @@ function renderTrucks(){
       dragPayload={type:'truck',id:t.id,plate:t.plate,model:t.model}; el.classList.add('dragging'); setAssignDragMode(true);
     });
     el.addEventListener('dragend',  ()=>{ el.classList.remove('dragging'); setAssignDragMode(false); dragPayload=null; });
-    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); trucks=trucks.filter(x=>x.id!==t.id); save('fleetcc-trucks',trucks); renderTrucks(); });
+    el.querySelector('[data-id]').addEventListener('click',e=>{ e.stopPropagation(); trucks=trucks.filter(x=>x.id!==t.id); save('OpWatch-trucks',trucks); renderTrucks(); });
     list.appendChild(el);
   });
 }
@@ -2630,7 +2630,7 @@ document.getElementById('svcCancel').addEventListener('click',()=>document.getEl
 document.getElementById('svcSave').addEventListener('click',()=>{
   const name=document.getElementById('svcName').value.trim(); if(!name) return;
   services.push({id:'s'+Date.now(),name,cat:document.getElementById('svcCat').value,slots:parseInt(document.getElementById('svcDur').value)||2});
-  save('fleetcc-services',services); renderServices();
+  save('OpWatch-services',services); renderServices();
   document.getElementById('svcName').value=''; document.getElementById('svcForm').classList.remove('open');
 });
 document.getElementById('opAddBtn').addEventListener('click',()=>toggleForm('opForm','opName'));
@@ -2638,7 +2638,7 @@ document.getElementById('opCancel').addEventListener('click',()=>document.getEle
 document.getElementById('opSave').addEventListener('click',()=>{
   const name=document.getElementById('opName').value.trim(); if(!name) return;
   operators.push({id:'o'+Date.now(),name,role:document.getElementById('opRole').value.trim()||'Operatore',status:'available'});
-  save('fleetcc-operators',operators); renderOperators(); renderFilterBar();
+  save('OpWatch-operators',operators); renderOperators(); renderFilterBar();
   document.getElementById('opName').value=document.getElementById('opRole').value='';
   document.getElementById('opForm').classList.remove('open');
 });
@@ -2647,7 +2647,7 @@ document.getElementById('truckCancel').addEventListener('click',()=>document.get
 document.getElementById('truckSave').addEventListener('click',()=>{
   const plate=document.getElementById('truckPlate').value.trim().toUpperCase(); if(!plate) return;
   trucks.push({id:'t'+Date.now(),plate,model:document.getElementById('truckModel').value.trim()||'Veicolo',status:'available'});
-  save('fleetcc-trucks',trucks); renderTrucks();
+  save('OpWatch-trucks',trucks); renderTrucks();
   document.getElementById('truckPlate').value=document.getElementById('truckModel').value='';
   document.getElementById('truckForm').classList.remove('open');
 });
@@ -2866,7 +2866,7 @@ document.getElementById('evtClientId').addEventListener('change',e=>renderClient
 document.getElementById('newClientQuickBtn').addEventListener('click',()=>{
   const name=prompt('Nome del nuovo cliente:',''); if(!name?.trim()) return;
   const nc={id:'c'+Date.now(),name:name.trim(),address:'',phone:'',note:''};
-  clients.push(nc); save('fleetcc-clients',clients);
+  clients.push(nc); save('OpWatch-clients',clients);
   populateClientSelect(nc.id);
   if(appView==='config') renderConfigClients();
 });
@@ -3475,7 +3475,7 @@ function renderConfigServices() {
         <button class="ci-btn ci-del" title="Elimina">×</button>
       </div>`;
     el.querySelectorAll('.ci-btn')[0].addEventListener('click',()=>{ cfgEdit={type:'service',id:s.id}; renderConfigServices(); });
-    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ services=services.filter(x=>x.id!==s.id); save('fleetcc-services',services); renderConfigServices(); renderServices(); });
+    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ services=services.filter(x=>x.id!==s.id); save('OpWatch-services',services); renderConfigServices(); renderServices(); });
     list.appendChild(el);
   });
 }
@@ -3515,7 +3515,7 @@ function buildSvcEditForm(s) {
       note:           wrap.querySelector('#editSvcNote').value.trim(),
       estimatedCost:  costVal!=='' ? parseFloat(costVal)||null : null,
     };
-    save('fleetcc-services',services); cfgEdit=null; renderConfigServices(); renderServices();
+    save('OpWatch-services',services); cfgEdit=null; renderConfigServices(); renderServices();
   });
   return wrap;
 }
@@ -3545,7 +3545,7 @@ function renderConfigOperators() {
         <button class="ci-btn ci-del" title="Elimina">×</button>
       </div>`;
     el.querySelectorAll('.ci-btn')[0].addEventListener('click',()=>{ cfgEdit={type:'operator',id:op.id}; renderConfigOperators(); });
-    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ operators=operators.filter(x=>x.id!==op.id); save('fleetcc-operators',operators); renderConfigOperators(); renderOperators(); });
+    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ operators=operators.filter(x=>x.id!==op.id); save('OpWatch-operators',operators); renderConfigOperators(); renderOperators(); });
     list.appendChild(el);
   });
 }
@@ -3588,7 +3588,7 @@ function buildOpEditForm(op) {
       workStart: wrap.querySelector('#editOpWorkStart').value||'08:00',
       workEnd:   wrap.querySelector('#editOpWorkEnd').value||'17:00',
     };
-    save('fleetcc-operators',operators); cfgEdit=null; renderConfigOperators(); renderOperators(); render();
+    save('OpWatch-operators',operators); cfgEdit=null; renderConfigOperators(); renderOperators(); render();
   });
   return wrap;
 }
@@ -3620,7 +3620,7 @@ function renderConfigTrucks() {
         <button class="ci-btn ci-del" title="Elimina">×</button>
       </div>`;
     el.querySelectorAll('.ci-btn')[0].addEventListener('click',()=>{ cfgEdit={type:'truck',id:t.id}; renderConfigTrucks(); });
-    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ trucks=trucks.filter(x=>x.id!==t.id); save('fleetcc-trucks',trucks); renderConfigTrucks(); renderTrucks(); });
+    el.querySelectorAll('.ci-btn')[1].addEventListener('click',()=>{ trucks=trucks.filter(x=>x.id!==t.id); save('OpWatch-trucks',trucks); renderConfigTrucks(); renderTrucks(); });
     list.appendChild(el);
   });
 }
@@ -3651,7 +3651,7 @@ function buildTruckEditForm(t) {
       patente: wrap.querySelector('#editTruckPatente').value,
       settore: wrap.querySelector('#editTruckSettore').value.trim(),
     };
-    save('fleetcc-trucks',trucks); cfgEdit=null; renderConfigTrucks(); renderTrucks();
+    save('OpWatch-trucks',trucks); cfgEdit=null; renderConfigTrucks(); renderTrucks();
   });
   return wrap;
 }
@@ -3675,7 +3675,7 @@ document.getElementById('cfgSvcSave').addEventListener('click',()=>{
     settore:document.getElementById('cfgSvcSettore').value.trim(),
     note:   document.getElementById('cfgSvcNote').value.trim(),
   });
-  save('fleetcc-services',services);
+  save('OpWatch-services',services);
   ['cfgSvcName','cfgSvcComune','cfgSvcSettore','cfgSvcNote'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('cfgSvcForm').classList.remove('open');
   renderConfigServices(); renderServices();
@@ -3694,7 +3694,7 @@ document.getElementById('cfgOpSave').addEventListener('click',()=>{
     workStart: document.getElementById('cfgOpWorkStart').value||'08:00',
     workEnd:   document.getElementById('cfgOpWorkEnd').value||'17:00',
   });
-  save('fleetcc-operators',operators);
+  save('OpWatch-operators',operators);
   ['cfgOpName','cfgOpRole','cfgOpSettore'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('cfgOpWorkStart').value='08:00';
   document.getElementById('cfgOpWorkEnd').value='17:00';
@@ -3713,7 +3713,7 @@ document.getElementById('cfgTruckSave').addEventListener('click',()=>{
     patente:document.getElementById('cfgTruckPatente').value,
     settore:document.getElementById('cfgTruckSettore').value.trim(),
   });
-  save('fleetcc-trucks',trucks);
+  save('OpWatch-trucks',trucks);
   ['cfgTruckPlate','cfgTruckModel','cfgTruckSettore'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('cfgTruckForm').classList.remove('open');
   renderConfigTrucks(); renderTrucks();
@@ -3842,13 +3842,13 @@ document.getElementById('absSaveBtn').addEventListener('click',()=>{
   } else {
     absences.push({ id:Date.now().toString(36)+Math.random().toString(36).slice(2), operatorId:absEditState.operatorId, date:absEditState.dateISO, type, note });
   }
-  save('fleetcc-absences', absences);
+  save('OpWatch-absences', absences);
   closeAbsModal(); renderVacationView(); render();
 });
 document.getElementById('absDeleteBtn').addEventListener('click',()=>{
   if(!absEditState?.existingAbsId) return;
   absences = absences.filter(a=>a.id!==absEditState.existingAbsId);
-  save('fleetcc-absences', absences);
+  save('OpWatch-absences', absences);
   closeAbsModal(); renderVacationView(); render();
 });
 
@@ -3888,7 +3888,7 @@ function renderConfigClients() {
     btns[btnIdx++].addEventListener('click',()=>{ cfgEdit={type:'client',id:cl.id}; renderConfigClients(); });
     btns[btnIdx].addEventListener('click',()=>{
       if(!confirm(`Eliminare il cliente "${cl.name}"?`)) return;
-      clients=clients.filter(x=>x.id!==cl.id); save('fleetcc-clients',clients); renderConfigClients();
+      clients=clients.filter(x=>x.id!==cl.id); save('OpWatch-clients',clients); renderConfigClients();
     });
     list.appendChild(el);
   });
@@ -3911,7 +3911,7 @@ function buildClientEditForm(cl) {
     const name=wrap.querySelector('#editClName').value.trim(); if(!name) return;
     const idx=clients.findIndex(x=>x.id===cl.id);
     if(idx!==-1) clients[idx]={...clients[idx], name, address:wrap.querySelector('#editClAddress').value.trim(), phone:wrap.querySelector('#editClPhone').value.trim(), note:wrap.querySelector('#editClNote').value.trim()};
-    save('fleetcc-clients',clients); cfgEdit=null; renderConfigClients();
+    save('OpWatch-clients',clients); cfgEdit=null; renderConfigClients();
   });
   return wrap;
 }
@@ -3921,7 +3921,7 @@ document.getElementById('cfgClientCancel').addEventListener('click',()=>document
 document.getElementById('cfgClientSave').addEventListener('click',()=>{
   const name=document.getElementById('cfgClientName').value.trim(); if(!name) return;
   clients.push({ id:'c'+Date.now(), name, address:document.getElementById('cfgClientAddress').value.trim(), phone:document.getElementById('cfgClientPhone').value.trim(), note:document.getElementById('cfgClientNote').value.trim() });
-  save('fleetcc-clients',clients);
+  save('OpWatch-clients',clients);
   ['cfgClientName','cfgClientAddress','cfgClientPhone','cfgClientNote'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('cfgClientForm').classList.remove('open');
   renderConfigClients();
@@ -4068,11 +4068,11 @@ document.addEventListener('keydown', e=>{
   }
 });
 
-// ── FleetCC sync panel import button ─────────────────────────────────────
-document.getElementById('fleetccImportBtn').addEventListener('click', async () => {
-  const msg = document.getElementById('fleetccImportMsg');
-  if(!fleetccToken || !fleetccApiBase) {
-    msg.textContent = 'Non connesso a FleetCC.';
+// ── OpWatch sync panel import button ─────────────────────────────────────
+document.getElementById('OpWatchImportBtn').addEventListener('click', async () => {
+  const msg = document.getElementById('OpWatchImportMsg');
+  if(!OpWatchToken || !OpWatchApiBase) {
+    msg.textContent = 'Non connesso a OpWatch.';
     msg.style.display = '';
     return;
   }
@@ -4080,9 +4080,9 @@ document.getElementById('fleetccImportBtn').addEventListener('click', async () =
   msg.style.display = '';
   // Pass expectedVersion: -1 to skip conflict check (force import)
   try {
-    const res = await fetch(`${fleetccApiBase}/planning/events`, {
+    const res = await fetch(`${OpWatchApiBase}/planning/events`, {
       method:  'PUT',
-      headers: { Authorization: `Bearer ${fleetccToken}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${OpWatchToken}`, 'Content-Type': 'application/json' },
       body:    JSON.stringify({ events, expectedVersion: -1 }),
     });
     const json = await res.json();
@@ -4100,15 +4100,15 @@ document.getElementById('fleetccImportBtn').addEventListener('click', async () =
   }
 });
 
-// ── FleetCC parent-frame integration ─────────────────────────────────────
-// Receives { type:'FLEETCC_AUTH', token, apiBase } from PlanningModule.jsx
+// ── OpWatch parent-frame integration ─────────────────────────────────────
+// Receives { type:'OpWatch_AUTH', token, apiBase } from PlanningModule.jsx
 window.addEventListener('message', async (e) => {
-  if(!e.data || e.data.type !== 'FLEETCC_AUTH') return;
-  fleetccToken   = e.data.token   || null;
-  fleetccApiBase = e.data.apiBase || null;
-  if(fleetccToken && fleetccApiBase) {
-    // Show the FleetCC sync panel in config view
-    const syncCol = document.getElementById('fleetccSyncCol');
+  if(!e.data || e.data.type !== 'OpWatch_AUTH') return;
+  OpWatchToken   = e.data.token   || null;
+  OpWatchApiBase = e.data.apiBase || null;
+  if(OpWatchToken && OpWatchApiBase) {
+    // Show the OpWatch sync panel in config view
+    const syncCol = document.getElementById('OpWatchSyncCol');
     if(syncCol) syncCol.style.display = '';
     // Show SSE dot
     const sseDot = document.getElementById('sseDot');
@@ -4125,7 +4125,7 @@ window.addEventListener('message', async (e) => {
 
     // Periodic refresh: vehicles + operators + availability every 60s
     // (Events are handled by SSE; this is a fallback for non-event data)
-    // Guard: only start one interval — FLEETCC_AUTH may fire again on token rotation
+    // Guard: only start one interval — OpWatch_AUTH may fire again on token rotation
     if(!_refreshIntervalStarted) {
       _refreshIntervalStarted = true;
       setInterval(async () => {

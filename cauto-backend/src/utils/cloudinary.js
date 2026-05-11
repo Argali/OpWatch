@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Cloudinary helper — shared upload storage for multer.
  *
  * Usage in a controller:
  *   const { makeCloudinaryStorage } = require("../utils/cloudinary");
- *   const upload = multer({ storage: makeCloudinaryStorage("fleetcc/gps") });
+ *   const upload = multer({ storage: makeCloudinaryStorage("OpWatch/gps") });
  *
  * Falls back to local disk storage when CLOUDINARY_* env vars are not set
  * (keeps local dev working without a Cloudinary account).
@@ -21,7 +21,7 @@ const hasCloudinary =
  * Returns a multer StorageEngine that uploads to Cloudinary when credentials
  * are present, or falls back to disk at /uploads for local development.
  *
- * @param {string} folder - Cloudinary folder path, e.g. "fleetcc/gps"
+ * @param {string} folder - Cloudinary folder path, e.g. "OpWatch/gps"
  * @param {string} [localPrefix="upload"] - prefix for local filenames
  */
 function makeCloudinaryStorage(folder, localPrefix = "upload") {

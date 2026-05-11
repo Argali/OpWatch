@@ -1,4 +1,4 @@
-export function distanceM([lat1, lon1], [lat2, lon2]) {
+﻿export function distanceM([lat1, lon1], [lat2, lon2]) {
   const R = 6371000, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -35,7 +35,7 @@ export async function reverseGeocode(lat, lng) {
   try {
     const r = await fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=18&addressdetails=1`,
-      { headers: { "User-Agent": "FleetCC/1.0" }, signal: AbortSignal.timeout(6000) }
+      { headers: { "User-Agent": "OpWatch/1.0" }, signal: AbortSignal.timeout(6000) }
     );
     if (!r.ok) return null;
     const d = await r.json();

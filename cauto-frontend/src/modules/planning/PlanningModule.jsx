@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState } from "react";
+﻿import React, { useRef, useEffect, useCallback, useState } from "react";
 import { useAuth } from "@/core/auth/AuthContext";
 import { API } from "@/api";
 
@@ -17,7 +17,7 @@ export default function PlanningModule() {
     if (!iframeRef.current || !auth?.token) return;
     iframeRef.current.contentWindow.postMessage(
       {
-        type:    "FLEETCC_AUTH",
+        type:    "OpWatch_AUTH",
         token:   auth.token,
         apiBase: API,
       },

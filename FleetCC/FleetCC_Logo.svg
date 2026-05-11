@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    width="500"
    height="150"
    viewBox="0 0 500 150"
    version="1.1"
    id="svg6"
-   sodipodi:docname="FleetCC_Logo.svg"
+   sodipodi:docname="OpWatch_Logo.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -104,7 +104,7 @@
        stroke-linecap="round"
        id="path5" />
   </g>
-  <!-- "FleetCC" text -->
+  <!-- "OpWatch" text -->
   <text
      x="148"
      y="72"
@@ -114,7 +114,7 @@
      fill="#ffffff"
      id="text5"><tspan
        style="fill:#155810;fill-opacity:1"
-       id="tspan8">FleetCC</tspan></text>
+       id="tspan8">OpWatch</tspan></text>
   <!-- "COMMAND CENTER" subtitle -->
   <text
      x="150"

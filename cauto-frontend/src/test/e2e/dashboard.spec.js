@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+﻿import { test, expect } from "@playwright/test";
 import { injectAuth } from "./fixtures";
 
 test.describe("Dashboard", () => {
@@ -13,8 +13,8 @@ test.describe("Dashboard", () => {
   });
 
   test("sidebar navigation is visible", async ({ page }) => {
-    // Sidebar should contain FleetCC branding
-    await expect(page.getByText("FleetCC")).toBeVisible();
+    // Sidebar should contain OpWatch branding
+    await expect(page.getByText("OpWatch")).toBeVisible();
   });
 
   test("can navigate between modules via sidebar", async ({ page }) => {

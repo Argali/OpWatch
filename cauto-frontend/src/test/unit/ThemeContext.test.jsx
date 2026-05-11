@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -17,7 +17,7 @@ function ThemeDisplay() {
 }
 
 function renderTheme(localStorageMode) {
-  if (localStorageMode) localStorage.setItem("fleetcc.theme", localStorageMode);
+  if (localStorageMode) localStorage.setItem("OpWatch.theme", localStorageMode);
   return render(
     <ThemeProvider>
       <ThemeDisplay />
@@ -58,7 +58,7 @@ describe("ThemeContext", () => {
     const user = userEvent.setup();
     renderTheme("dark");
     await user.click(screen.getByRole("button", { name: "toggle" }));
-    expect(localStorage.getItem("fleetcc.theme")).toBe("light");
+    expect(localStorage.getItem("OpWatch.theme")).toBe("light");
   });
 
   it("sets data-theme attribute on <html> when toggling", async () => {

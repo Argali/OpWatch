@@ -1,4 +1,4 @@
-/**
+﻿/**
  * VisiRun GPS adapter
  *
  * Implements the same interface as gps.mock.js so it can be swapped in via
@@ -11,7 +11,7 @@
  *   getKpi(date)                   → getFleetKpi
  *   getOdometer()                  → getFleetOdometer
  *
- * Route CRUD (plans/percorsi drawn in FleetCC) stays in memory — these are
+ * Route CRUD (plans/percorsi drawn in OpWatch) stays in memory — these are
  * internal planning objects, not VisiRun missions.
  */
 

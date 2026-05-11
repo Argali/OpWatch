@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { API } from "@/api";
 import T from "@/theme";
 
@@ -31,7 +31,7 @@ export default function BugReportModal({ auth, onClose }) {
             <span style={{ fontSize: 20 }}>🐛</span>
             <div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#e2eaf5" }}>Segnala un bug</div>
-              <div style={{ fontSize: 11, color: "#7a9bbf", marginTop: 1 }}>Il report sarà inviato al team FleetCC</div>
+              <div style={{ fontSize: 11, color: "#7a9bbf", marginTop: 1 }}>Il report sarà inviato al team OpWatch</div>
             </div>
           </div>
           <button onClick={onClose} style={{ background: "transparent", border: "none", color: "#3d5a7a", cursor: "pointer", fontSize: 18, lineHeight: 1 }}>✕</button>
