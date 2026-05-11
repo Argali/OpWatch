@@ -8,6 +8,11 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
+    // Force all leaflet imports to the same instance.
+    // leaflet-burgermenu ships leaflet 2.0-alpha in its own node_modules;
+    // without dedup that creates two Leaflet bundles and breaks plugins
+    // like leaflet.markercluster that extend the other instance.
+    dedupe: ["leaflet"],
   },
   base: (() => { const p = process.env.BASE_PATH || "/"; return p.startsWith("/") ? p : "/" + p; })(),
   build: {
