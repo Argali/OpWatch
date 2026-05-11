@@ -485,10 +485,17 @@ function GPSModule({onSelectVehicle,mode="live"}){
     setNavPreviewLoading(false);
   },[myPos,auth?.token,navCosting]);
 
-  // Auto-follow position while navigating — keep user in lower third of map
+  // Zoom in close-up when navigation activates
   useEffect(()=>{
     if(navStatus!=="active"||!myPos||!liveMapRef.current)return;
-    liveMapRef.current.panTo(myPos,{animate:true,duration:0.6,noMoveStart:true});
+    liveMapRef.current.flyTo(myPos,18,{animate:true,duration:1.2});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[navStatus]); // intentionally only on navStatus change
+
+  // Auto-follow position while navigating at street-level zoom
+  useEffect(()=>{
+    if(navStatus!=="active"||!myPos||!liveMapRef.current)return;
+    liveMapRef.current.setView(myPos,18,{animate:true,duration:0.5,noMoveStart:true});
   },[myPos,navStatus]);
 
   // Auto-advance nav step as user moves
@@ -844,7 +851,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const mobileFullscreen = isMobile && tab === "live";
 
   return(
-    <div style={{display:"flex",flexDirection:"column",height:mobileFullscreen?"calc(100dvh - 60px)":isMobile?"calc(100dvh - 144px)":"calc(100vh - 130px)",fontFamily:T.font}}>
+    <div style={{display:"flex",flexDirection:"column",height:mobileFullscreen?"100%":isMobile?"calc(100dvh - 144px)":"calc(100vh - 130px)",flex:mobileFullscreen?1:undefined,minHeight:0,fontFamily:T.font}}>
       <div style={{display:mobileFullscreen?"none":"flex",alignItems:"center",gap:0,flexShrink:0}}>
         <TabBar tabs={gpsTabs} active={tab} onChange={(t)=>{setTab(t);cancelEdit();cancelCdrEdit();}}/>
         <div style={{marginLeft:"auto",marginBottom:20,display:"flex",gap:8}}>
@@ -1365,7 +1372,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
               ):(
                 /* Active/arrived: only re-center button on right */
                 navStatus==="active"&&myPos&&(
-                  <button onClick={()=>liveMapRef.current?.panTo(myPos,{animate:true})}
+                  <button onClick={()=>liveMapRef.current?.setView(myPos,18,{animate:true})}
                     style={{position:"absolute",bottom:96,right:16,zIndex:1001,width:52,height:52,borderRadius:14,background:"rgba(13,27,42,0.92)",border:`2px solid ${alpha(T.blue,53)}`,color:T.blue,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
                     <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>CENTRA</span>
@@ -1381,7 +1388,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 const eta=new Date(Date.now()+remSec*1000);
                 const etaStr=`${String(eta.getHours()).padStart(2,"0")}:${String(eta.getMinutes()).padStart(2,"0")}`;
                 return(
-                  <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1005,background:"rgba(8,15,28,0.97)",borderTop:`1px solid rgba(255,255,255,0.08)`,backdropFilter:"blur(16px)",boxShadow:"0 -4px 20px rgba(0,0,0,0.6)",paddingBottom:"env(safe-area-inset-bottom)"}}>
+                  <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1005,background:"rgba(8,15,28,0.97)",borderTop:`1px solid rgba(255,255,255,0.08)`,backdropFilter:"blur(16px)",boxShadow:"0 -4px 20px rgba(0,0,0,0.6)",paddingBottom:"calc(60px + env(safe-area-inset-bottom))"}}>
                     <div style={{display:"flex",alignItems:"center",padding:"12px 16px",gap:0}}>
                       {/* Distance remaining */}
                       <div style={{flex:1,textAlign:"center"}}>

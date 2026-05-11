@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 
 export function useGeolocation() {
   const [pos, setPos] = useState(null);
+  const [heading, setHeading] = useState(null); // degrees, 0=north, 90=east
   const [geoError, setGeoError] = useState(null);
   const watchRef = useRef(null);
 
@@ -12,7 +13,10 @@ export function useGeolocation() {
     }
     setGeoError(null);
     watchRef.current = navigator.geolocation.watchPosition(
-      p => setPos([p.coords.latitude, p.coords.longitude]),
+      p => {
+        setPos([p.coords.latitude, p.coords.longitude]);
+        if (p.coords.heading != null && !isNaN(p.coords.heading)) setHeading(p.coords.heading);
+      },
       e => setGeoError(e.code === 1 ? "Permesso negato" : e.message),
       { enableHighAccuracy: true, maximumAge: 10000, timeout: 15000 }
     );
@@ -24,6 +28,7 @@ export function useGeolocation() {
       watchRef.current = null;
     }
     setPos(null);
+    setHeading(null);
     setGeoError(null);
   }, []);
 
@@ -31,5 +36,5 @@ export function useGeolocation() {
     if (watchRef.current != null) navigator.geolocation.clearWatch(watchRef.current);
   }, []);
 
-  return { pos, geoError, start, stop };
+  return { pos, heading, geoError, start, stop };
 }

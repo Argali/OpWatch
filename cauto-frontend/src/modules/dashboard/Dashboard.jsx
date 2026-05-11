@@ -134,10 +134,17 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "16px", paddingBottom: "calc(72px + env(safe-area-inset-bottom))", background: T.bg }}>
+        {/* Content — GPS live gets zero padding so map fills edge-to-edge */}
+        <div style={{
+          flex: 1, minHeight: 0,
+          overflowY: active === "gps" ? "hidden" : "auto",
+          padding: active === "gps" ? 0 : "16px",
+          paddingBottom: active === "gps" ? 0 : "calc(72px + env(safe-area-inset-bottom))",
+          background: T.bg,
+          display: "flex", flexDirection: "column",
+        }}>
           <Suspense fallback={<ModuleSpinner />}>
-            <div key={moduleKey} style={{ animation: "fadeIn 220ms ease-out" }}>
+            <div key={moduleKey} style={{ animation: "fadeIn 220ms ease-out", flex: active === "gps" ? 1 : undefined, minHeight: 0, display: active === "gps" ? "flex" : undefined, flexDirection: active === "gps" ? "column" : undefined }}>
               {renderModule()}
             </div>
           </Suspense>
