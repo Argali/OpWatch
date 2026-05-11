@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster";
+import "leaflet-easyprint";
 import T, { statusColor, statusLabel } from "@/theme";
 import Icon from "@/shared/ui/Icon";
 
@@ -35,7 +36,7 @@ function injectGeoCss() {
   document.head.appendChild(s);
 }
 
-function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColor,zones,punti,onMapClick,onWaypointMove,onWaypointDelete,searchMarkerRef,snappedSegments,snapMode,onPathClick,annotations=[],myPosition,driverLocations}){
+function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColor,zones,punti,onMapClick,onWaypointMove,onWaypointDelete,searchMarkerRef,easyPrintRef,snappedSegments,snapMode,onPathClick,annotations=[],myPosition,driverLocations}){
   const containerRef=useRef(null);
   const mapRef=useRef(null);
   const routeLayerRef=useRef(null);
@@ -76,7 +77,11 @@ function FleetMap({vehicles,routes,visibleRoutes,editMode,editWaypoints,editColo
     map.on("click",(e)=>{ if(cbClick.current)cbClick.current([e.latlng.lat,e.latlng.lng]); });
     mapRef.current=map;
     if(searchMarkerRef)searchMarkerRef.current=map;
-    return()=>{map.remove();mapRef.current=null;if(searchMarkerRef)searchMarkerRef.current=null;};
+    if(easyPrintRef){
+      const ep=L.easyPrint({hidden:true,sizeModes:["A4Portrait","A4Landscape"],filename:"FleetCC_map",hideControlContainer:true}).addTo(map);
+      easyPrintRef.current=ep;
+    }
+    return()=>{map.remove();mapRef.current=null;if(searchMarkerRef)searchMarkerRef.current=null;if(easyPrintRef)easyPrintRef.current=null;};
   },[]);// eslint-disable-line
 
   useEffect(()=>{

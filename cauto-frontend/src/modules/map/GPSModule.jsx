@@ -36,66 +36,6 @@ function formatPhotonResult(feature) {
 // Keep alias for existing call sites
 const photonToNominatim = formatPhotonResult;
 
-// ── html2canvas unsupported CSS color fix ─────────────────────────────────────
-// html2canvas can't parse color-mix() or the CSS Color Level 4 color() function
-// (e.g. color(display-p3 …) which Chrome emits on wide-gamut/Retina displays).
-//
-// Strategy:
-//   1. Walk every element's COMPUTED styles (not just inline) for the colour props
-//      most likely to trip html2canvas.
-//   2. If a value contains "color-mix(" or the bare "color(" function, convert it
-//      to rgb/rgba by drawing it onto a 1×1 canvas — the browser handles all the
-//      colour-space maths internally, so we always get a plain rgb() back.
-//   3. Inject as an inline style with !important so it beats the cascade.
-//   4. Return a restore function that undoes every override after the screenshot.
-
-const _COLOR_PROPS = [
-  "color", "background-color",
-  "border-top-color", "border-right-color", "border-bottom-color", "border-left-color",
-  "outline-color", "text-decoration-color", "caret-color", "fill", "stroke",
-];
-
-function _cssColorToRgb(val) {
-  try {
-    const c = document.createElement("canvas");
-    c.width = c.height = 1;
-    const ctx = c.getContext("2d");
-    ctx.fillStyle = val;
-    ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
-    return a < 255 ? `rgba(${r},${g},${b},${(a / 255).toFixed(3)})` : `rgb(${r},${g},${b})`;
-  } catch { return val; }
-}
-
-function resolveColorMixStyles(root) {
-  const restores = [];
-  const unsupported = /color-mix\(|(?<![a-z-])color\(/;
-
-  const walk = (el) => {
-    const cs = window.getComputedStyle(el);
-    const toUndo = [];
-    for (const prop of _COLOR_PROPS) {
-      const val = cs.getPropertyValue(prop);
-      if (val && unsupported.test(val)) {
-        const prev = el.style.getPropertyValue(prop);
-        const prevPrio = el.style.getPropertyPriority(prop);
-        el.style.setProperty(prop, _cssColorToRgb(val), "important");
-        toUndo.push([prop, prev, prevPrio]);
-      }
-    }
-    if (toUndo.length) restores.push([el, toUndo]);
-    for (const child of el.children) walk(child);
-  };
-
-  walk(root);
-
-  return () => {
-    for (const [el, props] of restores)
-      for (const [prop, val, prio] of props)
-        val ? el.style.setProperty(prop, val, prio) : el.style.removeProperty(prop);
-  };
-}
-
 // ── Recent searches ────────────────────────────────────────────────────────
 const RECENT_KEY = 'fleetcc_recent_searches';
 function saveRecentSearch(r) {
@@ -319,52 +259,16 @@ function GPSModule({onSelectVehicle,mode="live"}){
 
   // ── PDF export state ──────────────────────────────────────────────────────
   const [pdfPanel,setPdfPanel]=useState(false);
-  const [pdfMode,setPdfMode]=useState("tutto");
-  const [pdfTitle,setPdfTitle]=useState("");
-  const [pdfExporting,setPdfExporting]=useState(false);
-  const mapContainerRef=useRef(null);
+  const [pdfOrientation,setPdfOrientation]=useState("landscape");
+  const [pdfTitle,setPdfTitle]=useState("Vista Completa");
+  const easyPrintRef=useRef(null);
 
-  useEffect(()=>{
-    const labels={percorso:"Percorsi",zona:"Zone",punti:"Punti",tutto:"Vista Completa"};
-    setPdfTitle(labels[pdfMode]||"FleetCC");
-  },[pdfMode]);
-
-  const handleExportPdf=async()=>{
-    if(!mapContainerRef.current)return;
-    setPdfExporting(true);
-    try{
-      const [html2canvas,{jsPDF}]=await Promise.all([
-        import("html2canvas").then(m=>m.default),
-        import("jspdf"),
-      ]);
-      // Resolve color-mix() → rgb() before html2canvas parses styles
-      const restoreStyles=resolveColorMixStyles(mapContainerRef.current);
-      const canvas=await html2canvas(mapContainerRef.current,{useCORS:true,scale:2,logging:false});
-      restoreStyles();
-      const imgData=canvas.toDataURL("image/jpeg",0.92);
-      const pdf=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
-      const pw=pdf.internal.pageSize.getWidth();
-      const ph=pdf.internal.pageSize.getHeight();
-      pdf.setFillColor(10,22,40);
-      pdf.rect(0,0,pw,14,"F");
-      pdf.setTextColor(226,234,245);
-      pdf.setFontSize(10);
-      pdf.setFont("helvetica","bold");
-      pdf.text(pdfTitle||"FleetCC Export",8,9);
-      pdf.setFont("helvetica","normal");
-      pdf.setFontSize(8);
-      pdf.text(new Date().toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric"}),pw-8,9,{align:"right"});
-      const imgH=ph-16;
-      const imgW=pw;
-      pdf.addImage(imgData,"JPEG",0,14,imgW,imgH);
-      pdf.save(`${(pdfTitle||"fleetcc").replace(/\s+/g,"-").toLowerCase()}.pdf`);
-      setPdfPanel(false);
-    }catch(e){
-      if(typeof restoreStyles==="function")restoreStyles();
-      alert("Errore export PDF: "+e.message);
-    }finally{
-      setPdfExporting(false);
-    }
+  const handleExportPdf=()=>{
+    if(!easyPrintRef.current)return;
+    const size=pdfOrientation==="portrait"?"A4Portrait page":"A4Landscape page";
+    const filename=(pdfTitle||"FleetCC").replace(/\s+/g,"-").toLowerCase();
+    easyPrintRef.current.printMap(size,filename);
+    setPdfPanel(false);
   };
 
   // ── annotation state ──────────────────────────────────────────────────────
@@ -1184,7 +1088,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
           />
         )}
 
-        <div ref={mapContainerRef} style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
+        <div style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
           {/* ── Mobile floating address search bar (hidden while navigating) ── */}
           {mobileFullscreen&&navStatus==="idle"&&(
             <MobileSearchOverlay
@@ -1202,6 +1106,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
             snappedSegments={snappedSegments} snapMode={snapMode}
             onMapClick={handleMapClick} onWaypointMove={handleWaypointMove} onWaypointDelete={handleWaypointDelete} onPathClick={handleInsertControlPoint}
             searchMarkerRef={tab==="live"?liveMapRef:null}
+            easyPrintRef={easyPrintRef}
             annotations={visibleAnnotations}
             cdr={tab==="live"?cdr.filter(c=>c.lat&&c.lng):[]}
             onCdrClick={tab==="live"?(c)=>{setTab("cdr");editCdrItem(c);}:null}
@@ -1574,23 +1479,25 @@ function GPSModule({onSelectVehicle,mode="live"}){
             <div style={{position:"absolute",bottom:46,right:10,zIndex:1002,background:"rgba(13,27,42,0.96)",border:`1px solid ${T.border}`,borderRadius:10,padding:16,width:230,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",fontFamily:T.font}} onClick={e=>e.stopPropagation()}>
               <div style={{fontSize:13,fontWeight:700,color:T.text,marginBottom:12}}>Esporta mappa in PDF</div>
               <div style={{marginBottom:10}}>
-                <div style={{fontSize:11,color:T.textSub,marginBottom:6,fontWeight:600}}>Modalità</div>
-                {[["tutto","Tutto"],["percorso","Percorsi"],["zona","Zone"],["punti","Punti"]].map(([v,l])=>(
-                  <label key={v} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,cursor:"pointer"}}>
-                    <input type="radio" name="pdfMode" value={v} checked={pdfMode===v} onChange={()=>setPdfMode(v)} style={{accentColor:T.blue}}/>
-                    <span style={{fontSize:12,color:T.text}}>{l}</span>
-                  </label>
-                ))}
+                <div style={{fontSize:11,color:T.textSub,marginBottom:6,fontWeight:600}}>Orientamento</div>
+                <div style={{display:"flex",gap:6}}>
+                  {[["landscape","🖼 Orizzontale"],["portrait","📄 Verticale"]].map(([v,l])=>(
+                    <button key={v} onClick={()=>setPdfOrientation(v)}
+                      style={{flex:1,padding:"7px 4px",borderRadius:7,cursor:"pointer",fontFamily:T.font,fontSize:11,fontWeight:pdfOrientation===v?700:400,background:pdfOrientation===v?T.navActive:T.bg,border:`1px solid ${pdfOrientation===v?T.blue+"66":T.border}`,color:pdfOrientation===v?T.blue:T.textSub}}>
+                      {l}
+                    </button>
+                  ))}
+                </div>
               </div>
               <div style={{marginBottom:12}}>
                 <div style={{fontSize:11,color:T.textSub,marginBottom:5,fontWeight:600}}>Titolo</div>
                 <input value={pdfTitle} onChange={e=>setPdfTitle(e.target.value)}
                   style={{width:"100%",background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,color:T.text,padding:"7px 9px",fontSize:12,fontFamily:T.font,outline:"none",boxSizing:"border-box"}}/>
               </div>
-              <button onClick={handleExportPdf} disabled={pdfExporting}
-                style={{width:"100%",padding:"9px",background:pdfExporting?T.bg:T.navActive,border:`1px solid ${pdfExporting?T.border:T.blue+"66"}`,borderRadius:7,color:pdfExporting?T.textDim:T.blue,cursor:pdfExporting?"not-allowed":"pointer",fontSize:13,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-                {pdfExporting&&<span style={{display:"inline-block",width:11,height:11,border:`2px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
-                {pdfExporting?"Generazione…":"Esporta PDF"}
+              <div style={{fontSize:11,color:T.textDim,marginBottom:10,lineHeight:1.4}}>La finestra di stampa si aprirà — scegli "Salva come PDF" nel browser.</div>
+              <button onClick={handleExportPdf}
+                style={{width:"100%",padding:"9px",background:T.navActive,border:`1px solid ${T.blue+"66"}`,borderRadius:7,color:T.blue,cursor:"pointer",fontSize:13,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+                📄 Esporta PDF
               </button>
             </div>
           )}
