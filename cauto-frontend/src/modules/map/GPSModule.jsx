@@ -36,33 +36,63 @@ function formatPhotonResult(feature) {
 // Keep alias for existing call sites
 const photonToNominatim = formatPhotonResult;
 
-// ── html2canvas color-mix() fix ───────────────────────────────────────────────
-// html2canvas can't parse color-mix() — walk the subtree, replace every inline
-// style that contains "color-mix" with the browser-resolved rgb() value, then
-// return a function that restores the originals after the screenshot.
+// ── html2canvas unsupported CSS color fix ─────────────────────────────────────
+// html2canvas can't parse color-mix() or the CSS Color Level 4 color() function
+// (e.g. color(display-p3 …) which Chrome emits on wide-gamut/Retina displays).
+//
+// Strategy:
+//   1. Walk every element's COMPUTED styles (not just inline) for the colour props
+//      most likely to trip html2canvas.
+//   2. If a value contains "color-mix(" or the bare "color(" function, convert it
+//      to rgb/rgba by drawing it onto a 1×1 canvas — the browser handles all the
+//      colour-space maths internally, so we always get a plain rgb() back.
+//   3. Inject as an inline style with !important so it beats the cascade.
+//   4. Return a restore function that undoes every override after the screenshot.
+
+const _COLOR_PROPS = [
+  "color", "background-color",
+  "border-top-color", "border-right-color", "border-bottom-color", "border-left-color",
+  "outline-color", "text-decoration-color", "caret-color", "fill", "stroke",
+];
+
+function _cssColorToRgb(val) {
+  try {
+    const c = document.createElement("canvas");
+    c.width = c.height = 1;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = val;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+    return a < 255 ? `rgba(${r},${g},${b},${(a / 255).toFixed(3)})` : `rgb(${r},${g},${b})`;
+  } catch { return val; }
+}
+
 function resolveColorMixStyles(root) {
-  const saved = [];
+  const restores = [];
+  const unsupported = /color-mix\(|(?<![a-z-])color\(/;
+
   const walk = (el) => {
-    const style = el.style;
-    if (!style || !style.length) { for (const c of el.children) walk(c); return; }
     const cs = window.getComputedStyle(el);
-    const toRestore = [];
-    for (let i = 0; i < style.length; i++) {
-      const prop = style[i];
-      const val = style.getPropertyValue(prop);
-      if (val.includes("color-mix")) {
-        const resolved = cs.getPropertyValue(prop);
-        toRestore.push([prop, val]);
-        style.setProperty(prop, resolved || "transparent");
+    const toUndo = [];
+    for (const prop of _COLOR_PROPS) {
+      const val = cs.getPropertyValue(prop);
+      if (val && unsupported.test(val)) {
+        const prev = el.style.getPropertyValue(prop);
+        const prevPrio = el.style.getPropertyPriority(prop);
+        el.style.setProperty(prop, _cssColorToRgb(val), "important");
+        toUndo.push([prop, prev, prevPrio]);
       }
     }
-    if (toRestore.length) saved.push([el, toRestore]);
-    for (const c of el.children) walk(c);
+    if (toUndo.length) restores.push([el, toUndo]);
+    for (const child of el.children) walk(child);
   };
+
   walk(root);
+
   return () => {
-    for (const [el, props] of saved)
-      for (const [prop, val] of props) el.style.setProperty(prop, val);
+    for (const [el, props] of restores)
+      for (const [prop, val, prio] of props)
+        val ? el.style.setProperty(prop, val, prio) : el.style.removeProperty(prop);
   };
 }
 
