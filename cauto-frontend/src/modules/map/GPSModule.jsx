@@ -213,6 +213,45 @@ function MobileSearchOverlay({ searchAddr, setSearchAddr, searchLoading, searchF
   );
 }
 
+// ── Desktop route planner address input ──────────────────────────────────────
+function PlanInput({label,query,setQuery,results,onSelect,selected,onUseMyPos}){
+  const [focused,setFocused]=React.useState(false);
+  return(
+    <div style={{position:"relative"}}>
+      <div style={{display:"flex",alignItems:"center",background:"#0d1b2a",border:`1px solid ${selected?"#3b82f688":"#1e3a5a"}`,borderRadius:7,overflow:"hidden"}}>
+        <span style={{padding:"0 9px",fontSize:10,color:selected?"#3b82f6":"#4b6070",fontWeight:700,flexShrink:0,letterSpacing:0.5,textTransform:"uppercase"}}>{label}</span>
+        <div style={{width:1,height:20,background:"#1e3a5a",flexShrink:0}}/>
+        <input value={query} onChange={e=>setQuery(e.target.value)}
+          onFocus={()=>setFocused(true)}
+          onBlur={()=>setTimeout(()=>setFocused(false),160)}
+          placeholder={label==="Da"?"Punto di partenza…":"Destinazione…"}
+          style={{flex:1,background:"transparent",border:"none",color:"#e2eaf5",padding:"7px 8px",fontSize:12,fontFamily:"inherit",outline:"none",minWidth:0}}/>
+        {selected&&<span style={{padding:"0 8px",color:"#3b82f6",fontSize:13,flexShrink:0,lineHeight:1}}>✓</span>}
+        {onUseMyPos&&!selected&&(
+          <button onClick={onUseMyPos} title="Usa la mia posizione"
+            style={{background:"transparent",border:"none",color:"#4b6070",cursor:"pointer",padding:"0 8px",fontSize:14,lineHeight:"34px",flexShrink:0}}>⊙</button>
+        )}
+      </div>
+      {focused&&results.length>0&&(
+        <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2100,background:"#0f1f30",border:"1px solid #1e3a5a",borderRadius:7,boxShadow:"0 6px 24px rgba(0,0,0,0.55)",marginTop:3,maxHeight:190,overflowY:"auto"}}>
+          {results.map((r,i)=>(
+            <div key={i} onClick={()=>{onSelect(r);setFocused(false);}}
+              style={{display:"flex",alignItems:"center",gap:8,padding:"8px 10px",cursor:"pointer",borderBottom:"1px solid #1a2d40"}}
+              onMouseEnter={e=>e.currentTarget.style.background="#1a2d40"}
+              onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+              <span style={{fontSize:14,flexShrink:0}}>{r.icon}</span>
+              <div style={{minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:600,color:"#e2eaf5",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.title}</div>
+                {r.subtitle&&<div style={{fontSize:10,color:"#64748b",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{r.subtitle}</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GPSModule({onSelectVehicle,mode="live"}){
   const {auth}=useAuth();
   const {can}=usePerms();
@@ -241,6 +280,26 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const navPolyRef=useRef(null);
   const previewPolyRef=useRef(null);
   const navAbortRef=useRef(null);
+  // ── Desktop route planner ──────────────────────────────────────────────────
+  const [planOpen,setPlanOpen]=useState(false);
+  const [planFromQuery,setPlanFromQuery]=useState("");
+  const [planToQuery,setPlanToQuery]=useState("");
+  const [planFromResults,setPlanFromResults]=useState([]);
+  const [planToResults,setPlanToResults]=useState([]);
+  const [planFrom,setPlanFrom]=useState(null);   // {lat,lng,name}
+  const [planTo,setPlanTo]=useState(null);       // {lat,lng,name}
+  const [planResult,setPlanResult]=useState(null); // {shape,maneuvers,distance,duration}
+  const [planLoading,setPlanLoading]=useState(false);
+  const [planError,setPlanError]=useState(null);
+  const planPolyRef=useRef(null);
+  const debouncedPlanFromQuery=useDebounce(planFromQuery,350);
+  const debouncedPlanToQuery=useDebounce(planToQuery,350);
+  // ── Mobile nav extras ──────────────────────────────────────────────────────
+  const [showNavTrucks,setShowNavTrucks]=useState(false);
+  const [showNavSegnala,setShowNavSegnala]=useState(false);
+  const [navSegnalazione,setNavSegnalazione]=useState({tipo:"",note:""});
+  const [navSegnalaMsg,setNavSegnalaMsg]=useState(null);
+  const [navSegnalaSending,setNavSegnalaSending]=useState(false);
   const {data:vehicles,loading,error,refetch}=useApi("/gps/vehicles",{pollMs:10000});
   const [routes,setRoutes]=useState(null);
   const [visibleRoutes,setVisibleRoutes]=useState({});
@@ -452,6 +511,66 @@ function GPSModule({onSelectVehicle,mode="live"}){
     if(previewPolyRef.current){previewPolyRef.current.remove();previewPolyRef.current=null;}
   },[]);
 
+  // ── Desktop route planner functions ────────────────────────────────────────
+  const searchPlanAddresses=useCallback(async(q,setResults)=>{
+    if(!q.trim()){setResults([]);return;}
+    try{
+      const lb=myPos?`&lat=${myPos[0]}&lon=${myPos[1]}`:"";
+      const r=await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=6&lang=default${lb}`);
+      const d=await r.json();
+      setResults((d.features||[]).map(photonToNominatim));
+    }catch{setResults([]);}
+  },[myPos]);
+
+  const calculatePlan=useCallback(async()=>{
+    if(!planFrom||!planTo)return;
+    setPlanLoading(true);setPlanError(null);setPlanResult(null);
+    if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}
+    try{
+      const r=await fetch(`${API}/gps/navigate`,{
+        method:"POST",
+        headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},
+        body:JSON.stringify({from:[planFrom.lat,planFrom.lng],to:[planTo.lat,planTo.lng],costing:navCosting}),
+      });
+      const d=await r.json();
+      if(!d.ok){setPlanError(d.error||"Errore calcolo percorso");}
+      else{
+        setPlanResult(d.data);
+        if(liveMapRef.current){
+          planPolyRef.current=L.polyline(d.data.shape,{color:"#3b82f6",weight:6,opacity:0.85}).addTo(liveMapRef.current);
+          liveMapRef.current.fitBounds(planPolyRef.current.getBounds(),{padding:[60,60]});
+        }
+      }
+    }catch{setPlanError("Errore di rete o server Valhalla non disponibile");}
+    setPlanLoading(false);
+  },[planFrom,planTo,navCosting,auth.token]);
+
+  const clearPlan=useCallback(()=>{
+    setPlanResult(null);setPlanError(null);setPlanFrom(null);setPlanTo(null);
+    setPlanFromQuery("");setPlanToQuery("");setPlanFromResults([]);setPlanToResults([]);
+    if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}
+  },[]);
+
+  // ── Mobile nav segnalazione ─────────────────────────────────────────────────
+  const submitNavSegnalazione=useCallback(async()=>{
+    if(!navSegnalazione.tipo)return;
+    setNavSegnalaSending(true);setNavSegnalaMsg(null);
+    try{
+      const res=await fetch(`${API}/segnalazioni-territorio`,{
+        method:"POST",
+        headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},
+        body:JSON.stringify({tipo:navSegnalazione.tipo,note:navSegnalazione.note||null,lat:myPos?.[0]??null,lng:myPos?.[1]??null,address:null}),
+      });
+      const d=await res.json();
+      if(d.ok){
+        setNavSegnalaMsg({ok:true,text:"Segnalazione inviata"});
+        setNavSegnalazione({tipo:"",note:""});
+        setTimeout(()=>{setNavSegnalaMsg(null);setShowNavSegnala(false);},2000);
+      }else setNavSegnalaMsg({ok:false,text:d.error||"Errore"});
+    }catch{setNavSegnalaMsg({ok:false,text:"Errore di rete"});}
+    setNavSegnalaSending(false);
+  },[navSegnalazione,myPos,auth.token]);
+
   const previewRoute=useCallback(async(dest)=>{
     setNavPreviewDest(dest);setNavPreviewInfo(null);setNavPreviewLoading(true);
     if(!myPos||!liveMapRef.current){setNavPreviewLoading(false);return;}
@@ -522,6 +641,16 @@ function GPSModule({onSelectVehicle,mode="live"}){
   useEffect(()=>{
     searchNavDest(debouncedNavDestQuery);
   },[debouncedNavDestQuery,searchNavDest]);
+
+  // Debounced auto-search for desktop planner
+  useEffect(()=>{
+    if(debouncedPlanFromQuery.length>=2)searchPlanAddresses(debouncedPlanFromQuery,setPlanFromResults);
+    else setPlanFromResults([]);
+  },[debouncedPlanFromQuery,searchPlanAddresses]);
+  useEffect(()=>{
+    if(debouncedPlanToQuery.length>=2)searchPlanAddresses(debouncedPlanToQuery,setPlanToResults);
+    else setPlanToResults([]);
+  },[debouncedPlanToQuery,searchPlanAddresses]);
 
   const flyToResult=useCallback((r)=>{
     if(!liveMapRef.current)return;
@@ -1005,6 +1134,82 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 })()}
               </div>
 
+              {/* ── Desktop route planner ── */}
+              <div style={{marginBottom:8,flexShrink:0}}>
+                <button onClick={()=>{setPlanOpen(o=>!o);if(planOpen)clearPlan();}}
+                  style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 10px",background:planOpen?T.navActive:T.card,border:`1px solid ${planOpen?alpha(T.blue,50):T.cardBorder}`,borderRadius:8,color:planOpen?T.blue:T.textSub,cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600,transition:"all 0.15s"}}>
+                  <span style={{display:"flex",alignItems:"center",gap:7}}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                    Pianifica percorso
+                  </span>
+                  <span style={{fontSize:11,opacity:0.7}}>{planOpen?"▲":"▼"}</span>
+                </button>
+                {planOpen&&(
+                  <div style={{marginTop:7,display:"flex",flexDirection:"column",gap:7}}>
+                    {/* Profile selector */}
+                    <div style={{display:"flex",gap:3}}>
+                      {NAV_PROFILES.map(p=>(
+                        <button key={p.id} onClick={()=>setNavCosting(p.id)}
+                          style={{flex:1,padding:"5px 2px",borderRadius:6,border:`1px solid ${navCosting===p.id?T.blue:T.border}`,background:navCosting===p.id?T.navActive:"transparent",color:navCosting===p.id?T.blue:T.textSub,cursor:"pointer",fontFamily:T.font,fontSize:9,fontWeight:navCosting===p.id?700:400,display:"flex",flexDirection:"column",alignItems:"center",gap:1}}>
+                          <span style={{fontSize:13,lineHeight:1}}>{p.icon}</span>
+                          <span>{p.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                    {/* From */}
+                    <PlanInput label="Da" query={planFromQuery}
+                      setQuery={q=>{setPlanFromQuery(q);setPlanFrom(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
+                      results={planFromResults} selected={!!planFrom}
+                      onSelect={r=>{setPlanFrom({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanFromQuery(r.title||r.display_name);setPlanFromResults([]);setPlanResult(null);}}
+                      onUseMyPos={myPos?()=>{setPlanFrom({lat:myPos[0],lng:myPos[1],name:"Posizione attuale"});setPlanFromQuery("Posizione attuale");setPlanFromResults([]);}:null}
+                    />
+                    {/* To */}
+                    <PlanInput label="A" query={planToQuery}
+                      setQuery={q=>{setPlanToQuery(q);setPlanTo(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
+                      results={planToResults} selected={!!planTo}
+                      onSelect={r=>{setPlanTo({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanToQuery(r.title||r.display_name);setPlanToResults([]);setPlanResult(null);}}
+                    />
+                    {/* Calculate */}
+                    <button onClick={calculatePlan} disabled={!planFrom||!planTo||planLoading}
+                      style={{padding:"8px",background:planFrom&&planTo?T.navActive:T.bg,border:`1px solid ${planFrom&&planTo?alpha(T.blue,50):T.border}`,borderRadius:7,color:planFrom&&planTo?T.blue:T.textDim,cursor:planFrom&&planTo&&!planLoading?"pointer":"not-allowed",fontSize:12,fontFamily:T.font,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s"}}>
+                      {planLoading&&<span style={{display:"inline-block",width:11,height:11,border:`2px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+                      {planLoading?"Calcolo percorso…":"Calcola percorso"}
+                    </button>
+                    {planError&&<div style={{fontSize:11,color:T.red,padding:"6px 9px",background:"#1a0808",borderRadius:6,border:"1px solid #3a1a1a"}}>{planError}</div>}
+                    {/* Result summary + maneuvers */}
+                    {planResult&&(
+                      <div style={{background:T.card,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:9,overflow:"hidden"}}>
+                        {/* Summary */}
+                        <div style={{display:"flex",alignItems:"center",padding:"10px 12px",gap:0,borderBottom:`1px solid ${T.border}`}}>
+                          <div style={{flex:1,textAlign:"center"}}>
+                            <div style={{fontSize:16,fontWeight:800,color:T.blue,lineHeight:1,fontFamily:"monospace"}}>{fmtDist(planResult.distance)}</div>
+                            <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>DISTANZA</div>
+                          </div>
+                          <div style={{width:1,height:30,background:T.border}}/>
+                          <div style={{flex:1,textAlign:"center"}}>
+                            <div style={{fontSize:16,fontWeight:800,color:"#f1f5f9",lineHeight:1,fontFamily:"monospace"}}>{fmtTime(planResult.duration)}</div>
+                            <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>TEMPO</div>
+                          </div>
+                          <button onClick={clearPlan} style={{background:"transparent",border:"none",color:T.textDim,cursor:"pointer",fontSize:16,padding:"0 10px",lineHeight:1,flexShrink:0}} title="Cancella percorso">×</button>
+                        </div>
+                        {/* Maneuver list */}
+                        <div style={{maxHeight:220,overflowY:"auto"}}>
+                          {planResult.maneuvers.map((m,i)=>(
+                            <div key={i} style={{display:"flex",alignItems:"flex-start",gap:9,padding:"8px 12px",borderBottom:i<planResult.maneuvers.length-1?`1px solid ${T.border}`:"none"}}>
+                              <span style={{fontSize:17,flexShrink:0,lineHeight:1.3,minWidth:20,textAlign:"center"}}>{NAV_ARROW[m.type]||"↑"}</span>
+                              <div style={{flex:1,minWidth:0}}>
+                                <div style={{fontSize:11,color:T.text,lineHeight:1.4}}>{m.instruction}</div>
+                                <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{fmtDist(m.length)} · {fmtTime(m.time)}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* ── Segnalazione territorio (visible after address picked) ── */}
               {selectedSearchResult&&(
                 <div style={{background:T.card,border:`1px solid ${alpha(T.orange,27)}`,borderRadius:10,padding:"12px 13px",marginBottom:10,flexShrink:0}}>
@@ -1113,16 +1318,6 @@ function GPSModule({onSelectVehicle,mode="live"}){
         )}
 
         <div style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
-          {/* ── Mobile floating address search bar (hidden while navigating) ── */}
-          {mobileFullscreen&&navStatus==="idle"&&(
-            <MobileSearchOverlay
-              searchAddr={searchAddr} setSearchAddr={setSearchAddr}
-              searchLoading={searchLoading} searchFocused={searchFocused} setSearchFocused={setSearchFocused}
-              searchResults={searchResults} searchAddress={searchAddress}
-              flyToResult={flyToResult} cdr={cdr} punti={punti}
-              myPos={myPos} loadRecentSearches={loadRecentSearches} highlightMatch={highlightMatch}
-            />
-          )}
           {(tab==="live"||tab==="editor")&&<FleetMap
             vehicles={vehicles} routes={routes||[]} visibleRoutes={visibleRoutes}
             zones={tab==="live"?zones.filter(z=>visibleZones[z.id]!==false):[]} punti={tab==="live"?punti.filter(p=>visiblePunti[p.id]!==false):[]}
@@ -1263,7 +1458,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
                   <svg width="13" height="13" viewBox="0 0 24 24" fill={sharing?"currentColor":"none"} stroke="currentColor" strokeWidth="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
                   {sharing?"Condivisione attiva":"Condividi posizione"}
                 </button>
-                <button onClick={()=>setShowCamera(true)}
+                <button onClick={()=>{if(!sharing){startGeo();setSharing(true);}setShowCamera(true);}}
                   style={{background:"rgba(13,27,42,0.9)",border:`1px solid ${alpha(T.yellow,33)}`,borderRadius:8,color:T.yellow,padding:"7px 12px",cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600,backdropFilter:"blur(6px)",display:"flex",alignItems:"center",gap:6}}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                   Foto timbrata
@@ -1338,6 +1533,20 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 </div>
               )}
 
+              {/* ── Left-side FABs: Trucks + Segnalazione ── */}
+              <div style={{position:"absolute",bottom:20,left:16,zIndex:1001,display:"flex",flexDirection:"column",gap:12,alignItems:"center"}}>
+                <button onClick={()=>{setShowNavTrucks(v=>!v);setShowNavSegnala(false);}}
+                  style={{width:56,height:56,borderRadius:16,background:showNavTrucks?"rgba(59,130,246,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavTrucks?T.blue:T.border}`,color:showNavTrucks?T.blue:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
+                  <span style={{fontSize:22,lineHeight:1}}>🚛</span>
+                  <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>CAMION</span>
+                </button>
+                <button onClick={()=>{setShowNavSegnala(v=>!v);setShowNavTrucks(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}}
+                  style={{width:56,height:56,borderRadius:16,background:showNavSegnala?"rgba(251,146,60,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavSegnala?T.orange:T.border}`,color:showNavSegnala?T.orange:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>SEGNALA</span>
+                </button>
+              </div>
+
               {/* ── Right-side FABs (idle/setup mode) ── */}
               {navStatus==="idle"||navStatus==="loading"?(
                 <div style={{position:"absolute",bottom:20,right:16,zIndex:1001,display:"flex",flexDirection:"column",gap:14,alignItems:"center"}}>
@@ -1353,12 +1562,12 @@ function GPSModule({onSelectVehicle,mode="live"}){
                     <svg width="39" height="39" viewBox="0 0 24 24" fill={sharing?"currentColor":"none"} stroke="currentColor" strokeWidth="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
                     <span style={{fontSize:14,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>{sharing?"ATTIVO":"GPS"}</span>
                   </button>
-                  <button onClick={()=>setShowCamera(true)}
+                  <button onClick={()=>{if(!sharing){startGeo();setSharing(true);}setShowCamera(true);}}
                     style={{width:96,height:96,borderRadius:27,background:"rgba(13,27,42,0.92)",border:`3px solid ${alpha(T.yellow,53)}`,color:T.yellow,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                     <svg width="39" height="39" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     <span style={{fontSize:14,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>FOTO</span>
                   </button>
-                  <button onClick={()=>{setShowNavPanel(v=>!v);setNavError(null);}}
+                  <button onClick={()=>{setShowNavPanel(v=>!v);setNavError(null);if(!sharing){startGeo();setSharing(true);}}}
                     style={{width:96,height:96,borderRadius:27,background:showNavPanel?"rgba(59,130,246,0.2)":"rgba(13,27,42,0.92)",border:`3px solid ${alpha(T.blue,53)}`,color:T.blue,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                     {navStatus==="loading"
                       ?<div style={{width:36,height:36,border:`4px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>
@@ -1425,6 +1634,91 @@ function GPSModule({onSelectVehicle,mode="live"}){
               )}
             </>
           )}
+          {/* ── Mobile: Trucks slide-up panel ── */}
+          {showNavTrucks&&mobileFullscreen&&(
+            <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`1px solid ${T.border}`,borderRadius:"20px 20px 0 0",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font,display:"flex",flexDirection:"column",maxHeight:"65dvh"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 20px 12px",flexShrink:0}}>
+                <div style={{fontSize:16,fontWeight:700,color:T.text}}>🚛 Veicoli</div>
+                <button onClick={()=>setShowNavTrucks(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
+              </div>
+              <div style={{overflowY:"auto",padding:"0 16px 32px",display:"flex",flexDirection:"column",gap:10}}>
+                {(vehicles||[]).length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun veicolo disponibile</div>}
+                {(vehicles||[]).map(v=>(
+                  <div key={v.id} style={{background:T.card,border:`1px solid ${T.cardBorder}`,borderRadius:12,padding:"13px 15px",boxShadow:"0 2px 8px rgba(0,0,0,0.2)"}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
+                      <span style={{fontSize:14,fontWeight:700,color:T.text}}>{v.name}</span>
+                      <span style={{fontSize:10,padding:"3px 8px",borderRadius:9,background:statusColor[v.status]+"22",color:statusColor[v.status],fontWeight:700}}>{statusLabel[v.status]}</span>
+                    </div>
+                    <div style={{fontSize:11,color:T.textSub,marginBottom:8}}>{v.plate}{v.sector?` · ${v.sector}`:""}</div>
+                    {v.fuel_pct!=null&&<>
+                      <div style={{height:3,background:T.border,borderRadius:2,marginBottom:3}}>
+                        <div style={{height:"100%",width:`${v.fuel_pct}%`,background:v.fuel_pct<20?T.red:T.green,borderRadius:2}}/>
+                      </div>
+                      <div style={{fontSize:10,color:v.fuel_pct<20?T.red:T.textDim,marginBottom:8}}>⛽ {v.fuel_pct}%{v.speed_kmh>0?` · ${v.speed_kmh} km/h`:""}</div>
+                    </>}
+                    {v.lat&&v.lng&&(
+                      <button onClick={()=>{liveMapRef.current?.flyTo([v.lat,v.lng],16);setShowNavTrucks(false);}}
+                        style={{width:"100%",background:T.navActive,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:8,color:T.blue,padding:"8px",cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600}}>
+                        Centra sulla mappa →
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Mobile: Segnalazione slide-up panel ── */}
+          {showNavSegnala&&mobileFullscreen&&(
+            <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`2px solid ${T.orange}`,borderRadius:"20px 20px 0 0",padding:"20px 20px 36px",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span style={{fontSize:16,fontWeight:700,color:T.text}}>Segnalazione</span>
+                </div>
+                <button onClick={()=>{setShowNavSegnala(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
+              </div>
+              {myPos&&<div style={{fontSize:11,color:T.textDim,background:T.bg,borderRadius:7,padding:"6px 10px",marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
+                <span style={{fontSize:13}}>📍</span>
+                <span>Posizione GPS attuale · {myPos[0].toFixed(5)}, {myPos[1].toFixed(5)}</span>
+              </div>}
+              {!myPos&&<div style={{fontSize:12,color:T.orange,marginBottom:12}}>⚠ Attiva il GPS per includere la posizione</div>}
+              <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+                {[
+                  {id:"mancata_raccolta",label:"Mancata raccolta",color:T.red},
+                  {id:"abbandono",       label:"Abbandono rifiuti",color:T.orange},
+                  {id:"da_pulire",       label:"Da pulire",color:T.yellow},
+                  {id:"altro",          label:"Altro",color:T.textSub},
+                ].map(opt=>{
+                  const active=navSegnalazione.tipo===opt.id;
+                  return(
+                    <button key={opt.id} onClick={()=>setNavSegnalazione(s=>({...s,tipo:opt.id,note:opt.id!=="altro"?"":s.note}))}
+                      style={{display:"flex",alignItems:"center",gap:10,padding:"11px 14px",borderRadius:10,border:`1px solid ${active?opt.color+"88":T.border}`,background:active?opt.color+"18":T.bg,cursor:"pointer",textAlign:"left",fontFamily:T.font,transition:"all 0.12s"}}>
+                      <div style={{width:14,height:14,borderRadius:"50%",border:`2px solid ${active?opt.color:T.textDim}`,background:active?opt.color:"transparent",flexShrink:0,transition:"all 0.12s"}}/>
+                      <span style={{fontSize:14,color:active?opt.color:T.textSub,fontWeight:active?700:400}}>{opt.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              {navSegnalazione.tipo&&(
+                <textarea value={navSegnalazione.note} onChange={e=>setNavSegnalazione(s=>({...s,note:e.target.value}))}
+                  placeholder={navSegnalazione.tipo==="altro"?"Descrivi il problema…":"Note aggiuntive (opzionale)…"}
+                  rows={2}
+                  style={{width:"100%",background:T.bg,border:`1px solid ${navSegnalazione.tipo==="altro"&&!navSegnalazione.note.trim()?T.red+"66":T.border}`,borderRadius:9,color:T.text,padding:"10px 12px",fontSize:13,fontFamily:T.font,outline:"none",resize:"vertical",boxSizing:"border-box",marginBottom:12}}/>
+              )}
+              {navSegnalaMsg&&(
+                <div style={{fontSize:12,color:navSegnalaMsg.ok?T.green:T.red,marginBottom:10,padding:"7px 10px",background:navSegnalaMsg.ok?"#0a1a0a":"#1a0a0a",borderRadius:7,border:`1px solid ${navSegnalaMsg.ok?T.green+"44":T.red+"44"}`}}>
+                  {navSegnalaMsg.text}
+                </div>
+              )}
+              <button onClick={submitNavSegnalazione} disabled={navSegnalaSending||!navSegnalazione.tipo}
+                style={{width:"100%",padding:"13px",background:navSegnalazione.tipo?T.orange:"transparent",border:`1px solid ${navSegnalazione.tipo?T.orange:T.border}`,borderRadius:10,color:navSegnalazione.tipo?"#000":T.textDim,cursor:navSegnalazione.tipo&&!navSegnalaSending?"pointer":"not-allowed",fontSize:14,fontFamily:T.font,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"all 0.15s"}}>
+                {navSegnalaSending&&<span style={{display:"inline-block",width:14,height:14,border:"2px solid #000",borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+                {navSegnalaSending?"Invio…":"Invia segnalazione"}
+              </button>
+            </div>
+          )}
+
           {/* ── Navigation destination panel ── */}
           {showNavPanel&&mobileFullscreen&&(
             <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`1px solid ${T.border}`,borderRadius:"20px 20px 0 0",padding:"20px 20px 36px",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font}}>
@@ -1433,8 +1727,8 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 <button onClick={()=>setShowNavPanel(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
               </div>
               {/* Routing profiles — 3-column grid */}
-              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:5,marginBottom:14}}>
-                {NAV_PROFILES.map(p=>(
+              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8,marginBottom:14}}>
+                {NAV_PROFILES.filter(p=>p.id==="auto"||p.id==="truck").map(p=>(
                   <button key={p.id} onClick={()=>setNavCosting(p.id)}
                     style={{padding:"7px 4px",borderRadius:9,border:`1px solid ${navCosting===p.id?T.blue:T.border}`,background:navCosting===p.id?T.navActive:"transparent",color:navCosting===p.id?T.blue:T.textSub,cursor:"pointer",fontFamily:T.font,display:"flex",flexDirection:"column",alignItems:"center",gap:2,transition:"all 0.12s"}}>
                     <span style={{fontSize:18,lineHeight:1}}>{p.icon}</span>

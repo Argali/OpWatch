@@ -144,8 +144,8 @@ export default function LiveCamera({ position, auth, vehicles = [], onClose }) {
 
   // ── Lifecycle ───────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (position) reverseGeocode(position[0], position[1]).then(a => setAddress(a));
-  }, []); // eslint-disable-line
+    if (position && !address) reverseGeocode(position[0], position[1]).then(a => setAddress(a));
+  }, [position?.[0], position?.[1]]); // eslint-disable-line
 
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
 
