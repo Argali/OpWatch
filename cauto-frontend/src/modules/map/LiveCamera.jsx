@@ -24,7 +24,7 @@ const TIPO_TRUCK = [
 // ── Canvas stamp ─────────────────────────────────────────────────────────────
 function drawStamp(canvas, ctx, stamp) {
   const { address, coords, version, datetime } = stamp;
-  const lines = [`OpWatch v${version}`, address || "", coords, datetime].filter(Boolean);
+  const lines = [`OpSonata v${version}`, address || "", coords, datetime].filter(Boolean);
 
   const PAD = 42, LINE_H = 60, FS = 45;
   ctx.font = `bold ${FS}px 'JetBrains Mono', Consolas, monospace`;
@@ -440,7 +440,7 @@ export default function LiveCamera({ position, auth, vehicles = [], onClose }) {
           background: "linear-gradient(transparent, rgba(0,0,0,0.85))", display: "flex",
           flexDirection: "column", gap: 10, alignItems: "center" }}>
           <div style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(255,255,255,0.6)", textAlign: "center", lineHeight: 1.6 }}>
-            <span style={{ color: T.green, fontWeight: 700 }}>OpWatch v{APP_VERSION}</span>
+            <span style={{ color: T.green, fontWeight: 700 }}>OpSonata v{APP_VERSION}</span>
             {address && <><br />{address}</>}
             {position && <><br />{position[0].toFixed(5)}, {position[1].toFixed(5)}</>}
           </div>

@@ -13,8 +13,8 @@ test.describe("Dashboard", () => {
   });
 
   test("sidebar navigation is visible", async ({ page }) => {
-    // Sidebar should contain OpWatch branding
-    await expect(page.getByText("OpWatch")).toBeVisible();
+    // Sidebar should contain OpSonata branding
+    await expect(page.getByText("OpSonata")).toBeVisible();
   });
 
   test("can navigate between modules via sidebar", async ({ page }) => {

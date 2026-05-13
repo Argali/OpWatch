@@ -21,18 +21,18 @@ function injectGeoCss() {
   _geoCssInjected = true;
   const s = document.createElement("style");
   s.textContent = `
-    @keyframes OpWatch-pulse {
+    @keyframes OpSonata-pulse {
       0%   { transform: scale(1);   opacity: 0.6; }
       70%  { transform: scale(2.4); opacity: 0;   }
       100% { transform: scale(1);   opacity: 0;   }
     }
-    .OpWatch-my-pos-ring {
+    .OpSonata-my-pos-ring {
       position: absolute; width: 20px; height: 20px;
       top: 0; left: 0; border-radius: 50%;
       background: rgba(96,165,250,0.35);
-      animation: OpWatch-pulse 2s ease-out infinite;
+      animation: OpSonata-pulse 2s ease-out infinite;
     }
-    .OpWatch-my-pos-dot {
+    .OpSonata-my-pos-dot {
       position: absolute; width: 14px; height: 14px;
       top: 3px; left: 3px; border-radius: 50%;
       background: #60a5fa; border: 2.5px solid #fff;
@@ -114,7 +114,7 @@ function FleetMap({
     // easyPrint
     if(searchMarkerRef)searchMarkerRef.current=map;
     if(easyPrintRef){
-      const ep=L.easyPrint({hidden:true,sizeModes:["A4Portrait","A4Landscape"],filename:"OpWatch_map",hideControlContainer:true}).addTo(map);
+      const ep=L.easyPrint({hidden:true,sizeModes:["A4Portrait","A4Landscape"],filename:"OpSonata_map",hideControlContainer:true}).addTo(map);
       easyPrintRef.current=ep;
     }
 
@@ -333,7 +333,7 @@ function FleetMap({
     if(!myPosition)return;
     const icon=L.divIcon({
       className:"",
-      html:`<div style="position:relative;width:20px;height:20px"><div class="OpWatch-my-pos-ring"></div><div class="OpWatch-my-pos-dot"></div></div>`,
+      html:`<div style="position:relative;width:20px;height:20px"><div class="OpSonata-my-pos-ring"></div><div class="OpSonata-my-pos-dot"></div></div>`,
       iconSize:[20,20],iconAnchor:[10,10],
     });
     const m=L.marker(myPosition,{icon,zIndexOffset:3000,interactive:false});

@@ -26,11 +26,11 @@ test.describe("Theme toggle", () => {
   test("persists theme choice after page reload", async ({ page }) => {
     await page.getByTestId("theme-toggle").click();
     // localStorage should now be "light"
-    const stored = await page.evaluate(() => localStorage.getItem("OpWatch.theme"));
+    const stored = await page.evaluate(() => localStorage.getItem("OpSonata.theme"));
     expect(stored).toBe("light");
 
     await page.reload();
-    const storedAfterReload = await page.evaluate(() => localStorage.getItem("OpWatch.theme"));
+    const storedAfterReload = await page.evaluate(() => localStorage.getItem("OpSonata.theme"));
     expect(storedAfterReload).toBe("light");
   });
 });

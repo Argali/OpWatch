@@ -35,7 +35,7 @@ export async function reverseGeocode(lat, lng) {
   try {
     const r = await fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=18&addressdetails=1`,
-      { headers: { "User-Agent": "OpWatch/1.0" }, signal: AbortSignal.timeout(6000) }
+      { headers: { "User-Agent": "OpSonata/1.0" }, signal: AbortSignal.timeout(6000) }
     );
     if (!r.ok) return null;
     const d = await r.json();

@@ -37,7 +37,7 @@ function formatPhotonResult(feature) {
 const photonToNominatim = formatPhotonResult;
 
 // ── Recent searches ────────────────────────────────────────────────────────
-const RECENT_KEY = 'OpWatch_recent_searches';
+const RECENT_KEY = 'OpSonata_recent_searches';
 function saveRecentSearch(r) {
   try {
     const prev = JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
@@ -173,7 +173,7 @@ function MobileSearchOverlay({ searchAddr, setSearchAddr, searchLoading, searchF
                 <>
                   {internal.length > 0 && (
                     <>
-                      <div style={{ padding: "6px 14px 4px", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 0.8 }}>★ OpWatch</div>
+                      <div style={{ padding: "6px 14px 4px", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: 0.8 }}>★ OpSonata</div>
                       {internal.map((r, i) => (
                         <div key={`i${i}`} onClick={() => handleSelect(r)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderTop: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
                           <span style={{ fontSize: 18, flexShrink: 0 }}>⭐</span>
@@ -325,7 +325,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const handleExportPdf=()=>{
     if(!easyPrintRef.current)return;
     const size=pdfOrientation==="portrait"?"A4Portrait page":"A4Landscape page";
-    const filename=(pdfTitle||"OpWatch").replace(/\s+/g,"-").toLowerCase();
+    const filename=(pdfTitle||"OpSonata").replace(/\s+/g,"-").toLowerCase();
     easyPrintRef.current.printMap(size,filename);
     setPdfPanel(false);
   };
@@ -353,7 +353,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   };
 
   // ── zone editor state ─────────────────────────────────────────────────────
-  const [zones,setZones]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpWatch_zones")||"[]");}catch{return[];} });
+  const [zones,setZones]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpSonata_zones")||"[]");}catch{return[];} });
   const [visibleZones,setVisibleZones]=useState({});
   const [zoneCfg,setZoneCfg]=useState(EMPTY_ZONE_CFG);
   const [drawingZone,setDrawingZone]=useState(false);
@@ -375,7 +375,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const liveMapRef=useRef(null);
   const searchPinRef=useRef(null);
   const nominatimAbortRef=useRef(null);
-  useEffect(()=>{ localStorage.setItem("OpWatch_zones",JSON.stringify(zones)); },[zones]);
+  useEffect(()=>{ localStorage.setItem("OpSonata_zones",JSON.stringify(zones)); },[zones]);
   useEffect(()=>{ setVisibleZones(prev=>{ const n={...prev}; zones.forEach(z=>{ if(!(z.id in n))n[z.id]=true; }); return n; }); },[zones]);
   const toggleZone=(id)=>setVisibleZones(prev=>({...prev,[id]:!prev[id]}));
 
@@ -384,12 +384,12 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const cancelZoneDraw=()=>{ setDrawingZone(false); setEditingZone(false); setZoneCfg(EMPTY_ZONE_CFG); };
 
   // ── punti editor state ───────────────────────────────────────────────────
-  const [punti,setPunti]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpWatch_punti")||"[]");}catch{return[];} });
+  const [punti,setPunti]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpSonata_punti")||"[]");}catch{return[];} });
   const [visiblePunti,setVisiblePunti]=useState({});
   const [puntoCfg,setPuntoCfg]=useState(EMPTY_PUNTO_CFG);
   const [drawingPunti,setDrawingPunti]=useState(false);
   const [editingPunto,setEditingPunto]=useState(false);
-  useEffect(()=>{ localStorage.setItem("OpWatch_punti",JSON.stringify(punti)); },[punti]);
+  useEffect(()=>{ localStorage.setItem("OpSonata_punti",JSON.stringify(punti)); },[punti]);
   useEffect(()=>{ setVisiblePunti(prev=>{ const n={...prev}; punti.forEach(p=>{ if(!(p.id in n))n[p.id]=true; }); return n; }); },[punti]);
   const togglePunto=(id)=>setVisiblePunti(prev=>({...prev,[id]:!prev[id]}));
 
@@ -406,13 +406,13 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const cancelPuntoEdit=()=>{ setDrawingPunti(false); setEditingPunto(false); setPuntoCfg(EMPTY_PUNTO_CFG); };
 
   // ── gruppi state ─────────────────────────────────────────────────────────
-  const [gruppi,setGruppi]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpWatch_gruppi")||"[]");}catch{return[];} });
+  const [gruppi,setGruppi]=useState(()=>{ try{return JSON.parse(localStorage.getItem("OpSonata_gruppi")||"[]");}catch{return[];} });
   const [percorsiViewMode,setPercorsiViewMode]=useState("items"); // "items" | "gruppi"
   const [zoneViewMode,setZoneViewMode]=useState("items");         // "items" | "gruppi"
   const [puntiViewMode,setPuntiViewMode]=useState("items");       // "items" | "gruppi"
   const [editingGruppo,setEditingGruppo]=useState(false);
   const [gruppoCfg,setGruppoCfg]=useState(EMPTY_GRUPPO_CFG);
-  useEffect(()=>{ localStorage.setItem("OpWatch_gruppi",JSON.stringify(gruppi)); },[gruppi]);
+  useEffect(()=>{ localStorage.setItem("OpSonata_gruppi",JSON.stringify(gruppi)); },[gruppi]);
   const saveGruppo=()=>{
     if(!gruppoCfg.name.trim())return;
     setGruppi(prev=>[...prev,{...gruppoCfg,id:crypto.randomUUID()}]);
@@ -423,11 +423,11 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const toggleGruppoItem=(field,id)=>setGruppoCfg(c=>({...c,[field]:c[field].includes(id)?c[field].filter(x=>x!==id):[...c[field],id]}));
 
   // ── centri di raccolta state ──────────────────────────────────────────────
-  const [cdr,setCdr]=useState(()=>{try{return JSON.parse(localStorage.getItem("OpWatch_cdr")||"[]");}catch{return[];}});
+  const [cdr,setCdr]=useState(()=>{try{return JSON.parse(localStorage.getItem("OpSonata_cdr")||"[]");}catch{return[];}});
   const [editingCdr,setEditingCdr]=useState(null);
   const [cdrMeta,setCdrMeta]=useState(EMPTY_CDR_META);
   const [cdrShapes,setCdrShapes]=useState([]);
-  useEffect(()=>{localStorage.setItem("OpWatch_cdr",JSON.stringify(cdr));},[cdr]);
+  useEffect(()=>{localStorage.setItem("OpSonata_cdr",JSON.stringify(cdr));},[cdr]);
   const startNewCdr=()=>{setEditingCdr("new");setCdrMeta({...EMPTY_CDR_META});setCdrShapes([]);};
   const editCdrItem=(c)=>{setEditingCdr(c.id);setCdrMeta({name:c.name,comune:c.comune||"",materiale:c.materiale||"",sector:c.sector||"",address:c.address||"",lat:c.lat||null,lng:c.lng||null,color:c.color,opacity:c.opacity??0.5});setCdrShapes(c.shapes||[]);};
   const cancelCdrEdit=()=>{setEditingCdr(null);setCdrMeta(EMPTY_CDR_META);setCdrShapes([]);};
@@ -1088,7 +1088,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
                       </div>
                     );
                   }
-                  // ── Has query: show OpWatch + Photon results ─────────────
+                  // ── Has query: show OpSonata + Photon results ─────────────
                   const q=searchAddr.toLowerCase();
                   const internal=[
                     ...cdr.filter(c=>c.lat&&c.lng&&(c.name?.toLowerCase().includes(q)||c.comune?.toLowerCase().includes(q))).map(c=>({lat:String(c.lat),lon:String(c.lng),title:c.name||"CDR",subtitle:`CDR • ${c.comune||""}`,icon:"⭐",display_name:c.name})),
@@ -1098,7 +1098,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
                   return(
                     <div style={{position:"absolute",top:"100%",left:0,right:0,zIndex:2000,background:T.card,border:`1px solid ${T.border}`,borderRadius:7,boxShadow:"0 6px 20px rgba(0,0,0,0.4)",marginTop:3,maxHeight:260,overflowY:"auto"}}>
                       {internal.length>0&&<>
-                        <div style={{padding:"5px 12px 3px",fontSize:10,fontWeight:700,color:T.textDim,textTransform:"uppercase",letterSpacing:0.8}}>★ Posizioni OpWatch</div>
+                        <div style={{padding:"5px 12px 3px",fontSize:10,fontWeight:700,color:T.textDim,textTransform:"uppercase",letterSpacing:0.8}}>★ Posizioni OpSonata</div>
                         {internal.map((r,i)=>(
                           <div key={`int-${i}`} onClick={()=>flyToResult(r)} style={{padding:"8px 12px",cursor:"pointer",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"flex-start",gap:8}}
                             onMouseEnter={e=>e.currentTarget.style.background=T.bg}

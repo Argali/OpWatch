@@ -17,7 +17,7 @@ function ThemeDisplay() {
 }
 
 function renderTheme(localStorageMode) {
-  if (localStorageMode) localStorage.setItem("OpWatch.theme", localStorageMode);
+  if (localStorageMode) localStorage.setItem("OpSonata.theme", localStorageMode);
   return render(
     <ThemeProvider>
       <ThemeDisplay />
@@ -58,7 +58,7 @@ describe("ThemeContext", () => {
     const user = userEvent.setup();
     renderTheme("dark");
     await user.click(screen.getByRole("button", { name: "toggle" }));
-    expect(localStorage.getItem("OpWatch.theme")).toBe("light");
+    expect(localStorage.getItem("OpSonata.theme")).toBe("light");
   });
 
   it("sets data-theme attribute on <html> when toggling", async () => {

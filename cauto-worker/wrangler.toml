@@ -1,0 +1,28 @@
+name            = "opsonata-worker"
+main            = "src/index.js"
+compatibility_date  = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding      = "DB"
+database_name = "opsonata-db"
+database_id  = "3b5e5f2b-7aa2-4317-9a94-8588902561d1"
+
+[[kv_namespaces]]
+binding = "SESSIONS"
+id      = "3c1caba8ff8741158ef750ca09493b8a"
+
+[triggers]
+crons = ["0 6 * * *"]   # Daily 6am UTC — PM scheduler + license expiry check
+
+[vars]
+ENVIRONMENT  = "production"
+# Set these as Secrets in the Cloudflare dashboard (never in this file):
+# JWT_SECRET
+# AZURE_CLIENT_ID
+# AZURE_TENANT_ID
+# FRONTEND_URL
+# SEED_SECRET              ← one-time password seeding key
+# SEED_SUPERADMIN_PASSWORD
+# SEED_OFFICINA_PASSWORD
+# SEED_ADMIN_PASSWORD

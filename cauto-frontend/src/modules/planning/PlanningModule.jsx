@@ -17,7 +17,7 @@ export default function PlanningModule() {
     if (!iframeRef.current || !auth?.token) return;
     iframeRef.current.contentWindow.postMessage(
       {
-        type:    "OpWatch_AUTH",
+        type:    "OpSonata_AUTH",
         token:   auth.token,
         apiBase: API,
       },

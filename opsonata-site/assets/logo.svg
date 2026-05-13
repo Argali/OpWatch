@@ -1,0 +1,54 @@
+<svg width="420" height="140" viewBox="0 0 420 140" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background (optional, remove if you want transparent) -->
+  <rect width="420" height="140" fill="#050B18" />
+
+  <!-- Hexagon emblem -->
+  <g transform="translate(60,70)">
+    <!-- Hexagon shape -->
+    <polygon
+      points="0,-40 34,-20 34,20 0,40 -34,20 -34,-20"
+      fill="#0C3B4A"
+      stroke="#1FD38A"
+      stroke-width="2"
+    />
+
+    <!-- Inner grid -->
+    <rect x="-24" y="-24" width="48" height="48" fill="none" stroke="#1BA3A3" stroke-width="1" />
+    <!-- Vertical grid lines -->
+    <line x1="-8" y1="-24" x2="-8" y2="24" stroke="#1BA3A3" stroke-width="1" />
+    <line x1="8" y1="-24" x2="8" y2="24" stroke="#1BA3A3" stroke-width="1" />
+    <!-- Horizontal grid lines -->
+    <line x1="-24" y1="-8" x2="24" y2="-8" stroke="#1BA3A3" stroke-width="1" />
+    <line x1="-24" y1="8" x2="24" y2="8" stroke="#1BA3A3" stroke-width="1" />
+
+    <!-- Radar circles -->
+    <circle cx="0" cy="0" r="6" fill="none" stroke="#1FD38A" stroke-width="1" />
+    <circle cx="0" cy="0" r="16" fill="none" stroke="#1FD38A" stroke-width="1" />
+
+    <!-- Radar sweep arc -->
+    <path
+      d="M0,0 L16,0 A16,16 0 0 1 0,16 Z"
+      fill="rgba(31,211,138,0.35)"
+    />
+
+    <!-- Radar center dot -->
+    <circle cx="0" cy="0" r="2.5" fill="#1FD38A" />
+
+    <!-- Dots on grid -->
+    <circle cx="-12" cy="-12" r="3" fill="#1FD38A" />
+    <circle cx="14" cy="-6" r="3" fill="#7CFCC0" />
+    <circle cx="10" cy="14" r="3" fill="#1FD38A" />
+  </g>
+
+  <!-- Text: OpSonata -->
+  <text
+    x="130"
+    y="80"
+    font-family="Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+    font-size="40"
+    font-weight="700"
+    fill="#FFFFFF"
+  >
+    <tspan fill="#1FD38A">O</tspan>pSonata
+  </text>
+</svg>

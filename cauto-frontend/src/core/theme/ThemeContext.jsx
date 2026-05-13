@@ -8,7 +8,7 @@ function applyTheme(mode) {
 }
 
 function getInitialMode() {
-  const saved = localStorage.getItem("OpWatch.theme");
+  const saved = localStorage.getItem("OpSonata.theme");
   if (saved === "light" || saved === "dark") return saved;
   return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 }
@@ -22,7 +22,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     applyTheme(mode);
-    localStorage.setItem("OpWatch.theme", mode);
+    localStorage.setItem("OpSonata.theme", mode);
   }, [mode]);
 
   const toggle = () => setModeState(m => (m === "dark" ? "light" : "dark"));

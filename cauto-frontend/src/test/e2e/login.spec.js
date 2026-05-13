@@ -5,8 +5,8 @@ test.describe("Login screen", () => {
     await page.goto("/");
   });
 
-  test("shows the OpWatch logo and title", async ({ page }) => {
-    await expect(page.getByText("OpWatch")).toBeVisible();
+  test("shows the OpSonata logo and title", async ({ page }) => {
+    await expect(page.getByText("OpSonata")).toBeVisible();
     await expect(page.getByText("Fleet Command Center")).toBeVisible();
   });
 
