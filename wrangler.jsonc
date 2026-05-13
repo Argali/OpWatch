@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "opsonata",
+  "compatibility_date": "2026-05-13",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "cauto-frontend"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
