@@ -39,7 +39,6 @@ jobs:
   deploy-worker:
     needs: test
     runs-on: ubuntu-latest
-    # Only run when the Cloudflare token secret is present
     if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
     steps:
       - uses: actions/checkout@v4
@@ -61,10 +60,52 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy
 
-  # ── 3. Build frontend ─────────────────────────────────────────────────────────
-  build-frontend:
+  # ── 3a. Build for GitHub Pages (BASE_PATH = /OpSonata) ───────────────────────
+  build-github:
     needs: test
     runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID == '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: cauto-frontend/package-lock.json
+
+      - name: Install
+        working-directory: cauto-frontend
+        run: npm ci --legacy-peer-deps
+
+      - name: Build (GitHub Pages — BASE_PATH /OpSonata)
+        working-directory: cauto-frontend
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          BASE_PATH: /OpSonata
+        run: npm run build
+
+      - name: Validate build
+        working-directory: cauto-frontend
+        run: |
+          test -f dist/index.html || (echo "ERROR: dist/index.html missing" && exit 1)
+          ENTRY=$(find dist/assets -name 'index-*.js' | head -1)
+          if [ -z "$ENTRY" ]; then echo "ERROR: no entry chunk found" && exit 1; fi
+          SIZE=$(gzip -c "$ENTRY" | wc -c)
+          echo "Entry chunk gzipped: ${SIZE} bytes"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-github
+          path: cauto-frontend/dist
+          retention-days: 1
+
+  # ── 3b. Build for Cloudflare Pages (BASE_PATH = /) ───────────────────────────
+  build-cloudflare:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -94,52 +135,27 @@ jobs:
           SIZE=$(gzip -c "$ENTRY" | wc -c)
           echo "Entry chunk gzipped: ${SIZE} bytes"
 
-      - name: Upload build artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
+          name: frontend-dist-cloudflare
           path: cauto-frontend/dist
           retention-days: 1
 
-  # ── 4a. Deploy to Cloudflare Pages ───────────────────────────────────────────
-  deploy-pages-cloudflare:
-    needs: build-frontend
-    runs-on: ubuntu-latest
-    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist
-          path: cauto-frontend/dist
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Deploy to Cloudflare Pages
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler pages deploy cauto-frontend/dist --project-name=opsonata-platform --branch=main
-
-  # ── 4b. Deploy to GitHub Pages (fallback when no CF token) ───────────────────
+  # ── 4a. Deploy to GitHub Pages ────────────────────────────────────────────────
   deploy-pages-github:
-    needs: build-frontend
+    needs: build-github
     runs-on: ubuntu-latest
-    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID == '' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download build artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: frontend-dist
+          name: frontend-dist-github
           path: cauto-frontend/dist
 
       - name: Setup Pages
@@ -153,3 +169,27 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # ── 4b. Deploy to Cloudflare Pages ───────────────────────────────────────────
+  deploy-pages-cloudflare:
+    needs: build-cloudflare
+    runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist-cloudflare
+          path: cauto-frontend/dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler pages deploy cauto-frontend/dist --project-name=opsonata-platform --branch=main
