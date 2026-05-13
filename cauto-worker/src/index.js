@@ -18,6 +18,7 @@ import usersAdmin       from "./routes/users-admin.js";
 import segnalazioni     from "./routes/segnalazioni.js";
 import territorio       from "./routes/segnalazioni-territorio.js";
 import reports          from "./routes/reports.js";
+import planning         from "./routes/planning.js";
 import { seedPasswords } from "./seed.js";
 import { requireAuth }   from "./middleware/auth.js";
 
@@ -61,6 +62,7 @@ app.route("/api/admin/users",      usersAdmin);
 app.route("/api/segnalazioni",     segnalazioni);
 app.route("/api/territorio",       territorio);
 app.route("/api/reports",          reports);
+app.route("/api/planning",         planning);
 
 // ── 404 catch-all ─────────────────────────────────────────────────────────────
 app.notFound((c) => c.json({ ok: false, error: "Route non trovata" }, 404));
