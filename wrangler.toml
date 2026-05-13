@@ -1,5 +1,7 @@
 name = "opsonata"
 compatibility_date = "2025-05-13"
+workers_dev = true
+preview_urls = true
 
 [assets]
 directory = "opsonata-site"
