@@ -1,4 +1,4 @@
-name = "opsonata"
+name = "opsonata-platform"
 compatibility_date = "2025-05-13"
 workers_dev = true
 preview_urls = true
