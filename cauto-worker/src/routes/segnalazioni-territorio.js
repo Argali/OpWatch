@@ -41,14 +41,40 @@ territorio.post("/", rbac("territorio", "edit"), async (c) => {
   if (!VALID_TIPI.includes(body.tipo))
     return c.json({ ok: false, error: `tipo non valido. Valori: ${VALID_TIPI.join(", ")}` }, 400);
 
+  // photos should be an array of R2 URLs (uploaded via POST /api/upload first)
+  const photos = (body.photos ?? []).filter(p => typeof p === "string" && p.startsWith("http"));
+
   const id = crypto.randomUUID();
   await c.env.DB
     .prepare("INSERT INTO segnalazioni_territorio (id,tenant_id,tipo,lat,lng,address,comune,description,photos,reported_by) VALUES (?,?,?,?,?,?,?,?,?,?)")
     .bind(id, user.tenant_id, body.tipo, body.lat ?? null, body.lng ?? null,
           body.address ?? "", body.comune ?? "", body.description ?? "",
-          JSON.stringify(body.photos ?? []), user.email)
+          JSON.stringify(photos), user.email)
     .run();
-  return c.json({ ok: true, data: { id, ...body, status: "aperta", interventions: [] } }, 201);
+  return c.json({ ok: true, data: { id, ...body, photos, status: "aperta", interventions: [] } }, 201);
+});
+
+// PATCH /:id/photos — add R2 URLs to an existing segnalazione
+territorio.patch("/:id/photos", rbac("territorio", "edit"), async (c) => {
+  const user   = c.get("user");
+  const id     = c.req.param("id");
+  const { photos } = await c.req.json().catch(() => ({}));
+  if (!Array.isArray(photos))
+    return c.json({ ok: false, error: "photos deve essere un array di URL" }, 400);
+
+  const seg = await c.env.DB
+    .prepare("SELECT photos FROM segnalazioni_territorio WHERE id = ? AND tenant_id = ?")
+    .bind(id, user.tenant_id).first();
+  if (!seg) return c.json({ ok: false, error: "Segnalazione non trovata" }, 404);
+
+  const existing = JSON.parse(seg.photos ?? "[]");
+  const merged   = [...new Set([...existing, ...photos.filter(p => typeof p === "string" && p.startsWith("http"))])];
+
+  await c.env.DB
+    .prepare("UPDATE segnalazioni_territorio SET photos=?, updated_at=datetime('now') WHERE id=? AND tenant_id=?")
+    .bind(JSON.stringify(merged), id, user.tenant_id)
+    .run();
+  return c.json({ ok: true, data: { photos: merged } });
 });
 
 territorio.patch("/:id/status", rbac("territorio", "edit"), async (c) => {

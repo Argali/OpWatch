@@ -19,6 +19,7 @@ import segnalazioni     from "./routes/segnalazioni.js";
 import territorio       from "./routes/segnalazioni-territorio.js";
 import reports          from "./routes/reports.js";
 import planning         from "./routes/planning.js";
+import upload, { serveMedia } from "./routes/upload.js";
 import { seedPasswords } from "./seed.js";
 import { requireAuth }   from "./middleware/auth.js";
 
@@ -63,6 +64,11 @@ app.route("/api/segnalazioni",     segnalazioni);
 app.route("/api/territorio",       territorio);
 app.route("/api/reports",          reports);
 app.route("/api/planning",         planning);
+app.route("/api/upload",           upload);
+
+// ── Public media serving from R2 (no auth — URLs are unguessable) ─────────────
+app.get("/api/media/:key{[^/]+}", serveMedia);
+app.get("/api/media/:key{[^/]+}/*", serveMedia);
 
 // ── 404 catch-all ─────────────────────────────────────────────────────────────
 app.notFound((c) => c.json({ ok: false, error: "Route non trovata" }, 404));

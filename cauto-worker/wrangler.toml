@@ -12,6 +12,10 @@ database_id  = "3b5e5f2b-7aa2-4317-9a94-8588902561d1"
 binding = "SESSIONS"
 id      = "3c1caba8ff8741158ef750ca09493b8a"
 
+[[r2_buckets]]
+binding    = "MEDIA"
+bucket_name = "opsonata-media"
+
 [triggers]
 crons = ["0 6 * * *"]   # Daily 6am UTC — PM scheduler + license expiry check
 
