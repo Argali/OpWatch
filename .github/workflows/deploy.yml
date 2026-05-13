@@ -1,4 +1,4 @@
-﻿name: Deploy Frontend to GitHub Pages
+name: Deploy — Frontend + Worker
 
 on:
   push:
@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ── 1. Unit tests ─────────────────────────────────────────────────────────────
   test:
     runs-on: ubuntu-latest
     steps:
@@ -34,16 +35,36 @@ jobs:
         working-directory: cauto-frontend
         run: npm test
 
-      # E2E tests require a live backend (port 3001) which is not available in CI.
-      # Run them locally with: npm run test:e2e
-      # They are skipped here to keep the CI gate fast and reliable.
-
-  build-and-deploy:
+  # ── 2. Deploy Worker to Cloudflare ───────────────────────────────────────────
+  deploy-worker:
     needs: test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # Only run when the Cloudflare token secret is present
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: cauto-worker/package-lock.json
+
+      - name: Install worker deps
+        working-directory: cauto-worker
+        run: npm ci
+
+      - name: Deploy worker
+        working-directory: cauto-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+  # ── 3. Build frontend ─────────────────────────────────────────────────────────
+  build-frontend:
+    needs: test
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -57,30 +78,74 @@ jobs:
         working-directory: cauto-frontend
         run: npm ci --legacy-peer-deps
 
-      - name: Build
+      - name: Build (Cloudflare Pages — BASE_PATH /)
         working-directory: cauto-frontend
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          BASE_PATH: /OpSonata
+          BASE_PATH: /
         run: npm run build
 
       - name: Validate build
         working-directory: cauto-frontend
         run: |
           test -f dist/index.html || (echo "ERROR: dist/index.html missing" && exit 1)
-          test -f dist/404.html   || (echo "ERROR: dist/404.html missing"   && exit 1)
           ENTRY=$(find dist/assets -name 'index-*.js' | head -1)
           if [ -z "$ENTRY" ]; then echo "ERROR: no entry chunk found" && exit 1; fi
           SIZE=$(gzip -c "$ENTRY" | wc -c)
           echo "Entry chunk gzipped: ${SIZE} bytes"
-          if [ "$SIZE" -gt 204800 ]; then
-            echo "WARNING: entry chunk exceeds 200 kB gzipped (${SIZE} bytes)"
-          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: cauto-frontend/dist
+          retention-days: 1
+
+  # ── 4a. Deploy to Cloudflare Pages ───────────────────────────────────────────
+  deploy-pages-cloudflare:
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: cauto-frontend/dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler pages deploy cauto-frontend/dist --project-name=opsonata-platform --branch=main
+
+  # ── 4b. Deploy to GitHub Pages (fallback when no CF token) ───────────────────
+  deploy-pages-github:
+    needs: build-frontend
+    runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID == '' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: cauto-frontend/dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: cauto-frontend/dist
