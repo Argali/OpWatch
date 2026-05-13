@@ -222,13 +222,13 @@ export default function LiveCamera({ position, auth, vehicles = [], onClose }) {
       const ctx = drawVideoToCanvas(video, canvas);
       drawStamp(canvas, ctx, buildStamp());
       const blob = await new Promise((res, rej) =>
-        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas vuoto")), "image/jpeg", 0.92)
+        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas vuoto")), "image/jpeg", 0.88)
       );
       showPreview(blob);
     } catch (e) { setErrMsg(e.message || "Errore cattura"); setStatus("error"); }
   }
 
-  // ── Capture from file picker (with EXIF fix) ──────────────────────────────
+  // ── Capture from file picker (with EXIF fix + downscale) ────────────────
   async function handleFallbackFile(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -247,14 +247,23 @@ export default function LiveCamera({ position, auth, vehicles = [], onClose }) {
           img.src = url;
         });
       }
-      canvas.width  = source.width  ?? source.naturalWidth;
-      canvas.height = source.height ?? source.naturalHeight;
+
+      // Downscale to max 2048px on the longest side — prevents multi-MB gallery photos
+      const MAX_DIM = 2048;
+      const srcW = source.width  ?? source.naturalWidth;
+      const srcH = source.height ?? source.naturalHeight;
+      const scale = Math.min(1, MAX_DIM / Math.max(srcW, srcH));
+      canvas.width  = Math.round(srcW * scale);
+      canvas.height = Math.round(srcH * scale);
+
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(source, 0, 0);
+      ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
       if (source.close) source.close();
+
       drawStamp(canvas, ctx, buildStamp());
+
       const blob = await new Promise((res, rej) =>
-        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas vuoto")), "image/jpeg", 0.92)
+        canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas vuoto")), "image/jpeg", 0.88)
       );
       showPreview(blob);
     } catch (err) { setErrMsg(err.message || "Errore upload"); setStatus("error"); }
