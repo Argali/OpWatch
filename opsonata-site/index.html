@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -38,15 +38,20 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="#moduli">Moduli</a></li>
-      <li><a href="#funziona">Come Funziona</a></li>
-      <li><a href="#screenshots">Screenshots</a></li>
-      <li><a href="#contatti">Contatti</a></li>
+      <li><a href="#moduli" data-i18n="nav.modules">Moduli</a></li>
+      <li><a href="#funziona" data-i18n="nav.how">Come Funziona</a></li>
+      <li><a href="#screenshots" data-i18n="nav.screenshots">Screenshots</a></li>
+      <li><a href="#contatti" data-i18n="nav.contact">Contatti</a></li>
     </ul>
 
     <div class="nav-cta">
-      <a href="#contatti" class="btn btn-outline">Richiedi Demo</a>
-      <a href="https://app.opsonata.com" class="btn btn-primary">Accedi alla Piattaforma</a>
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="it">IT</button>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <a href="#contatti" class="btn btn-outline" data-i18n="nav.demo">Richiedi Demo</a>
+      <a href="https://app.opsonata.com" class="btn btn-primary" data-i18n="nav.platform">Accedi alla Piattaforma</a>
     </div>
 
     <button class="hamburger" aria-label="Menu" aria-expanded="false">
@@ -57,12 +62,17 @@
 
 <!-- Mobile menu -->
 <div class="mobile-menu" role="dialog" aria-label="Menu mobile">
-  <a href="#moduli">Moduli</a>
-  <a href="#funziona">Come Funziona</a>
-  <a href="#screenshots">Screenshots</a>
-  <a href="#contatti">Contatti</a>
-  <a href="#contatti" class="btn btn-primary">Richiedi Demo</a>
-  <a href="https://app.opsonata.com" class="btn btn-outline">Accedi alla Piattaforma</a>
+  <a href="#moduli" data-i18n="nav.modules">Moduli</a>
+  <a href="#funziona" data-i18n="nav.how">Come Funziona</a>
+  <a href="#screenshots" data-i18n="nav.screenshots">Screenshots</a>
+  <a href="#contatti" data-i18n="nav.contact">Contatti</a>
+  <a href="#contatti" class="btn btn-primary" data-i18n="nav.demo">Richiedi Demo</a>
+  <a href="https://app.opsonata.com" class="btn btn-outline" data-i18n="nav.platform">Accedi alla Piattaforma</a>
+  <div class="lang-switcher lang-switcher--mobile" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="it">IT</button>
+    <button class="lang-btn" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -73,7 +83,7 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="container hero-content">
 
-    <div class="badge animate-up">
+    <div class="badge animate-up" data-i18n="hero.badge">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
         <circle cx="5" cy="5" r="4" fill="#4ade80"/>
         <circle cx="5" cy="5" r="2" fill="#fff"/>
@@ -81,13 +91,13 @@
       Flotta connessa in tempo reale
     </div>
 
-    <h1 class="hero-title animate-up delay-1">
+    <h1 class="hero-title animate-up delay-1" data-i18n-html="hero.title">
       Gestisci la tua<br>
       <span class="line-green">flotta veicoli</span><br>
       <span class="line-blue">ovunque tu sia</span>
     </h1>
 
-    <p class="hero-sub animate-up delay-2">
+    <p class="hero-sub animate-up delay-2" data-i18n="hero.sub">
       OpSonata è la piattaforma integrata per il monitoraggio GPS, la pianificazione dei percorsi,
       la gestione dei conducenti e l'analisi delle performance. Tutto in un'unica interfaccia web.
     </p>
@@ -97,9 +107,9 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
           <path d="M8 0a8 8 0 110 16A8 8 0 018 0zm0 4a.5.5 0 00-.5.5v4a.5.5 0 00.146.354l2.5 2.5a.5.5 0 00.708-.708L8.5 8.293V4.5A.5.5 0 008 4z"/>
         </svg>
-        Richiedi una Demo
+        <span data-i18n="hero.cta1">Richiedi una Demo</span>
       </a>
-      <a href="#moduli" class="btn btn-outline">Scopri i Moduli</a>
+      <a href="#moduli" class="btn btn-outline" data-i18n="hero.cta2">Scopri i Moduli</a>
     </div>
 
   </div>
@@ -108,7 +118,7 @@
 <!-- Trust bar -->
 <div class="trust-bar">
   <div class="container trust-bar-inner">
-    <span>Tecnologie integrate</span>
+    <span data-i18n="trust.label">Tecnologie integrate</span>
     <div class="trust-divider"></div>
     <span class="trust-item">Azure AD / MSAL</span>
     <div class="trust-divider"></div>
@@ -128,9 +138,9 @@
 <section class="section" id="moduli">
   <div class="container">
     <div class="section-header" data-animate>
-      <p class="section-label">Piattaforma modulare</p>
-      <h2 class="section-title">Tutto ciò di cui hai bisogno,<br><span>in un'unica piattaforma</span></h2>
-      <p class="section-sub">
+      <p class="section-label" data-i18n="section.modules.label">Piattaforma modulare</p>
+      <h2 class="section-title" data-i18n-html="section.modules.title">Tutto ciò di cui hai bisogno,<br><span>in un'unica piattaforma</span></h2>
+      <p class="section-sub" data-i18n="section.modules.sub">
         OpSonata combina monitoraggio GPS, pianificazione percorsi, gestione flotta e analisi dati
         in un'interfaccia coerente e accessibile da qualsiasi dispositivo.
       </p>
@@ -140,8 +150,8 @@
 
       <div class="card module-card" data-animate data-delay="0">
         <div class="module-icon green">🗺️</div>
-        <h3 class="module-title">Mappa Live</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.map.title">Mappa Live</h3>
+        <p class="module-desc" data-i18n="mod.map.desc">
           Visualizza la posizione di tutta la flotta in tempo reale su mappa interattiva.
           Clustering automatico, filtri per stato veicolo, cronologia tracce GPS e navigazione street-level.
         </p>
@@ -154,8 +164,8 @@
 
       <div class="card module-card" data-animate data-delay="80">
         <div class="module-icon blue">🛣️</div>
-        <h3 class="module-title">Editor Percorsi</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.routes.title">Editor Percorsi</h3>
+        <p class="module-desc" data-i18n="mod.routes.desc">
           Pianifica e ottimizza i percorsi di consegna con waypoint trascinabili, snapping automatico
           alla rete stradale, annotazioni sulla mappa e esportazione PDF professionale.
         </p>
@@ -169,8 +179,8 @@
 
       <div class="card module-card" data-animate data-delay="160">
         <div class="module-icon orange">🚛</div>
-        <h3 class="module-title">Gestione Flotta</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.fleet.title">Gestione Flotta</h3>
+        <p class="module-desc" data-i18n="mod.fleet.desc">
           Registro completo dei veicoli: targa, marca, modello, assegnazione conducente, scadenze
           di manutenzione, km percorsi e stato operativo. Menu rapido direttamente sulla mappa.
         </p>
@@ -183,8 +193,8 @@
 
       <div class="card module-card" data-animate data-delay="0">
         <div class="module-icon teal">📊</div>
-        <h3 class="module-title">Analytics & Report</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.analytics.title">Analytics & Report</h3>
+        <p class="module-desc" data-i18n="mod.analytics.desc">
           Dashboard con grafici interattivi per km percorsi, consumi, sostituzioni, performance
           per conducente e confronti periodo su periodo. Esportazione dati in PDF e CSV.
         </p>
@@ -197,8 +207,8 @@
 
       <div class="card module-card" data-animate data-delay="80">
         <div class="module-icon yellow">🌤️</div>
-        <h3 class="module-title">Overlay Meteo</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.weather.title">Overlay Meteo</h3>
+        <p class="module-desc" data-i18n="mod.weather.desc">
           Layer meteo sovrapposti alla mappa operativa: temperatura (°C), precipitazioni e intensità
           del vento. Alimentati da OpenWeatherMap, aggiornati in tempo reale.
         </p>
@@ -211,8 +221,8 @@
 
       <div class="card module-card" data-animate data-delay="160">
         <div class="module-icon red">🔐</div>
-        <h3 class="module-title">Autenticazione Azure</h3>
-        <p class="module-desc">
+        <h3 class="module-title" data-i18n="mod.auth.title">Autenticazione Azure</h3>
+        <p class="module-desc" data-i18n="mod.auth.desc">
           Integrazione nativa con Microsoft Azure Active Directory (MSAL). Single Sign-On aziendale,
           gestione ruoli, sessioni sicure e nessuna password da gestire internamente.
         </p>
@@ -233,9 +243,9 @@
 <section class="section" id="funziona" style="background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
     <div class="section-header center" data-animate>
-      <p class="section-label">Processo semplice</p>
-      <h2 class="section-title">Operativo in <span>tre passi</span></h2>
-      <p class="section-sub">
+      <p class="section-label" data-i18n="how.label">Processo semplice</p>
+      <h2 class="section-title" data-i18n-html="how.title">Operativo in <span>tre passi</span></h2>
+      <p class="section-sub" data-i18n="how.sub">
         Nessuna installazione client, nessuna configurazione complessa.
         OpSonata è una web app — accedi dal browser e sei operativo in minuti.
       </p>
@@ -244,32 +254,32 @@
     <div class="steps-grid">
       <div class="step" data-animate data-delay="0">
         <div class="step-num">1</div>
-        <h3 class="step-title">Configura i veicoli</h3>
-        <p class="step-desc">
+        <h3 class="step-title" data-i18n="step1.title">Configura i veicoli</h3>
+        <p class="step-desc" data-i18n="step1.desc">
           Aggiungi i tuoi camion con targa, modello e dispositivo GPS.
           Importazione massiva da CSV supportata.
         </p>
       </div>
       <div class="step" data-animate data-delay="120">
         <div class="step-num">2</div>
-        <h3 class="step-title">Monitora in tempo reale</h3>
-        <p class="step-desc">
+        <h3 class="step-title" data-i18n="step2.title">Monitora in tempo reale</h3>
+        <p class="step-desc" data-i18n="step2.desc">
           La mappa live si aggiorna ogni 30 secondi con la posizione precisa
           di ogni veicolo e il suo stato operativo.
         </p>
       </div>
       <div class="step" data-animate data-delay="240">
         <div class="step-num">3</div>
-        <h3 class="step-title">Pianifica e ottimizza</h3>
-        <p class="step-desc">
+        <h3 class="step-title" data-i18n="step3.title">Pianifica e ottimizza</h3>
+        <p class="step-desc" data-i18n="step3.desc">
           Usa l'editor percorsi per disegnare route ottimizzate e assegnarle
           ai conducenti direttamente dalla piattaforma.
         </p>
       </div>
       <div class="step" data-animate data-delay="360">
         <div class="step-num">4</div>
-        <h3 class="step-title">Analizza le performance</h3>
-        <p class="step-desc">
+        <h3 class="step-title" data-i18n="step4.title">Analizza le performance</h3>
+        <p class="step-desc" data-i18n="step4.desc">
           Report automatici su km, consumi e puntualità ti aiutano a
           ridurre i costi e migliorare il servizio nel tempo.
         </p>
@@ -285,23 +295,22 @@
   <div class="container">
     <div class="highlight-strip" data-animate>
       <div>
-        <p class="section-label">Perché OpSonata</p>
-        <h2 class="section-title" style="font-size: clamp(22px,3vw,32px);">Progettato per chi lavora<br><span>sul territorio ogni giorno</span></h2>
-        <p class="section-sub" style="margin-top: 12px; font-size: 15px;">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. OpSonata nasce dall'esigenza concreta di chi gestisce
+        <p class="section-label" data-i18n="hl.label">Perché OpSonata</p>
+        <h2 class="section-title" style="font-size: clamp(22px,3vw,32px);" data-i18n-html="hl.title">Progettato per chi lavora<br><span>sul territorio ogni giorno</span></h2>
+        <p class="section-sub" style="margin-top: 12px; font-size: 15px;" data-i18n="hl.sub">
+          OpSonata nasce dall'esigenza concreta di chi gestisce
           flotte di veicoli commerciali in contesti complessi.
         </p>
       </div>
       <div>
         <ul class="highlight-list">
-          <li class="highlight-item">Interfaccia web — nessuna app da installare sui dispositivi aziendali</li>
-          <li class="highlight-item">Dark mode nativa con toggle light/dark, rispetta le preferenze di sistema</li>
-          <li class="highlight-item">PWA installabile — funziona offline con dati cached</li>
-          <li class="highlight-item">Sicurezza enterprise con Azure AD e Single Sign-On</li>
-          <li class="highlight-item">Export PDF direttamente dalla mappa, pronto per stampa e archivio</li>
-          <li class="highlight-item">Integrazione meteo per pianificare le consegne in sicurezza</li>
-          <li class="highlight-item">Supporto multi-lingua (Italiano, Inglese, Francese)</li>
+          <li class="highlight-item" data-i18n="hl.item1">Interfaccia web — nessuna app da installare sui dispositivi aziendali</li>
+          <li class="highlight-item" data-i18n="hl.item2">Dark mode nativa con toggle light/dark, rispetta le preferenze di sistema</li>
+          <li class="highlight-item" data-i18n="hl.item3">PWA installabile — funziona offline con dati cached</li>
+          <li class="highlight-item" data-i18n="hl.item4">Sicurezza enterprise con Azure AD e Single Sign-On</li>
+          <li class="highlight-item" data-i18n="hl.item5">Export PDF direttamente dalla mappa, pronto per stampa e archivio</li>
+          <li class="highlight-item" data-i18n="hl.item6">Integrazione meteo per pianificare le consegne in sicurezza</li>
+          <li class="highlight-item" data-i18n="hl.item7">Supporto multi-lingua (Italiano, Inglese, Francese)</li>
         </ul>
       </div>
     </div>
@@ -314,9 +323,9 @@
 <section class="section" id="screenshots" style="background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
     <div class="section-header" data-animate>
-      <p class="section-label">Interfaccia</p>
-      <h2 class="section-title">Vedi OpSonata in <span>azione</span></h2>
-      <p class="section-sub">
+      <p class="section-label" data-i18n="sc.label">Interfaccia</p>
+      <h2 class="section-title" data-i18n-html="sc.title">Vedi OpSonata in <span>azione</span></h2>
+      <p class="section-sub" data-i18n="sc.sub">
         Un'interfaccia pulita, dark-first, progettata per essere usata tutto il giorno
         senza affaticare la vista. Responsive su desktop, tablet e mobile.
       </p>
@@ -327,47 +336,46 @@
       <div class="screenshot-wrap featured">
         <div class="screenshot-placeholder">
           <span>🗺️</span>
-          <p>Mappa Live — Monitoraggio flotta in tempo reale con clustering, tracce GPS e menu veicoli</p>
+          <p data-i18n="sc.map.desc">Mappa Live — Monitoraggio flotta in tempo reale con clustering, tracce GPS e menu veicoli</p>
         </div>
-        <div class="screenshot-label">Mappa Live — Vista flotta completa</div>
+        <div class="screenshot-label" data-i18n="sc.map.label">Mappa Live — Vista flotta completa</div>
       </div>
 
       <div class="screenshot-wrap">
         <div class="screenshot-placeholder">
           <span>🛣️</span>
-          <p>Editor Percorsi — Disegna route con waypoints e snap-to-road</p>
+          <p data-i18n="sc.routes.desc">Editor Percorsi — Disegna route con waypoints e snap-to-road</p>
         </div>
-        <div class="screenshot-label">Editor Percorsi</div>
+        <div class="screenshot-label" data-i18n="sc.routes.label">Editor Percorsi</div>
       </div>
 
       <div class="screenshot-wrap">
         <div class="screenshot-placeholder">
           <span>📊</span>
-          <p>Dashboard Analytics — KPI, grafici e report esportabili</p>
+          <p data-i18n="sc.analytics.desc">Dashboard Analytics — KPI, grafici e report esportabili</p>
         </div>
-        <div class="screenshot-label">Analytics & Report</div>
+        <div class="screenshot-label" data-i18n="sc.analytics.label">Analytics & Report</div>
       </div>
 
       <div class="screenshot-wrap">
         <div class="screenshot-placeholder">
           <span>🌤️</span>
-          <p>Overlay Meteo — Layer temperatura, pioggia e vento sulla mappa</p>
+          <p data-i18n="sc.weather.desc">Overlay Meteo — Layer temperatura, pioggia e vento sulla mappa</p>
         </div>
-        <div class="screenshot-label">Overlay Meteo</div>
+        <div class="screenshot-label" data-i18n="sc.weather.label">Overlay Meteo</div>
       </div>
 
       <div class="screenshot-wrap">
         <div class="screenshot-placeholder">
           <span>🚛</span>
-          <p>Registro Flotta — Scheda veicolo con storico km e manutenzioni</p>
+          <p data-i18n="sc.fleet.desc">Registro Flotta — Scheda veicolo con storico km e manutenzioni</p>
         </div>
-        <div class="screenshot-label">Gestione Flotta</div>
+        <div class="screenshot-label" data-i18n="sc.fleet.label">Gestione Flotta</div>
       </div>
 
     </div>
   </div>
 </section>
-
 
 <!-- ═══════════════════════════════════════════
      CONTACT
@@ -375,9 +383,9 @@
 <section class="section" id="contatti" style="background: var(--bg-alt); border-top: 1px solid var(--border);">
   <div class="container">
     <div class="section-header" data-animate>
-      <p class="section-label">Parliamoci</p>
-      <h2 class="section-title">Richiedi una <span>demo gratuita</span></h2>
-      <p class="section-sub">
+      <p class="section-label" data-i18n="contact.label">Parliamoci</p>
+      <h2 class="section-title" data-i18n-html="contact.title">Richiedi una <span>demo gratuita</span></h2>
+      <p class="section-sub" data-i18n="contact.sub">
         Compila il form e ti ricontatteremo entro 24 ore per una demo personalizzata
         della piattaforma adatta alla tua flotta.
       </p>
@@ -390,34 +398,34 @@
         <div class="contact-detail">
           <div class="contact-icon">📍</div>
           <div>
-            <h4>Sede</h4>
-            <p>Via Lorem Ipsum, 42<br>20100 Milano (MI), Italia</p>
+            <h4 data-i18n="contact.address.title">Sede</h4>
+            <p data-i18n-html="contact.address.val">Via Lorem Ipsum, 42<br>20100 Milano (MI), Italia</p>
           </div>
         </div>
         <div class="contact-detail">
           <div class="contact-icon">📧</div>
           <div>
-            <h4>Email</h4>
+            <h4 data-i18n="contact.email.title">Email</h4>
             <p>info@opsonata.com</p>
           </div>
         </div>
         <div class="contact-detail">
           <div class="contact-icon">📞</div>
           <div>
-            <h4>Telefono</h4>
+            <h4 data-i18n="contact.phone.title">Telefono</h4>
             <p>+39 02 0000 0000</p>
           </div>
         </div>
         <div class="contact-detail">
           <div class="contact-icon">🕐</div>
           <div>
-            <h4>Orari supporto</h4>
-            <p>Lun–Ven, 9:00–18:00 CET</p>
+            <h4 data-i18n="contact.hours.title">Orari supporto</h4>
+            <p data-i18n="contact.hours.val">Lun–Ven, 9:00–18:00 CET</p>
           </div>
         </div>
 
         <div style="margin-top: 8px; padding: 20px; background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-lg);">
-          <p style="font-size: 13px; color: var(--text-2); line-height: 1.7;">
+          <p style="font-size: 13px; color: var(--text-2); line-height: 1.7;" data-i18n-html="contact.existing">
             <strong style="color: var(--text);">Hai già un'installazione?</strong><br>
             Per il supporto tecnico scrivi a
             <a href="mailto:support@opsonata.com" style="color: var(--blue);">support@opsonata.com</a>
@@ -432,50 +440,50 @@
           <form id="contact-form" novalidate>
             <div class="form-row">
               <div class="form-group">
-                <label for="fname">Nome *</label>
-                <input type="text" id="fname" name="fname" placeholder="Mario" required />
+                <label for="fname" data-i18n="form.fname">Nome *</label>
+                <input type="text" id="fname" name="fname" data-i18n-placeholder="form.fname.ph" placeholder="Mario" required />
               </div>
               <div class="form-group">
-                <label for="lname">Cognome *</label>
-                <input type="text" id="lname" name="lname" placeholder="Rossi" required />
+                <label for="lname" data-i18n="form.lname">Cognome *</label>
+                <input type="text" id="lname" name="lname" data-i18n-placeholder="form.lname.ph" placeholder="Rossi" required />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="email">Email aziendale *</label>
-              <input type="email" id="email" name="email" placeholder="mario.rossi@azienda.it" required />
+              <label for="email" data-i18n="form.email">Email aziendale *</label>
+              <input type="email" id="email" name="email" data-i18n-placeholder="form.email.ph" placeholder="mario.rossi@azienda.it" required />
             </div>
 
             <div class="form-group">
-              <label for="company">Azienda *</label>
-              <input type="text" id="company" name="company" placeholder="Trasporti Rossi Srl" required />
+              <label for="company" data-i18n="form.company">Azienda *</label>
+              <input type="text" id="company" name="company" data-i18n-placeholder="form.company.ph" placeholder="Trasporti Rossi Srl" required />
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="fleet-size">Dimensione flotta</label>
+                <label for="fleet-size" data-i18n="form.fleet">Dimensione flotta</label>
                 <select id="fleet-size" name="fleet-size">
-                  <option value="">Seleziona…</option>
-                  <option value="1-10">1 – 10 veicoli</option>
-                  <option value="11-50">11 – 50 veicoli</option>
-                  <option value="51-200">51 – 200 veicoli</option>
-                  <option value="200+">200+ veicoli</option>
+                  <option value="" data-i18n="form.fleet.opt0">Seleziona…</option>
+                  <option value="1-10" data-i18n="form.fleet.opt1">1 – 10 veicoli</option>
+                  <option value="11-50" data-i18n="form.fleet.opt2">11 – 50 veicoli</option>
+                  <option value="51-200" data-i18n="form.fleet.opt3">51 – 200 veicoli</option>
+                  <option value="200+" data-i18n="form.fleet.opt4">200+ veicoli</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="phone">Telefono</label>
-                <input type="tel" id="phone" name="phone" placeholder="+39 02 000 000" />
+                <label for="phone" data-i18n="form.phone">Telefono</label>
+                <input type="tel" id="phone" name="phone" data-i18n-placeholder="form.phone.ph" placeholder="+39 02 000 000" />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="message">Note aggiuntive</label>
-              <textarea id="message" name="message" placeholder="Descrivi brevemente la tua esigenza…"></textarea>
+              <label for="message" data-i18n="form.message">Note aggiuntive</label>
+              <textarea id="message" name="message" data-i18n-placeholder="form.message.ph" placeholder="Descrivi brevemente la tua esigenza…"></textarea>
             </div>
 
             <div class="form-check">
               <input type="checkbox" id="gdpr" name="gdpr" required />
-              <label for="gdpr">
+              <label for="gdpr" data-i18n-html="form.gdpr">
                 Ho letto e accetto la
                 <a href="privacy.html">Privacy Policy</a> e acconsento al trattamento
                 dei miei dati personali ai sensi del GDPR (Reg. UE 2016/679). *
@@ -483,14 +491,14 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-              Invia Richiesta Demo
+              <span data-i18n="form.submit">Invia Richiesta Demo</span>
             </button>
           </form>
 
           <div id="form-success" class="form-success">
             <div style="font-size: 40px; margin-bottom: 12px;">✅</div>
-            <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Richiesta inviata!</div>
-            <div style="font-size: 15px; color: var(--text-2);">Ti ricontatteremo entro 24 ore lavorative.</div>
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;" data-i18n="form.success.title">Richiesta inviata!</div>
+            <div style="font-size: 15px; color: var(--text-2);" data-i18n="form.success.sub">Ti ricontatteremo entro 24 ore lavorative.</div>
           </div>
         </div>
       </div>
@@ -526,7 +534,7 @@
           </svg>
           OpSonata
         </a>
-        <p>
+        <p data-i18n="footer.brand.desc">
           Piattaforma web per la gestione integrata di flotte veicoli, monitoraggio GPS
           e pianificazione percorsi. Sviluppata da Cauto.
         </p>
@@ -537,46 +545,45 @@
       </div>
 
       <div class="footer-col">
-        <h5>Piattaforma</h5>
+        <h5 data-i18n="footer.platform">Piattaforma</h5>
         <ul class="footer-links">
-          <li><a href="#moduli">Mappa Live</a></li>
-          <li><a href="#moduli">Editor Percorsi</a></li>
-          <li><a href="#moduli">Gestione Flotta</a></li>
+          <li><a href="#moduli" data-i18n="mod.map.title">Mappa Live</a></li>
+          <li><a href="#moduli" data-i18n="mod.routes.title">Editor Percorsi</a></li>
+          <li><a href="#moduli" data-i18n="mod.fleet.title">Gestione Flotta</a></li>
           <li><a href="#moduli">Analytics</a></li>
-          <li><a href="#moduli">Overlay Meteo</a></li>
+          <li><a href="#moduli" data-i18n="mod.weather.title">Overlay Meteo</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h5>Azienda</h5>
+        <h5 data-i18n="footer.company">Azienda</h5>
         <ul class="footer-links">
-          <li><a href="#hero">Chi siamo</a></li>
-          <li><a href="#contatti">Contatti</a></li>
-          <li><a href="#contatti">Richiedi Demo</a></li>
+          <li><a href="#hero" data-i18n="footer.company.about">Chi siamo</a></li>
+          <li><a href="#contatti" data-i18n="footer.company.contact">Contatti</a></li>
+          <li><a href="#contatti" data-i18n="footer.company.demo">Richiedi Demo</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Carriere</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h5>Legale</h5>
+        <h5 data-i18n="footer.legal">Legale</h5>
         <ul class="footer-links">
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
-          <li><a href="privacy.html#gdpr">Diritti GDPR</a></li>
-          <li><a href="#">Termini di servizio</a></li>
-          <li><a href="#">Note legali</a></li>
+          <li><a href="privacy.html" data-i18n="footer.legal.privacy">Privacy Policy</a></li>
+          <li><a href="cookies.html" data-i18n="footer.legal.cookie">Cookie Policy</a></li>
+          <li><a href="privacy.html#gdpr" data-i18n="footer.legal.gdpr">Diritti GDPR</a></li>
+          <li><a href="#" data-i18n="footer.legal.terms">Termini di servizio</a></li>
+          <li><a href="#" data-i18n="footer.legal.notes">Note legali</a></li>
         </ul>
       </div>
 
     </div>
 
     <div class="footer-bottom">
-      <span>© 2025 Cauto Srl — OpSonata. Tutti i diritti riservati. P.IVA IT00000000000</span>
+      <span data-i18n="footer.copy">© 2025 Cauto Srl — OpSonata. Tutti i diritti riservati. P.IVA IT00000000000</span>
       <div class="footer-legal">
-        <a href="privacy.html">Privacy</a>
-        <a href="cookies.html">Cookie</a>
-        <a href="#">Termini</a>
+        <a href="privacy.html" data-i18n="footer.legal.privacy">Privacy</a>
+        <a href="cookies.html" data-i18n="footer.legal.cookie">Cookie</a>
+        <a href="#" data-i18n="footer.legal.terms">Termini</a>
       </div>
     </div>
   </div>
@@ -586,13 +593,13 @@
      COOKIE BANNER
 ════════════════════════════════════════════ -->
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Consenso cookie">
-  <p>
+  <p data-i18n-html="cookie.text">
     Utilizziamo cookie tecnici necessari al funzionamento del sito. Leggi la nostra
     <a href="cookies.html">Cookie Policy</a> e la <a href="privacy.html">Privacy Policy</a>.
   </p>
   <div class="cookie-actions">
-    <button class="btn btn-ghost" id="cookie-decline" style="font-size: 13px;">Solo necessari</button>
-    <button class="btn btn-primary" id="cookie-accept" style="font-size: 13px; padding: 9px 18px;">Accetta</button>
+    <button class="btn btn-ghost" id="cookie-decline" style="font-size: 13px;" data-i18n="cookie.decline">Solo necessari</button>
+    <button class="btn btn-primary" id="cookie-accept" style="font-size: 13px; padding: 9px 18px;" data-i18n="cookie.accept">Accetta</button>
   </div>
 </div>
 
