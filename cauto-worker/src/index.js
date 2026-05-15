@@ -29,8 +29,12 @@ const app = new Hono();
 app.use("*", logger());
 
 app.use("*", async (c, next) => {
+  // FRONTEND_URL may be a comma-separated list for multi-origin support.
+  // Falls back to the production URL — "credentials: true" forbids the wildcard "*".
+  const raw = c.env.FRONTEND_URL || "https://app.opsonata.com";
+  const allowed = raw.split(",").map(s => s.trim()).filter(Boolean);
   const corsHandler = cors({
-    origin:         c.env.FRONTEND_URL ?? "*",
+    origin:         (origin) => allowed.includes(origin) ? origin : allowed[0],
     allowHeaders:   ["Authorization", "Content-Type"],
     allowMethods:   ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     credentials:    true,
