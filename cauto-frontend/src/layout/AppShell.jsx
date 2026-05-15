@@ -22,6 +22,11 @@ export default function AppShell() {
   const [redirecting, setRedirecting] = useState(true);
 
   useEffect(() => {
+    // Clear any stale interaction state left by a previous failed redirect
+    Object.keys(sessionStorage)
+      .filter(k => k.includes("interaction.status"))
+      .forEach(k => sessionStorage.removeItem(k));
+
     msalInstance.initialize()
       .then(() => msalInstance.handleRedirectPromise())
       .then(async result => {

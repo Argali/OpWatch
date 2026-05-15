@@ -16,7 +16,12 @@ function LoginScreen(){
 
   const handleMicrosoftLogin=async()=>{
     setLoading(true);setError(null);
-    try{ await msalInstance.loginRedirect(loginRequest); }
+    try{
+      if(msalInstance.getInteractionStatus?.()!=="none"){
+        Object.keys(sessionStorage).filter(k=>k.includes("interaction.status")).forEach(k=>sessionStorage.removeItem(k));
+      }
+      await msalInstance.loginRedirect(loginRequest);
+    }
     catch(e){ setError(e?.message||e?.errorCode||"Accesso non riuscito"); setLoading(false); }
   };
 
