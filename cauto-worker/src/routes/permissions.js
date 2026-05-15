@@ -23,7 +23,8 @@ permissions.get("/", async (c) => {
     if (!matrix[row.role]) matrix[row.role] = {};
     matrix[row.role][row.module] = row.level;
   }
-  return c.json({ ok: true, data: { matrix, roles: ROLES, modules: MODULES, levels: LEVELS } });
+  const my_access = matrix[user.role] || {};
+  return c.json({ ok: true, my_access, matrix, roles: ROLES, modules: MODULES, levels: LEVELS });
 });
 
 // PATCH — update matrix (fleet_manager / company_admin only)
