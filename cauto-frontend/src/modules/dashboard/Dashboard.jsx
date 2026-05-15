@@ -122,8 +122,7 @@ export default function Dashboard() {
         {/* Header */}
         <div style={{ background: T.sidebar, borderBottom: `1px solid ${T.border}`, padding: "0 16px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, zIndex: 100, backdropFilter: "blur(10px)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <FleetLogo size={26} />
-            <div style={{ fontSize: 14, fontWeight: 800, color: T.text, letterSpacing: -0.3 }}><span style={{ color: T.green }}>OpS</span>onata</div>
+            <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 28, objectFit: "contain" }} />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {currentNav && <span style={{ fontSize: 13, fontWeight: 600, color: T.textSub }}>{selectedVehicle ? selectedVehicle.name : currentNav.label}</span>}
@@ -263,12 +262,10 @@ export default function Dashboard() {
 
         {/* Logo */}
         <div style={{ height: 64, padding: sidebarOpen ? "0 16px" : "0", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: sidebarOpen ? "flex-start" : "center", gap: 10, flexShrink: 0 }}>
-          <FleetLogo size={32} />
-          {sidebarOpen && (
-            <div style={{ minWidth: 0, opacity: sidebarOpen ? 1 : 0, transition: "opacity 140ms" }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: T.text, letterSpacing: -0.3, whiteSpace: "nowrap" }}><span style={{ color: T.green }}>OpS</span>onata</div>
-            </div>
-          )}
+          {sidebarOpen
+            ? <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 36, objectFit: "contain", opacity: 1, transition: "opacity 140ms" }} />
+            : <FleetLogo size={32} />
+          }
         </div>
 
         {/* User info */}

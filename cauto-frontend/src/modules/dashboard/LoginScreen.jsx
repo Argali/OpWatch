@@ -3,7 +3,6 @@ import { msalInstance, loginRequest } from "@/msalConfig.js";
 import { useAuth } from "@/core/auth/AuthContext";
 import { API } from "@/api";
 import T, { alpha } from "@/theme";
-import FleetLogo from "@/shared/ui/FleetLogo";
 
 function LoginScreen({ authError = null }){
   const {login}=useAuth();
@@ -44,12 +43,9 @@ function LoginScreen({ authError = null }){
       <svg style={{position:"fixed",inset:0,width:"100%",height:"100%",opacity:0.03,pointerEvents:"none"}}><defs><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#60a5fa" strokeWidth="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>
       <div style={{width:400}}>
         <div style={{textAlign:"center",marginBottom:36}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:14}}>
-            <FleetLogo size={52}/>
-            <div style={{textAlign:"left"}}>
-              <div style={{fontSize:26,fontWeight:800,color:T.text,letterSpacing:-0.5}}><span style={{color:T.green}}>OpS</span>onata</div>
-              <div style={{fontSize:11,color:T.textSub,letterSpacing:1.5,textTransform:"uppercase",marginTop:1}}>Operation Platform</div>
-            </div>
+          <div style={{display:"inline-flex",flexDirection:"column",alignItems:"center",gap:8}}>
+            <img src="/opsonata-logo.png" alt="OpSonata" style={{height:64,objectFit:"contain"}}/>
+            <div style={{fontSize:11,color:T.textSub,letterSpacing:1.5,textTransform:"uppercase"}}>Operation Platform</div>
           </div>
         </div>
         <div style={{background:T.card,border:`1px solid ${T.cardBorder}`,borderRadius:16,padding:32,boxShadow:"0 20px 60px rgba(0,0,0,0.4)"}}>
