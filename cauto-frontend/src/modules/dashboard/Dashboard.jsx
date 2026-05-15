@@ -122,7 +122,7 @@ export default function Dashboard() {
         {/* Header */}
         <div style={{ background: T.sidebar, borderBottom: `1px solid ${T.border}`, padding: "0 16px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, zIndex: 100, backdropFilter: "blur(10px)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 28, objectFit: "contain" }} />
+            <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 40, objectFit: "contain" }} />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {currentNav && <span style={{ fontSize: 13, fontWeight: 600, color: T.textSub }}>{selectedVehicle ? selectedVehicle.name : currentNav.label}</span>}
@@ -263,7 +263,7 @@ export default function Dashboard() {
         {/* Logo */}
         <div style={{ height: 64, padding: sidebarOpen ? "0 16px" : "0", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: sidebarOpen ? "flex-start" : "center", gap: 10, flexShrink: 0 }}>
           {sidebarOpen
-            ? <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 36, objectFit: "contain", opacity: 1, transition: "opacity 140ms" }} />
+            ? <img src="/opsonata-logo.png" alt="OpSonata" style={{ height: 52, objectFit: "contain", opacity: 1, transition: "opacity 140ms" }} />
             : <FleetLogo size={32} />
           }
         </div>
