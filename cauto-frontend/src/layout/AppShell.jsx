@@ -44,7 +44,7 @@ export default function AppShell() {
             const res = await fetch(`${API}/auth/azure`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ms_token: result.idToken }),
+              body: JSON.stringify({ azureToken: result.idToken }),
             });
             data = await res.json();
           } catch (err) {
