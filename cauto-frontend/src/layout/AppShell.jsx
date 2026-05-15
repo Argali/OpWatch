@@ -23,10 +23,15 @@ export default function AppShell() {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // Clear any stale interaction state left by a previous failed redirect
-    Object.keys(sessionStorage)
-      .filter(k => k.includes("interaction.status"))
-      .forEach(k => sessionStorage.removeItem(k));
+    // Only clear stale interaction locks when there is no active redirect response
+    // in the URL. Clearing before handleRedirectPromise on a callback causes MSAL v5
+    // to return null (no pending redirect detected) and silently drop the auth result.
+    const hasRedirectResponse = new URLSearchParams(window.location.search).has("code");
+    if (!hasRedirectResponse) {
+      Object.keys(sessionStorage)
+        .filter(k => k.includes("interaction.status"))
+        .forEach(k => sessionStorage.removeItem(k));
+    }
 
     msalInstance.initialize()
       .then(() => msalInstance.handleRedirectPromise())
@@ -37,7 +42,7 @@ export default function AppShell() {
             const res = await fetch(`${API}/auth/azure`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ azureToken: result.idToken }),
+              body: JSON.stringify({ ms_token: result.idToken }),
             });
             data = await res.json();
           } catch (err) {
