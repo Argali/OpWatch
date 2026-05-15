@@ -20,6 +20,7 @@ const Splash = () => (
 export default function AppShell() {
   const { auth, login } = useAuth();
   const [redirecting, setRedirecting] = useState(true);
+  const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
     // Clear any stale interaction state left by a previous failed redirect
@@ -31,18 +32,31 @@ export default function AppShell() {
       .then(() => msalInstance.handleRedirectPromise())
       .then(async result => {
         if (result?.idToken) {
+          let data;
           try {
             const res = await fetch(`${API}/auth/azure`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ id_token: result.idToken }),
+              body: JSON.stringify({ azureToken: result.idToken }),
             });
-            const data = await res.json();
-            if (data.ok) login(data.token, data.user, data.tenant);
-          } catch {}
+            data = await res.json();
+          } catch (err) {
+            console.error("[Auth] Network error contacting backend:", err);
+            setAuthError("Impossibile raggiungere il server. Controlla la connessione o riprova.");
+            return;
+          }
+          if (data.ok) {
+            login(data.token, data.user, data.tenant);
+          } else {
+            console.error("[Auth] Backend rejected token:", data.error);
+            setAuthError(data.error || "Accesso non riuscito. Riprova.");
+          }
         }
       })
-      .catch(() => {})
+      .catch(err => {
+        console.error("[Auth] MSAL redirect error:", err);
+        setAuthError(err?.message || "Errore durante l'accesso Microsoft. Riprova.");
+      })
       .finally(() => setRedirecting(false));
   }, [login]);
 
@@ -50,7 +64,7 @@ export default function AppShell() {
 
   return (
     <Suspense fallback={<Splash />}>
-      {auth ? <Dashboard /> : <LoginScreen />}
+      {auth ? <Dashboard /> : <LoginScreen authError={authError} />}
     </Suspense>
   );
 }

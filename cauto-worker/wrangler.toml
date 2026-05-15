@@ -20,12 +20,13 @@ bucket_name = "opsonata-media"
 crons = ["0 6 * * *"]   # Daily 6am UTC — PM scheduler + license expiry check
 
 [vars]
-ENVIRONMENT  = "production"
+ENVIRONMENT        = "production"
+DEFAULT_TENANT_ID  = "cauto"   # Tenant assigned to new Azure SSO users on first login
 # Set these as Secrets in the Cloudflare dashboard (never in this file):
 # JWT_SECRET
-# AZURE_CLIENT_ID
-# AZURE_TENANT_ID
-# FRONTEND_URL
+# AZURE_CLIENT_ID           ← 5dcaf286-6c13-42fc-99f0-94e991d86354
+# AZURE_TENANT_ID           ← 65e803c0-672a-4162-85a7-e1a402843bd2
+# FRONTEND_URL              ← https://app.opsonata.com (or your Cloudflare Pages URL)
 # SEED_SECRET              ← one-time password seeding key
 # SEED_SUPERADMIN_PASSWORD
 # SEED_OFFICINA_PASSWORD

@@ -41,7 +41,9 @@ auth.post("/login", async (c) => {
 
 // ── Azure AD token exchange ───────────────────────────────────────────────────
 auth.post("/azure", async (c) => {
-  const { azureToken } = await c.req.json().catch(() => ({}));
+  const body = await c.req.json().catch(() => ({}));
+  // Accept both field names: new (azureToken) and legacy (id_token)
+  const azureToken = body.azureToken || body.id_token;
   if (!azureToken)
     return c.json({ ok: false, error: "Azure token mancante" }, 400);
 
@@ -52,17 +54,48 @@ auth.post("/azure", async (c) => {
     return c.json({ ok: false, error: "Token Azure non valido" }, 401);
   }
 
-  const email = azurePayload.preferred_username || azurePayload.email || azurePayload.upn;
+  const email = (
+    azurePayload.preferred_username ||
+    azurePayload.email              ||
+    azurePayload.upn                ||
+    ""
+  ).toLowerCase().trim();
+
   if (!email)
     return c.json({ ok: false, error: "Email non trovata nel token Azure" }, 401);
 
-  const user = await c.env.DB
-    .prepare("SELECT * FROM users WHERE email = ? AND active = 1 AND auth_provider = 'azure'")
-    .bind(email.toLowerCase().trim())
+  let user = await c.env.DB
+    .prepare("SELECT * FROM users WHERE email = ?")
+    .bind(email)
     .first();
 
-  if (!user)
-    return c.json({ ok: false, error: "Utente non autorizzato" }, 403);
+  if (user && !user.active)
+    return c.json({ ok: false, error: "Account disattivato" }, 403);
+
+  // Auto-provision: create the user on first Azure login
+  if (!user) {
+    const name     = azurePayload.name || email;
+    const tenantId = c.env.DEFAULT_TENANT_ID ?? "cauto";
+    const newId    = crypto.randomUUID();
+
+    try {
+      await c.env.DB
+        .prepare(`INSERT INTO users (id, name, email, password_hash, role, tenant_id, active, auth_provider)
+                  VALUES (?, ?, ?, NULL, 'coordinatore_operativo', ?, 1, 'azure')`)
+        .bind(newId, name, email, tenantId)
+        .run();
+
+      user = await c.env.DB
+        .prepare("SELECT * FROM users WHERE id = ?")
+        .bind(newId)
+        .first();
+
+      console.log(`[Auth] Azure user auto-provisioned: ${email} (tenant: ${tenantId})`);
+    } catch (err) {
+      console.error("[Auth] Failed to auto-provision Azure user:", err.message);
+      return c.json({ ok: false, error: "Impossibile creare l'utente. Contattare l'amministratore." }, 500);
+    }
+  }
 
   const token = await signToken(
     { userId: user.id, email: user.email, role: user.role, tenantId: user.tenant_id },

@@ -5,9 +5,9 @@ import { API } from "@/api";
 import T, { alpha } from "@/theme";
 import FleetLogo from "@/shared/ui/FleetLogo";
 
-function LoginScreen(){
+function LoginScreen({ authError = null }){
   const {login}=useAuth();
-  const [error,setError]=useState(null);
+  const [error,setError]=useState(authError);
   const [loading,setLoading]=useState(false);
   const [showAdmin,setShowAdmin]=useState(false);
   const [adminEmail,setAdminEmail]=useState("");
