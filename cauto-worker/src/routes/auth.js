@@ -50,7 +50,8 @@ auth.post("/azure", async (c) => {
   let azurePayload;
   try {
     azurePayload = await verifyAzureToken(azureToken, c.env);
-  } catch {
+  } catch (err) {
+    console.error("[Auth] Azure token validation failed:", err?.message ?? err);
     return c.json({ ok: false, error: "Token Azure non valido" }, 401);
   }
 
