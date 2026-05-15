@@ -23,10 +23,12 @@ export default function AppShell() {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // Only clear stale interaction locks when there is no active redirect response
-    // in the URL. Clearing before handleRedirectPromise on a callback causes MSAL v5
-    // to return null (no pending redirect detected) and silently drop the auth result.
-    const hasRedirectResponse = new URLSearchParams(window.location.search).has("code");
+    // Only clear stale interaction locks when there is no active redirect response.
+    // MSAL v5 defaults to response_mode=fragment, so the code arrives in the URL
+    // hash (#code=...), not the query string. Clearing interaction.status before
+    // handleRedirectPromise causes MSAL to return null and silently drop the result.
+    const loc = window.location.search + window.location.hash;
+    const hasRedirectResponse = loc.includes("code=") || loc.includes("error=");
     if (!hasRedirectResponse) {
       Object.keys(sessionStorage)
         .filter(k => k.includes("interaction.status"))
