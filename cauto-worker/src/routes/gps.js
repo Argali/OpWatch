@@ -50,6 +50,42 @@ gps.get("/vehicles", async (c) => {
   return c.json({ ok: true, data: MOCK_VEHICLES, source: "mock" });
 });
 
+// ── Driver live-location sharing (KV, 5-min TTL, ephemeral) ──────────────────
+// Key pattern: loc:{tenantId}:{userId}
+
+gps.post("/driver-location", async (c) => {
+  const user = c.get("user");
+  const { lat, lng } = await c.req.json().catch(() => ({}));
+  if (lat == null || lng == null)
+    return c.json({ ok: false, error: "lat e lng obbligatori" }, 400);
+
+  const key = `loc:${user.tenant_id}:${user.id}`;
+  await c.env.SESSIONS.put(key, JSON.stringify({
+    userId: user.id, name: user.name, email: user.email,
+    lat, lng, updatedAt: new Date().toISOString(),
+  }), { expirationTtl: 300 });
+
+  return c.json({ ok: true });
+});
+
+gps.delete("/driver-location", async (c) => {
+  const user = c.get("user");
+  await c.env.SESSIONS.delete(`loc:${user.tenant_id}:${user.id}`);
+  return c.json({ ok: true });
+});
+
+gps.get("/driver-locations", async (c) => {
+  const user    = c.get("user");
+  const prefix  = `loc:${user.tenant_id}:`;
+  const { keys } = await c.env.SESSIONS.list({ prefix });
+
+  const locations = (
+    await Promise.all(keys.map(k => c.env.SESSIONS.get(k.name, "json")))
+  ).filter(Boolean);
+
+  return c.json({ ok: true, data: locations });
+});
+
 // ── Routes (percorsi) — stored in D1 ─────────────────────────────────────────
 gps.get("/routes", async (c) => {
   const user = c.get("user");

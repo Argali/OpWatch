@@ -20,6 +20,8 @@ import territorio       from "./routes/segnalazioni-territorio.js";
 import reports          from "./routes/reports.js";
 import planning         from "./routes/planning.js";
 import upload, { serveMedia } from "./routes/upload.js";
+import superadmin, { auditLogs } from "./routes/superadmin.js";
+import bugs             from "./routes/bugs.js";
 import { seedPasswords } from "./seed.js";
 import { requireAuth }   from "./middleware/auth.js";
 
@@ -69,6 +71,9 @@ app.route("/api/territorio",       territorio);
 app.route("/api/reports",          reports);
 app.route("/api/planning",         planning);
 app.route("/api/upload",           upload);
+app.route("/api/superadmin",       superadmin);
+app.route("/api/audit-logs",       auditLogs);
+app.route("/api/bugs",             bugs);
 
 // ── Public media serving from R2 (no auth — URLs are unguessable) ─────────────
 app.get("/api/media/:key{[^/]+}", serveMedia);
