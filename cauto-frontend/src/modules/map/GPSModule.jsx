@@ -900,7 +900,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
     try{
       const body={...meta,waypoints:snappedPath||editWaypoints,opacity:Number(meta.opacity),annotations:editAnnotations};
       const url=editingId==="new"?`${API}/gps/routes`:`${API}/gps/routes/${editingId}`;
-      const method=editingId==="new"?"POST":"PUT";
+      const method=editingId==="new"?"POST":"PATCH";
       const d=await(await fetch(url,{method,headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify(body)})).json();
       if(d.ok){cancelEdit();await loadRoutes();}
     }catch{}
