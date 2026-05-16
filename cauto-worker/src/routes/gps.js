@@ -127,6 +127,22 @@ gps.get("/vehicles", async (c) => {
   return c.json({ ok: true, data: MOCK_VEHICLES, source: "mock" });
 });
 
+// ── Geotab connection test (admin only, temporary) ────────────────────────────
+gps.get("/geotab-test", async (c) => {
+  const server  = c.env.GEOTAB_SERVER   || "(not set)";
+  const db      = c.env.GEOTAB_DATABASE || "(not set)";
+  const user    = c.env.GEOTAB_USERNAME || "(not set)";
+  const hasPass = !!c.env.GEOTAB_PASSWORD;
+  const provider= c.env.GPS_PROVIDER    || "(not set)";
+  try {
+    await c.env.SESSIONS.delete(GT_SESSION_KEY).catch(()=>{}); // force fresh auth
+    const creds = await gtRefreshSession(c.env);
+    return c.json({ ok: true, provider, server, db, user, hasPass, sessionId: creds.sessionId.slice(0,8)+"…", resolvedServer: creds.server });
+  } catch (err) {
+    return c.json({ ok: false, provider, server, db, user, hasPass, error: err.message });
+  }
+});
+
 // ── Driver live-location sharing (KV, 5-min TTL, ephemeral) ──────────────────
 // Key pattern: loc:{tenantId}:{userId}
 
