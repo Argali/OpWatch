@@ -113,14 +113,27 @@ function mapGeotabVehicles(statusList, deviceList) {
     });
 }
 
+const GT_VEHICLES_KEY = "geotab:vehicles";
+const GT_DEVICES_KEY  = "geotab:devices";
+
 gps.get("/vehicles", async (c) => {
   if (c.env.GPS_PROVIDER === "geotab") {
+    // Serve from KV cache (60 s min TTL) — keeps us well under the 10 req/min quota
+    const cached = await c.env.SESSIONS.get(GT_VEHICLES_KEY, "json");
+    if (cached) return c.json({ ok: true, data: cached, source: "geotab:cached" });
+
     try {
-      const [statusList, deviceList] = await Promise.all([
-        gtCall(c.env, "Get", { typeName: "DeviceStatusInfo" }),
-        gtCall(c.env, "Get", { typeName: "Device" }),
-      ]);
-      return c.json({ ok: true, data: mapGeotabVehicles(statusList, deviceList), source: "geotab" });
+      // Device list changes rarely — cache for 5 min
+      let deviceList = await c.env.SESSIONS.get(GT_DEVICES_KEY, "json");
+      if (!deviceList) {
+        deviceList = await gtCall(c.env, "Get", { typeName: "Device" });
+        await c.env.SESSIONS.put(GT_DEVICES_KEY, JSON.stringify(deviceList), { expirationTtl: 300 });
+      }
+      // Live positions — cache for 60 s (KV minimum TTL)
+      const statusList = await gtCall(c.env, "Get", { typeName: "DeviceStatusInfo" });
+      const vehicles = mapGeotabVehicles(statusList, deviceList);
+      await c.env.SESSIONS.put(GT_VEHICLES_KEY, JSON.stringify(vehicles), { expirationTtl: 60 });
+      return c.json({ ok: true, data: vehicles, source: "geotab" });
     } catch (err) {
       console.error("Geotab error:", err.message);
       return c.json({ ok: false, error: "Errore Geotab: " + err.message }, 502);
