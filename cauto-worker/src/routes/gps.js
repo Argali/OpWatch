@@ -64,7 +64,7 @@ async function gtRefreshSession(env) {
     database: env.GEOTAB_DATABASE,
     sessionId: result.credentials.sessionId,
     userName: env.GEOTAB_USERNAME,
-    server: result.path || server,
+    server: (result.path && result.path !== "ThisServer") ? result.path : server,
   };
   await env.SESSIONS.put(GT_SESSION_KEY, JSON.stringify(creds), { expirationTtl: 82800 }); // 23 h
   return creds;
