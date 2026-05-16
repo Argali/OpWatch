@@ -72,12 +72,12 @@ export default function CompanyAdminPanel(){
     setTimeout(()=>setMsg(null),3000);
   };
   const toggleUser=async(id,active)=>{
-    await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({active})});
-    load();
+    const r=await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({active})});
+    const d=await r.json();if(d.ok)load();else setMsg({ok:false,text:d.error||"Errore aggiornamento utente"});
   };
   const changeRole=async(id,role)=>{
-    await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({role})});
-    load();
+    const r=await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({role})});
+    const d=await r.json();if(d.ok)load();else setMsg({ok:false,text:d.error||"Errore aggiornamento ruolo"});
   };
 
   return(

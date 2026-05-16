@@ -41,18 +41,29 @@ function SegnalazioniModule(){
     if(!form.settore||!form.vehicle||!form.description){setMsg({ok:false,text:"Settore, veicolo e descrizione sono obbligatori"});return;}
     setSubmitting(true);setMsg(null);
     try{
-      const fd=new FormData();
-      ["reporter_name","settore","vehicle","plate","description","tipo","available_from","ponte"].forEach(k=>fd.append(k,form[k]||""));
-      if(form.photo)fd.append("photo",form.photo);
-      const r=await fetch(`${API}/segnalazioni`,{method:"POST",headers:{Authorization:`Bearer ${auth.token}`},body:fd});
+      let photo_url=null;
+      if(form.photo){
+        const fd=new FormData();fd.append("file",form.photo);
+        const upRes=await fetch(`${API}/upload`,{method:"POST",headers:{Authorization:`Bearer ${auth.token}`},body:fd});
+        const upData=await upRes.json();
+        if(upData.ok)photo_url=upData.url;
+      }
+      const r=await fetch(`${API}/segnalazioni`,{method:"POST",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},
+        body:JSON.stringify({tipo:form.tipo,vehicle:form.vehicle,plate:form.plate,description:form.description,settore:form.settore,reporter_name:form.reporter_name,available_from:form.available_from||null,photo_url})});
       const d=await r.json();
       if(d.ok){setMsg({ok:true,text:"Segnalazione inviata"});setShowForm(false);setForm(emptyForm);setPhotoPreview(null);loadList();}
       else setMsg({ok:false,text:d.error});
     }catch{setMsg({ok:false,text:"Errore di rete"});}
     setSubmitting(false);setTimeout(()=>setMsg(null),4000);
   };
-  const updateStatus=async(id,status)=>{await fetch(`${API}/segnalazioni/${id}/status`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({status})});loadList();};
-  const updatePonte=async(id,ponte)=>{await fetch(`${API}/segnalazioni/${id}/ponte`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({ponte})});loadList();};
+  const updateStatus=async(id,status)=>{
+    const r=await fetch(`${API}/segnalazioni/${id}/status`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({status})});
+    const d=await r.json();if(d.ok)loadList();else setMsg({ok:false,text:d.error||"Errore aggiornamento stato"});
+  };
+  const updatePonte=async(id,ponte)=>{
+    const r=await fetch(`${API}/segnalazioni/${id}/ponte`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({ponte})});
+    const d=await r.json();if(d.ok)loadList();else setMsg({ok:false,text:d.error||"Errore aggiornamento ponte"});
+  };
   const inp={width:"100%",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,padding:"10px 14px",color:T.text,fontSize:13,outline:"none",boxSizing:"border-box",fontFamily:T.font};
   const lbl={fontSize:11,color:T.textSub,display:"block",marginBottom:5,textTransform:"uppercase",letterSpacing:0.5,fontWeight:600};
   const openSeg=list.filter(s=>s.status!=="chiusa");

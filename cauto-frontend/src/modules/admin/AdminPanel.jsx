@@ -145,8 +145,14 @@ export default function AdminPanel(){
     setTimeout(()=>setUserMsg(null),3000);
   };
 
-  const toggleUser=async(id,active)=>{ await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({active})}); loadUsers(); };
-  const changeRole=async(id,role)=>{ await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({role})}); loadUsers(); };
+  const toggleUser=async(id,active)=>{
+    const r=await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({active})});
+    const d=await r.json();if(d.ok)loadUsers();else setUserMsg({ok:false,text:d.error||"Errore aggiornamento utente"});
+  };
+  const changeRole=async(id,role)=>{
+    const r=await fetch(`${API}/admin/users/${id}`,{method:"PATCH",headers:{Authorization:`Bearer ${auth.token}`,"Content-Type":"application/json"},body:JSON.stringify({role})});
+    const d=await r.json();if(d.ok)loadUsers();else setUserMsg({ok:false,text:d.error||"Errore aggiornamento ruolo"});
+  };
 
   const inp={width:"100%",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,padding:"9px 12px",color:T.text,fontSize:13,outline:"none",boxSizing:"border-box",fontFamily:T.font};
   const selStyle={background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,padding:"7px 10px",color:T.text,fontSize:12,outline:"none",fontFamily:T.font,cursor:"pointer"};

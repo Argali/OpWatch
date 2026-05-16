@@ -91,7 +91,7 @@ planning.get("/operators", async (c) => {
 });
 
 // ── PUT /operators/:id ────────────────────────────────────────────────────────
-planning.put("/operators/:id", rbac("planning", "edit"), async (c) => {
+planning.patch("/operators/:id", rbac("planning", "edit"), async (c) => {
   const user = c.get("user");
   const id   = c.req.param("id");
   const body = await c.req.json().catch(() => ({}));
@@ -150,7 +150,7 @@ planning.get("/events", async (c) => {
 });
 
 // ── PUT /events — replace week events ────────────────────────────────────────
-planning.put("/events", rbac("planning", "edit"), async (c) => {
+planning.patch("/events", rbac("planning", "edit"), async (c) => {
   const user   = c.get("user");
   const body   = await c.req.json().catch(() => ({}));
   const events = body.events;

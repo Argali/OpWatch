@@ -27,8 +27,13 @@ segnalazioni.post("/", rbac("segnalazioni", "edit"), async (c) => {
 
   const id = crypto.randomUUID();
   await c.env.DB
-    .prepare("INSERT INTO segnalazioni (id,tenant_id,tipo,vehicle,plate,description,reported_by) VALUES (?,?,?,?,?,?,?)")
-    .bind(id, user.tenant_id, body.tipo, body.vehicle, body.plate ?? "", body.description ?? "", user.email)
+    .prepare(`INSERT INTO segnalazioni
+      (id,tenant_id,tipo,vehicle,plate,description,reported_by,settore,reporter_name,available_from,photo_url)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?)`)
+    .bind(id, user.tenant_id, body.tipo, body.vehicle,
+          body.plate ?? "", body.description ?? "", user.email,
+          body.settore ?? "", body.reporter_name ?? user.name ?? "",
+          body.available_from ?? null, body.photo_url ?? null)
     .run();
   return c.json({ ok: true, data: { id, ...body, status: "aperta", tenant_id: user.tenant_id } }, 201);
 });
