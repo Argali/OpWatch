@@ -37,16 +37,93 @@ async function callValhalla(env, endpoint, body, timeoutMs = 12000) {
   }
 }
 
-// ── Mock vehicles (replaced by live adapter when Visirun is authorised) ───────
+// ── Mock vehicles (fallback when GPS_PROVIDER != "geotab") ───────────────────
 const MOCK_VEHICLES = [
-  { id:"v1", plate:"FE-123-AA", name:"Camion 01", status:"active", lat:44.8381, lng:11.6198, speed:35, comune:"Ferrara", settore:"A" },
-  { id:"v2", plate:"FE-456-BB", name:"Camion 02", status:"active", lat:44.8321, lng:11.6301, speed:0,  comune:"Ferrara", settore:"B" },
-  { id:"v3", plate:"FE-789-CC", name:"Furgone 01",status:"active", lat:44.8412, lng:11.6089, speed:28, comune:"Ferrara", settore:"A" },
-  { id:"v4", plate:"FE-012-DD", name:"Camion 03", status:"workshop",lat:44.8290,lng:11.6250, speed:0,  comune:"Ferrara", settore:"C" },
+  { id:"v1", plate:"FE-123-AA", name:"Camion 01", status:"active",   lat:44.8381, lng:11.6198, speed_kmh:35, comune:"Ferrara", settore:"A" },
+  { id:"v2", plate:"FE-456-BB", name:"Camion 02", status:"active",   lat:44.8321, lng:11.6301, speed_kmh:0,  comune:"Ferrara", settore:"B" },
+  { id:"v3", plate:"FE-789-CC", name:"Furgone 01",status:"active",   lat:44.8412, lng:11.6089, speed_kmh:28, comune:"Ferrara", settore:"A" },
+  { id:"v4", plate:"FE-012-DD", name:"Camion 03", status:"workshop", lat:44.8290, lng:11.6250, speed_kmh:0,  comune:"Ferrara", settore:"C" },
 ];
 
+// ── Geotab MyGeotab API adapter ───────────────────────────────────────────────
+const GT_SESSION_KEY = "geotab:session";
+
+async function gtRefreshSession(env) {
+  const server = env.GEOTAB_SERVER || "my.geotab.com";
+  const res = await fetch(`https://${server}/apiv1`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      method: "Authenticate",
+      params: { database: env.GEOTAB_DATABASE, userName: env.GEOTAB_USERNAME, password: env.GEOTAB_PASSWORD },
+    }),
+  });
+  const { result, error } = await res.json();
+  if (!result) throw new Error(`Geotab auth failed: ${error?.message || "unknown"}`);
+  const creds = {
+    database: env.GEOTAB_DATABASE,
+    sessionId: result.credentials.sessionId,
+    userName: env.GEOTAB_USERNAME,
+    server: result.path || server,
+  };
+  await env.SESSIONS.put(GT_SESSION_KEY, JSON.stringify(creds), { expirationTtl: 82800 }); // 23 h
+  return creds;
+}
+
+async function gtCall(env, method, params) {
+  let creds = await env.SESSIONS.get(GT_SESSION_KEY, "json") || await gtRefreshSession(env);
+  const doCall = async (c) => {
+    const res = await fetch(`https://${c.server || env.GEOTAB_SERVER}/apiv1`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ method, params: { ...params, credentials: c } }),
+    });
+    return res.json();
+  };
+  let data = await doCall(creds);
+  // Session expired → refresh once and retry
+  if (data.error?.data?.type === "InvalidUserException") {
+    await env.SESSIONS.delete(GT_SESSION_KEY);
+    creds = await gtRefreshSession(env);
+    data = await doCall(creds);
+  }
+  if (data.error) throw new Error(data.error.message || "Geotab API error");
+  return data.result;
+}
+
+function mapGeotabVehicles(statusList, deviceList) {
+  const byId = new Map((deviceList || []).map(d => [d.id, d]));
+  return (statusList || [])
+    .filter(s => s.latitude != null && s.longitude != null)
+    .map(s => {
+      const d = byId.get(s.device?.id) || {};
+      return {
+        id:        s.device?.id || "",
+        name:      d.name || s.device?.id || "",
+        plate:     d.licensePlate || "",
+        status:    s.isDeviceCommunicating ? "active" : "inactive",
+        lat:       s.latitude,
+        lng:       s.longitude,
+        speed_kmh: Math.round(s.speed || 0),
+        comune:    "",
+        settore:   "",
+      };
+    });
+}
+
 gps.get("/vehicles", async (c) => {
-  // When GPS_PROVIDER env var is set to 'visirun', swap mock for live adapter here
+  if (c.env.GPS_PROVIDER === "geotab") {
+    try {
+      const [statusList, deviceList] = await Promise.all([
+        gtCall(c.env, "Get", { typeName: "DeviceStatusInfo" }),
+        gtCall(c.env, "Get", { typeName: "Device" }),
+      ]);
+      return c.json({ ok: true, data: mapGeotabVehicles(statusList, deviceList), source: "geotab" });
+    } catch (err) {
+      console.error("Geotab error:", err.message);
+      return c.json({ ok: false, error: "Errore Geotab: " + err.message }, 502);
+    }
+  }
   return c.json({ ok: true, data: MOCK_VEHICLES, source: "mock" });
 });
 

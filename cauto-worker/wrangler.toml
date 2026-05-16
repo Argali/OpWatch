@@ -21,6 +21,12 @@ crons = ["0 6 * * *"]   # Daily 6am UTC — PM scheduler + license expiry check
 
 [vars]
 ENVIRONMENT        = "production"
+GPS_PROVIDER       = "geotab"          # "mock" | "geotab"
+GEOTAB_SERVER      = "my.geotab.com"
+GEOTAB_DATABASE    = "demo_opsonata_demo"
+# Secrets to add in Cloudflare dashboard (Workers → opsonata-worker → Settings → Variables):
+#   GEOTAB_USERNAME   erwankervazo@gmail.com
+#   GEOTAB_PASSWORD   (the password)
 DEFAULT_TENANT_ID  = "cauto"   # Tenant assigned to new Azure SSO users on first login
 # These are not secret — they match the values already public in the frontend msalConfig.js
 AZURE_CLIENT_ID    = "5dcaf286-6c13-42fc-99f0-94e991d86354"
