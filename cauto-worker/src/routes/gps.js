@@ -65,9 +65,9 @@ gps.post("/routes", rbac("gps", "edit"), async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const id   = crypto.randomUUID();
   await c.env.DB
-    .prepare("INSERT INTO routes (id,tenant_id,name,color,opacity,comune,materiale,sector,waypoints_json) VALUES (?,?,?,?,?,?,?,?,?)")
+    .prepare("INSERT INTO routes (id,tenant_id,name,color,opacity,comune,materiale,sector,giorno,waypoints_json) VALUES (?,?,?,?,?,?,?,?,?,?)")
     .bind(id, user.tenant_id, body.name ?? "", body.color ?? "#4ade80", body.opacity ?? 0.85,
-          body.comune ?? "", body.materiale ?? "", body.sector ?? "", JSON.stringify(body.waypoints ?? []))
+          body.comune ?? "", body.materiale ?? "", body.sector ?? "", body.giorno ?? null, JSON.stringify(body.waypoints ?? []))
     .run();
   return c.json({ ok: true, data: { id, ...body } }, 201);
 });
@@ -77,9 +77,9 @@ gps.patch("/routes/:id", rbac("gps", "edit"), async (c) => {
   const id   = c.req.param("id");
   const body = await c.req.json().catch(() => ({}));
   await c.env.DB
-    .prepare("UPDATE routes SET name=?,color=?,opacity=?,comune=?,materiale=?,sector=?,waypoints_json=?,updated_at=datetime('now') WHERE id=? AND tenant_id=?")
+    .prepare("UPDATE routes SET name=?,color=?,opacity=?,comune=?,materiale=?,sector=?,giorno=?,waypoints_json=?,updated_at=datetime('now') WHERE id=? AND tenant_id=?")
     .bind(body.name, body.color, body.opacity, body.comune, body.materiale, body.sector,
-          JSON.stringify(body.waypoints ?? []), id, user.tenant_id)
+          body.giorno ?? null, JSON.stringify(body.waypoints ?? []), id, user.tenant_id)
     .run();
   return c.json({ ok: true });
 });

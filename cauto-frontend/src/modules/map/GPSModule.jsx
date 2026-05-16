@@ -94,7 +94,14 @@ import LiveCamera from "@/modules/map/LiveCamera";
 import EditoreModule from "@/modules/map/EditoreModule";
 
 // ─── GPS MODULE ───────────────────────────────────────────────────────────────
-const EMPTY_META={name:"",color:"#4ade80",opacity:0.85,comune:"",materiale:"",sector:""};
+const GIORNI=[
+  {key:"lun",label:"Lun"},{key:"mar",label:"Mar"},{key:"mer",label:"Mer"},
+  {key:"gio",label:"Gio"},{key:"ven",label:"Ven"},{key:"sab",label:"Sab"},{key:"dom",label:"Dom"},
+];
+const GIORNO_KEYS=["dom","lun","mar","mer","gio","ven","sab"]; // matches Date.getDay() index
+const todayGiorno=()=>GIORNO_KEYS[new Date().getDay()];
+
+const EMPTY_META={name:"",color:"#4ade80",opacity:0.85,comune:"",materiale:"",sector:"",giorno:""};
 
 const EMPTY_ZONE_CFG={type:"circle",name:"",comune:"",materiale:"",sector:"",fillColor:"#60a5fa",fillOpacity:0.3,borderColor:"#3a7bd5"};
 const EMPTY_PUNTO_CFG={nome:"",comune:"",materiale:"",sector:"",color:"#f87171"};
@@ -298,6 +305,8 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const [showNavTrucks,setShowNavTrucks]=useState(false);
   const [showNavPercorsi,setShowNavPercorsi]=useState(false);
   const [showNavSegnala,setShowNavSegnala]=useState(false);
+  const [selectedGiorno,setSelectedGiorno]=useState(todayGiorno);
+  const [settoreFilter,setSettoreFilter]=useState("");
   const [navSegnalazione,setNavSegnalazione]=useState({tipo:"",note:""});
   const [navSegnalaMsg,setNavSegnalaMsg]=useState(null);
   const [navSegnalaSending,setNavSegnalaSending]=useState(false);
@@ -707,7 +716,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   useEffect(()=>{loadRoutes();},[loadRoutes]);
 
   const toggleRoute=(id)=>setVisibleRoutes(prev=>({...prev,[id]:!prev[id]}));
-  const startEdit=(r)=>{setEditingId(r.id);setEditWaypoints(r.waypoints.map(wp=>[...wp]));setMeta({name:r.name,color:r.color,opacity:r.opacity??0.85,comune:r.comune||"",materiale:r.materiale||"",sector:r.sector||""});setSnappedSegments(null);setEditAnnotations(r.annotations||[]);setAnnotMode(false);setAnnotEditId(null);};
+  const startEdit=(r)=>{setEditingId(r.id);setEditWaypoints(r.waypoints.map(wp=>[...wp]));setMeta({name:r.name,color:r.color,opacity:r.opacity??0.85,comune:r.comune||"",materiale:r.materiale||"",sector:r.sector||"",giorno:r.giorno||""});setSnappedSegments(null);setEditAnnotations(r.annotations||[]);setAnnotMode(false);setAnnotEditId(null);};
   const startNew=()=>{setEditingId("new");setEditWaypoints([]);setMeta({...EMPTY_META});setSnappedSegments(null);setEditAnnotations([]);setAnnotMode(false);setAnnotEditId(null);};
   const cancelEdit=()=>{setEditingId(null);setEditWaypoints([]);setMeta(EMPTY_META);setSnappedSegments(null);setEditAnnotations([]);setAnnotMode(false);setAnnotEditId(null);};
 
@@ -905,6 +914,23 @@ function GPSModule({onSelectVehicle,mode="live"}){
 
   const canEdit=can("gps","edit");
   const editorActive=tab==="editor"&&editingId!==null;
+
+  // ── Derived: day-filtered routes + settore-filtered vehicles ──────────────
+  const dayRoutes=useMemo(()=>{
+    if(!routes)return[];
+    if(!selectedGiorno)return routes;
+    return routes.filter(r=>!r.giorno||r.giorno===selectedGiorno);
+  },[routes,selectedGiorno]);
+
+  const uniqueSettori=useMemo(()=>
+    [...new Set((vehicles||[]).map(v=>v.settore).filter(Boolean))].sort()
+  ,[vehicles]);
+
+  const filteredVehicles=useMemo(()=>{
+    if(!vehicles)return[];
+    if(!settoreFilter)return vehicles;
+    return vehicles.filter(v=>v.settore===settoreFilter);
+  },[vehicles,settoreFilter]);
 
   // ── Geolocation: share position to backend ────────────────────────────────
   const toggleSharing=useCallback(()=>{
@@ -1260,7 +1286,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
           )}
 
           {(tab==="live"||tab==="editor")&&<FleetMap
-            vehicles={vehicles} routes={routes||[]} visibleRoutes={visibleRoutes}
+            vehicles={vehicles} routes={tab==="live"?dayRoutes:routes||[]} visibleRoutes={visibleRoutes}
             zones={tab==="live"?zones.filter(z=>visibleZones[z.id]!==false):[]} punti={tab==="live"?punti.filter(p=>visiblePunti[p.id]!==false):[]}
             editMode={editorActive} editWaypoints={editWaypoints} editColor={meta.color}
             snappedSegments={snappedSegments} snapMode={snapMode}
@@ -1284,18 +1310,34 @@ function GPSModule({onSelectVehicle,mode="live"}){
             <div style={{position:"absolute",top:12,right:12,zIndex:1000,background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:210,maxWidth:240,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
               {/* Percorsi section — always visible */}
               <>
-                <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.live?`1px solid ${T.border}`:"none"}}>
-                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({routes.length})</div>
+                <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`}}>
+                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({dayRoutes.length})</div>
                   <span style={{fontSize:12,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
                 </div>
+                {/* Day selector pills */}
+                <div style={{display:"flex",gap:4,padding:"8px 14px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
+                  <button onClick={()=>setSelectedGiorno(null)}
+                    style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!selectedGiorno?700:400}}>
+                    Tutti
+                  </button>
+                  {GIORNI.map(g=>(
+                    <button key={g.key} onClick={()=>setSelectedGiorno(k=>k===g.key?null:g.key)}
+                      style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400}}>
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
                 {legendOpen.live&&<div style={{padding:"8px 14px",borderBottom:zones.length>0||punti.length>0?`1px solid ${T.border}`:"none"}}>
-                  {routes.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun percorso</div>}
-                  {routes.map(r=>(
+                  {dayRoutes.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun percorso</div>}
+                  {dayRoutes.map(r=>(
                     <div key={r.id} onClick={()=>toggleRoute(r.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleRoutes[r.id]?1:0.3,transition:"opacity 0.15s"}}>
                       <div style={{width:22,height:3,background:r.color,borderRadius:2,flexShrink:0}}/>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                        {(r.comune||r.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[r.comune,r.materiale].filter(Boolean).join(" · ")}</div>}
+                        <div style={{fontSize:9,color:T.textDim}}>
+                          {r.giorno?GIORNI.find(g=>g.key===r.giorno)?.label:"Tutti"}
+                          {(r.comune||r.materiale)&&` · ${[r.comune,r.materiale].filter(Boolean).join(" · ")}`}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -1586,9 +1628,23 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 <div style={{fontSize:16,fontWeight:700,color:T.text}}>🚛 Veicoli</div>
                 <button onClick={()=>setShowNavTrucks(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
               </div>
+              {uniqueSettori.length>0&&(
+                <div style={{display:"flex",gap:6,padding:"0 16px 12px",flexShrink:0,flexWrap:"wrap"}}>
+                  <button onClick={()=>setSettoreFilter("")}
+                    style={{padding:"4px 12px",borderRadius:20,border:`1px solid ${!settoreFilter?T.blue:T.border}`,background:!settoreFilter?T.navActive:T.bg,color:!settoreFilter?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:!settoreFilter?700:400}}>
+                    Tutti
+                  </button>
+                  {uniqueSettori.map(s=>(
+                    <button key={s} onClick={()=>setSettoreFilter(f=>f===s?"":s)}
+                      style={{padding:"4px 12px",borderRadius:20,border:`1px solid ${settoreFilter===s?T.blue:T.border}`,background:settoreFilter===s?T.navActive:T.bg,color:settoreFilter===s?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:settoreFilter===s?700:400}}>
+                      Settore {s}
+                    </button>
+                  ))}
+                </div>
+              )}
               <div style={{overflowY:"auto",padding:"0 16px 32px",display:"flex",flexDirection:"column",gap:10}}>
-                {(vehicles||[]).length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun veicolo disponibile</div>}
-                {(vehicles||[]).map(v=>(
+                {filteredVehicles.length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun veicolo disponibile</div>}
+                {filteredVehicles.map(v=>(
                   <div key={v.id} style={{background:T.card,border:`1px solid ${T.cardBorder}`,borderRadius:12,padding:"13px 15px",boxShadow:"0 2px 8px rgba(0,0,0,0.2)"}}>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
                       <span style={{fontSize:14,fontWeight:700,color:T.text}}>{v.name}</span>
@@ -1616,22 +1672,36 @@ function GPSModule({onSelectVehicle,mode="live"}){
           {/* ── Mobile: Percorsi slide-up panel ── */}
           {showNavPercorsi&&mobileFullscreen&&(
             <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`1px solid ${T.border}`,borderRadius:"20px 20px 0 0",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font,display:"flex",flexDirection:"column",maxHeight:"65dvh"}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 20px 12px",flexShrink:0}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 20px 10px",flexShrink:0}}>
                 <div style={{fontSize:16,fontWeight:700,color:T.text}}>Percorsi</div>
                 <button onClick={()=>setShowNavPercorsi(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
               </div>
+              {/* Day selector */}
+              <div style={{display:"flex",gap:5,padding:"0 16px 12px",flexShrink:0,overflowX:"auto"}}>
+                <button onClick={()=>setSelectedGiorno(null)}
+                  style={{padding:"4px 10px",borderRadius:20,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:!selectedGiorno?700:400,flexShrink:0}}>
+                  Tutti
+                </button>
+                {GIORNI.map(g=>(
+                  <button key={g.key} onClick={()=>setSelectedGiorno(k=>k===g.key?null:g.key)}
+                    style={{padding:"4px 10px",borderRadius:20,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400,flexShrink:0}}>
+                    {g.label}
+                  </button>
+                ))}
+              </div>
               <div style={{overflowY:"auto",padding:"0 16px 32px",display:"flex",flexDirection:"column",gap:8}}>
-                {(routes||[]).length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun percorso disponibile</div>}
-                {(routes||[]).map(r=>(
+                {dayRoutes.length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun percorso per questo giorno</div>}
+                {dayRoutes.map(r=>(
                   <div key={r.id}
-                    onClick={()=>{toggleRoute(r.id);}}
+                    onClick={()=>toggleRoute(r.id)}
                     style={{background:T.card,border:`1px solid ${visibleRoutes[r.id]!==false?r.color+"55":T.cardBorder}`,borderRadius:12,padding:"12px 14px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",opacity:visibleRoutes[r.id]!==false?1:0.45,transition:"opacity 0.15s,border-color 0.15s"}}>
                     <div style={{width:4,alignSelf:"stretch",background:r.color,borderRadius:2,flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:700,color:T.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                      {(r.comune||r.materiale||r.sector)&&(
-                        <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{[r.comune,r.materiale,r.sector].filter(Boolean).join(" · ")}</div>
-                      )}
+                      <div style={{fontSize:10,color:T.textDim,marginTop:2}}>
+                        {r.giorno?GIORNI.find(g=>g.key===r.giorno)?.label:"Tutti i giorni"}
+                        {(r.comune||r.materiale)&&` · ${[r.comune,r.materiale].filter(Boolean).join(" · ")}`}
+                      </div>
                     </div>
                     <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${visibleRoutes[r.id]!==false?r.color:T.border}`,background:visibleRoutes[r.id]!==false?r.color+"33":"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
                       {visibleRoutes[r.id]!==false&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke={r.color} strokeWidth="2.5"><polyline points="2,6 5,9 10,3"/></svg>}
@@ -2423,6 +2493,21 @@ function GPSModule({onSelectVehicle,mode="live"}){
                   <input value={meta[key]||""} onChange={e=>setMeta(m=>({...m,[key]:e.target.value}))} style={inp}/>
                 </div>
               ))}
+              <div style={{marginBottom:12}}>
+                <div style={{fontSize:11,color:T.textSub,marginBottom:6,fontWeight:600}}>Giorno</div>
+                <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+                  <button onClick={()=>setMeta(m=>({...m,giorno:""}))}
+                    style={{padding:"4px 8px",borderRadius:6,border:`1px solid ${!meta.giorno?T.blue:T.border}`,background:!meta.giorno?T.navActive:T.bg,color:!meta.giorno?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:!meta.giorno?700:400}}>
+                    Tutti
+                  </button>
+                  {GIORNI.map(g=>(
+                    <button key={g.key} onClick={()=>setMeta(m=>({...m,giorno:m.giorno===g.key?"":g.key}))}
+                      style={{padding:"4px 8px",borderRadius:6,border:`1px solid ${meta.giorno===g.key?T.blue:T.border}`,background:meta.giorno===g.key?T.navActive:T.bg,color:meta.giorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:meta.giorno===g.key?700:400}}>
+                      {g.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div style={{marginBottom:12}}>
                 <div style={{fontSize:11,color:T.textSub,marginBottom:6,fontWeight:600}}>Colore percorso</div>
                 <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:8}}>
