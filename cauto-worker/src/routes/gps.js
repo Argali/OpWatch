@@ -136,6 +136,11 @@ gps.get("/vehicles", async (c) => {
       return c.json({ ok: true, data: vehicles, source: "geotab" });
     } catch (err) {
       console.error("Geotab error:", err.message);
+      if (err.message.includes("quota exceeded")) {
+        // Stop hammering for 60 s — return empty list gracefully
+        await c.env.SESSIONS.put(GT_VEHICLES_KEY, JSON.stringify([]), { expirationTtl: 60 }).catch(()=>{});
+        return c.json({ ok: true, data: [], source: "geotab:rate-limited" });
+      }
       return c.json({ ok: false, error: "Errore Geotab: " + err.message }, 502);
     }
   }
