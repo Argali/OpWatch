@@ -1190,7 +1190,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
         <div style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
           {/* ── Live: search + planner top bar ── */}
           {tab==="live"&&!mobileFullscreen&&(
-            <div style={{position:"absolute",top:8,left:48,right:420,zIndex:1001,display:"flex",gap:8,alignItems:"flex-start",pointerEvents:"none"}}>
+            <div style={{position:"absolute",top:8,left:48,right:300,zIndex:1001,display:"flex",gap:8,alignItems:"flex-start",pointerEvents:"none"}}>
 
               {/* Cerca indirizzo */}
               <div style={{flex:1,pointerEvents:"auto",position:"relative",minWidth:0}}>
@@ -1270,74 +1270,6 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 })()}
               </div>
 
-              {/* Pianifica percorso */}
-              <div style={{flex:"0 0 auto",width:170,pointerEvents:"auto",position:"relative",minWidth:0}}>
-                <button onClick={()=>{setPlanOpen(o=>!o);if(planOpen)clearPlan();}}
-                  style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 12px",background:planOpen?"rgba(13,27,42,0.95)":"rgba(13,27,42,0.9)",backdropFilter:"blur(8px)",border:`1px solid ${planOpen?alpha(T.blue,50):T.border}`,borderRadius:planOpen?"8px 8px 0 0":"8px",color:planOpen?T.blue:T.textSub,cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600,transition:"all 0.15s",boxShadow:planOpen?"none":"0 2px 12px rgba(0,0,0,0.4)"}}>
-                  <span style={{display:"flex",alignItems:"center",gap:7}}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-                    Pianifica percorso
-                  </span>
-                  <span style={{fontSize:11,opacity:0.7}}>{planOpen?"▲":"▼"}</span>
-                </button>
-                {planOpen&&(
-                  <div style={{position:"absolute",top:"100%",left:0,right:0,background:"rgba(13,27,42,0.95)",backdropFilter:"blur(8px)",border:`1px solid ${alpha(T.blue,50)}`,borderTop:"none",borderRadius:"0 0 8px 8px",padding:10,display:"flex",flexDirection:"column",gap:7,boxShadow:"0 8px 24px rgba(0,0,0,0.45)"}}>
-                    <div style={{display:"flex",gap:3}}>
-                      {NAV_PROFILES.map(p=>(
-                        <button key={p.id} onClick={()=>setNavCosting(p.id)}
-                          style={{flex:1,padding:"5px 2px",borderRadius:6,border:`1px solid ${navCosting===p.id?T.blue:T.border}`,background:navCosting===p.id?T.navActive:"transparent",color:navCosting===p.id?T.blue:T.textSub,cursor:"pointer",fontFamily:T.font,fontSize:9,fontWeight:navCosting===p.id?700:400,display:"flex",flexDirection:"column",alignItems:"center",gap:1}}>
-                          <span style={{fontSize:13,lineHeight:1}}>{p.icon}</span>
-                          <span>{p.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <PlanInput label="Da" query={planFromQuery}
-                      setQuery={q=>{setPlanFromQuery(q);setPlanFrom(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
-                      results={planFromResults} selected={!!planFrom}
-                      onSelect={r=>{setPlanFrom({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanFromQuery(r.title||r.display_name);setPlanFromResults([]);setPlanResult(null);}}
-                      onUseMyPos={myPos?()=>{setPlanFrom({lat:myPos[0],lng:myPos[1],name:"Posizione attuale"});setPlanFromQuery("Posizione attuale");setPlanFromResults([]);}:null}
-                    />
-                    <PlanInput label="A" query={planToQuery}
-                      setQuery={q=>{setPlanToQuery(q);setPlanTo(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
-                      results={planToResults} selected={!!planTo}
-                      onSelect={r=>{setPlanTo({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanToQuery(r.title||r.display_name);setPlanToResults([]);setPlanResult(null);}}
-                    />
-                    <button onClick={calculatePlan} disabled={!planFrom||!planTo||planLoading}
-                      style={{padding:"8px",background:planFrom&&planTo?T.navActive:T.bg,border:`1px solid ${planFrom&&planTo?alpha(T.blue,50):T.border}`,borderRadius:7,color:planFrom&&planTo?T.blue:T.textDim,cursor:planFrom&&planTo&&!planLoading?"pointer":"not-allowed",fontSize:12,fontFamily:T.font,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s"}}>
-                      {planLoading&&<span style={{display:"inline-block",width:11,height:11,border:`2px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
-                      {planLoading?"Calcolo percorso…":"Calcola percorso"}
-                    </button>
-                    {planError&&<div style={{fontSize:11,color:T.red,padding:"6px 9px",background:"#1a0808",borderRadius:6,border:"1px solid #3a1a1a"}}>{planError}</div>}
-                    {planResult&&(
-                      <div style={{background:T.card,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:9,overflow:"hidden"}}>
-                        <div style={{display:"flex",alignItems:"center",padding:"10px 12px",gap:0,borderBottom:`1px solid ${T.border}`}}>
-                          <div style={{flex:1,textAlign:"center"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:T.blue,lineHeight:1,fontFamily:"monospace"}}>{fmtDist(planResult.distance)}</div>
-                            <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>DISTANZA</div>
-                          </div>
-                          <div style={{width:1,height:30,background:T.border}}/>
-                          <div style={{flex:1,textAlign:"center"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:"#f1f5f9",lineHeight:1,fontFamily:"monospace"}}>{fmtTime(planResult.duration)}</div>
-                            <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>TEMPO</div>
-                          </div>
-                          <button onClick={clearPlan} style={{background:"transparent",border:"none",color:T.textDim,cursor:"pointer",fontSize:16,padding:"0 10px",lineHeight:1,flexShrink:0}} title="Cancella percorso">×</button>
-                        </div>
-                        <div style={{maxHeight:200,overflowY:"auto"}}>
-                          {planResult.maneuvers.map((m,i)=>(
-                            <div key={i} style={{display:"flex",alignItems:"flex-start",gap:9,padding:"8px 12px",borderBottom:i<planResult.maneuvers.length-1?`1px solid ${T.border}`:"none"}}>
-                              <span style={{fontSize:17,flexShrink:0,lineHeight:1.3,minWidth:20,textAlign:"center"}}>{NAV_ARROW[m.type]||"↑"}</span>
-                              <div style={{flex:1,minWidth:0}}>
-                                <div style={{fontSize:11,color:T.text,lineHeight:1.4}}>{m.instruction}</div>
-                                <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{fmtDist(m.length)} · {fmtTime(m.time)}</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
 
             </div>
           )}
@@ -1413,125 +1345,189 @@ function GPSModule({onSelectVehicle,mode="live"}){
           />}
           {tab==="zone"&&<ZoneMap zones={zones} drawMode={drawingZone} zoneConfig={zoneCfg} onShapeComplete={handleShapeComplete} onZoneDelete={deleteZone}/>}
           {tab==="punti"&&<PuntiMap punti={punti} drawMode={drawingPunti} onMapClick={handlePuntiMapClick} onPuntoDelete={deletePunto}/>}
-          {/* ── unified floating legend (live tab, desktop only) ── */}
+          {/* ── unified right panel (live tab, desktop only) ── */}
           {tab==="live"&&!mobileFullscreen&&routes!==null&&(
-            <div style={{position:"absolute",top:12,right:12,zIndex:1000,display:"flex",gap:10,alignItems:"flex-start"}}>
+            <div style={{position:"absolute",top:12,right:12,zIndex:1000,width:268,background:"rgba(13,27,42,0.88)",border:`1px solid ${T.border}`,borderRadius:12,backdropFilter:"blur(10px)",boxShadow:"0 4px 24px rgba(0,0,0,0.45)",maxHeight:"calc(100% - 24px)",display:"flex",flexDirection:"column",overflow:"hidden"}}>
 
-              {/* ── LEFT: Vehicles panel ── */}
-              <div style={{background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:170,maxWidth:200,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
-                <div onClick={()=>setLegendOpen(o=>({...o,trucks:!o.trucks}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`}}>
-                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Veicoli ({filteredVehicles.length})</div>
-                  <span style={{fontSize:12,color:T.textDim}}>{legendOpen.trucks?"▲":"▼"}</span>
-                </div>
-                {/* Settore pills */}
-                {uniqueSettori.length>0&&(
-                  <div style={{display:"flex",gap:4,padding:"6px 10px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
-                    <button onClick={()=>setSettoreFilter("")}
-                      style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${!settoreFilter?T.blue:T.border}`,background:!settoreFilter?T.navActive:T.bg,color:!settoreFilter?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!settoreFilter?700:400}}>
+              {/* ── Veicoli section ── */}
+              <div onClick={()=>setLegendOpen(o=>({...o,trucks:!o.trucks}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Veicoli ({filteredVehicles.length})</div>
+                <span style={{fontSize:11,color:T.textDim}}>{legendOpen.trucks!==false?"▲":"▼"}</span>
+              </div>
+              {legendOpen.trucks!==false&&(
+                <>
+                  {uniqueSettori.length>0&&(
+                    <div style={{display:"flex",gap:4,padding:"6px 12px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+                      <button onClick={e=>{e.stopPropagation();setSettoreFilter("");}}
+                        style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${!settoreFilter?T.blue:T.border}`,background:!settoreFilter?T.navActive:T.bg,color:!settoreFilter?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!settoreFilter?700:400}}>
+                        Tutti
+                      </button>
+                      {uniqueSettori.map(s=>(
+                        <button key={s} onClick={e=>{e.stopPropagation();setSettoreFilter(f=>f===s?"":s);}}
+                          style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${settoreFilter===s?T.blue:T.border}`,background:settoreFilter===s?T.navActive:T.bg,color:settoreFilter===s?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:settoreFilter===s?700:400}}>
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{padding:"8px 14px",maxHeight:180,overflowY:"auto",flexShrink:0}}>
+                    {filteredVehicles.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun veicolo</div>}
+                    {filteredVehicles.map(v=>(
+                      <div key={v.id} onClick={()=>liveMapRef.current?.flyTo([v.lat,v.lng],16)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:v.lat?"pointer":"default",opacity:v.status==="workshop"?0.45:1,transition:"opacity 0.15s"}}>
+                        <div style={{width:8,height:8,borderRadius:"50%",background:statusColor[v.status]||T.textDim,flexShrink:0}}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{v.name}</div>
+                          <div style={{fontSize:9,color:T.textDim}}>{v.settore||v.sector||""}{v.speed_kmh>0?` · ${v.speed_kmh} km/h`:""}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* ── Percorsi section ── */}
+              <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2.5"><path d="M3 12h18M3 6l9-3 9 3M3 18l9 3 9-3"/></svg>
+                <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({dayRoutes.length})</div>
+                <span style={{fontSize:11,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
+              </div>
+              {legendOpen.live&&(
+                <>
+                  <div style={{display:"flex",gap:4,padding:"6px 12px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`,flexShrink:0}}>
+                    <button onClick={e=>{e.stopPropagation();setSelectedGiorno(null);}}
+                      style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!selectedGiorno?700:400}}>
                       Tutti
                     </button>
-                    {uniqueSettori.map(s=>(
-                      <button key={s} onClick={()=>setSettoreFilter(f=>f===s?"":s)}
-                        style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${settoreFilter===s?T.blue:T.border}`,background:settoreFilter===s?T.navActive:T.bg,color:settoreFilter===s?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:settoreFilter===s?700:400}}>
-                        {s}
+                    {GIORNI.map(g=>(
+                      <button key={g.key} onClick={e=>{e.stopPropagation();setSelectedGiorno(k=>k===g.key?null:g.key);}}
+                        style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400}}>
+                        {g.label}
                       </button>
                     ))}
                   </div>
-                )}
-                {legendOpen.trucks!==false&&<div style={{padding:"8px 14px",maxHeight:220,overflowY:"auto"}}>
-                  {filteredVehicles.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun veicolo</div>}
-                  {filteredVehicles.map(v=>(
-                    <div key={v.id} onClick={()=>liveMapRef.current?.flyTo([v.lat,v.lng],16)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:v.lat?"pointer":"default",opacity:v.status==="workshop"?0.45:1,transition:"opacity 0.15s"}}>
-                      <div style={{width:8,height:8,borderRadius:"50%",background:statusColor[v.status]||T.textDim,flexShrink:0}}/>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{v.name}</div>
-                        <div style={{fontSize:9,color:T.textDim}}>{v.settore||v.sector||""}{v.speed_kmh>0?` · ${v.speed_kmh} km/h`:""}</div>
+                  <div style={{padding:"8px 14px",maxHeight:200,overflowY:"auto",flexShrink:0}}>
+                    {dayRoutes.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun percorso</div>}
+                    {dayRoutes.map(r=>(
+                      <div key={r.id} onClick={()=>toggleRoute(r.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleRoutes[r.id]?1:0.3,transition:"opacity 0.15s"}}>
+                        <div style={{width:20,height:3,background:r.color,borderRadius:2,flexShrink:0}}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                          <div style={{fontSize:9,color:T.textDim}}>{r.giorno?GIORNI.find(g=>g.key===r.giorno)?.label:"Tutti"}{(r.comune||r.materiale)&&` · ${[r.comune,r.materiale].filter(Boolean).join(" · ")}`}</div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>}
-                <div style={{padding:"5px 14px 6px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim}}>Click → centra mappa</div>
-              </div>
+                    ))}
+                  </div>
+                </>
+              )}
 
-              {/* ── RIGHT: Percorsi + Zone + Punti panel ── */}
-              <div style={{background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:210,maxWidth:240,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
-                {/* Percorsi section */}
-                <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`}}>
-                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({dayRoutes.length})</div>
-                  <span style={{fontSize:12,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
-                </div>
-                {/* Day pills */}
-                <div style={{display:"flex",gap:4,padding:"6px 10px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
-                  <button onClick={()=>setSelectedGiorno(null)}
-                    style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!selectedGiorno?700:400}}>
-                    Tutti
+              {/* ── Zone section (if any) ── */}
+              {zones.length>0&&(
+                <>
+                  <div onClick={()=>setLegendOpen(o=>({...o,zone:!o.zone}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderTop:`1px solid ${T.border}`,flexShrink:0}}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+                    <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Zone ({zones.length})</div>
+                    <span style={{fontSize:11,color:T.textDim}}>{legendOpen.zone?"▲":"▼"}</span>
+                  </div>
+                  {legendOpen.zone&&<div style={{padding:"8px 14px",maxHeight:120,overflowY:"auto",flexShrink:0}}>
+                    {zones.map(z=>(
+                      <div key={z.id} onClick={()=>toggleZone(z.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,cursor:"pointer",opacity:visibleZones[z.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
+                        <div style={{width:13,height:13,flexShrink:0,background:z.fillColor,opacity:Math.max(z.fillOpacity,0.5),border:`2px solid ${z.borderColor}`,borderRadius:z.type==="circle"?"50%":"2px"}}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{z.name||z.type}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>}
+                </>
+              )}
+
+              {/* ── Punti section (if any) ── */}
+              {punti.length>0&&(
+                <>
+                  <div onClick={()=>setLegendOpen(o=>({...o,punti:!o.punti}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderTop:`1px solid ${T.border}`,flexShrink:0}}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.textSub} strokeWidth="2"><circle cx="12" cy="12" r="3"/></svg>
+                    <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Punti ({punti.length})</div>
+                    <span style={{fontSize:11,color:T.textDim}}>{legendOpen.punti?"▲":"▼"}</span>
+                  </div>
+                  {legendOpen.punti&&<div style={{padding:"8px 14px",maxHeight:120,overflowY:"auto",flexShrink:0}}>
+                    {punti.map(p=>(
+                      <div key={p.id} onClick={()=>togglePunto(p.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5,cursor:"pointer",opacity:visiblePunti[p.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
+                        <div style={{width:10,height:10,borderRadius:"50%",background:p.color,flexShrink:0,border:"2px solid #fff",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}/>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.nome||"—"}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>}
+                </>
+              )}
+
+              {/* ── Pianifica percorso section ── */}
+              <div onClick={()=>{setPlanOpen(o=>!o);if(planOpen)clearPlan();}} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderTop:`1px solid ${T.border}`,flexShrink:0}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={planOpen?T.blue:T.textSub} strokeWidth="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                <div style={{fontSize:10,color:planOpen?T.blue:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Pianifica percorso</div>
+                <span style={{fontSize:11,color:T.textDim}}>{planOpen?"▲":"▼"}</span>
+              </div>
+              {planOpen&&(
+                <div style={{padding:"10px 14px 14px",borderTop:`1px solid ${T.border}`,display:"flex",flexDirection:"column",gap:7,flexShrink:0}}>
+                  <div style={{display:"flex",gap:4}}>
+                    {NAV_PROFILES.map(p=>(
+                      <button key={p.id} onClick={e=>{e.stopPropagation();setNavCosting(p.id);}}
+                        style={{flex:1,padding:"5px 2px",borderRadius:6,border:`1px solid ${navCosting===p.id?T.blue:T.border}`,background:navCosting===p.id?T.navActive:"transparent",color:navCosting===p.id?T.blue:T.textSub,cursor:"pointer",fontFamily:T.font,fontSize:9,fontWeight:navCosting===p.id?700:400,display:"flex",flexDirection:"column",alignItems:"center",gap:1}}>
+                        <span style={{fontSize:13,lineHeight:1}}>{p.icon}</span>
+                        <span>{p.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <PlanInput label="Da" query={planFromQuery}
+                    setQuery={q=>{setPlanFromQuery(q);setPlanFrom(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
+                    results={planFromResults} selected={!!planFrom}
+                    onSelect={r=>{setPlanFrom({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanFromQuery(r.title||r.display_name);setPlanFromResults([]);setPlanResult(null);}}
+                    onUseMyPos={myPos?()=>{setPlanFrom({lat:myPos[0],lng:myPos[1],name:"Posizione attuale"});setPlanFromQuery("Posizione attuale");setPlanFromResults([]);}:null}
+                  />
+                  <PlanInput label="A" query={planToQuery}
+                    setQuery={q=>{setPlanToQuery(q);setPlanTo(null);setPlanResult(null);if(planPolyRef.current){planPolyRef.current.remove();planPolyRef.current=null;}}}
+                    results={planToResults} selected={!!planTo}
+                    onSelect={r=>{setPlanTo({lat:parseFloat(r.lat),lng:parseFloat(r.lon),name:r.title||r.display_name});setPlanToQuery(r.title||r.display_name);setPlanToResults([]);setPlanResult(null);}}
+                  />
+                  <button onClick={e=>{e.stopPropagation();calculatePlan();}} disabled={!planFrom||!planTo||planLoading}
+                    style={{padding:"8px",background:planFrom&&planTo?T.navActive:T.bg,border:`1px solid ${planFrom&&planTo?alpha(T.blue,50):T.border}`,borderRadius:7,color:planFrom&&planTo?T.blue:T.textDim,cursor:planFrom&&planTo&&!planLoading?"pointer":"not-allowed",fontSize:12,fontFamily:T.font,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s"}}>
+                    {planLoading&&<span style={{display:"inline-block",width:11,height:11,border:`2px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+                    {planLoading?"Calcolo percorso…":"Calcola percorso"}
                   </button>
-                  {GIORNI.map(g=>(
-                    <button key={g.key} onClick={()=>setSelectedGiorno(k=>k===g.key?null:g.key)}
-                      style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400}}>
-                      {g.label}
-                    </button>
-                  ))}
-                </div>
-                {legendOpen.live&&<div style={{padding:"8px 14px",borderBottom:zones.length>0||punti.length>0?`1px solid ${T.border}`:"none"}}>
-                  {dayRoutes.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun percorso</div>}
-                  {dayRoutes.map(r=>(
-                    <div key={r.id} onClick={()=>toggleRoute(r.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleRoutes[r.id]?1:0.3,transition:"opacity 0.15s"}}>
-                      <div style={{width:22,height:3,background:r.color,borderRadius:2,flexShrink:0}}/>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                        <div style={{fontSize:9,color:T.textDim}}>
-                          {r.giorno?GIORNI.find(g=>g.key===r.giorno)?.label:"Tutti"}
-                          {(r.comune||r.materiale)&&` · ${[r.comune,r.materiale].filter(Boolean).join(" · ")}`}
+                  {planError&&<div style={{fontSize:11,color:T.red,padding:"6px 9px",background:"#1a0808",borderRadius:6,border:"1px solid #3a1a1a"}}>{planError}</div>}
+                  {planResult&&(
+                    <div style={{background:T.card,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:9,overflow:"hidden"}}>
+                      <div style={{display:"flex",alignItems:"center",padding:"10px 12px",gap:0,borderBottom:`1px solid ${T.border}`}}>
+                        <div style={{flex:1,textAlign:"center"}}>
+                          <div style={{fontSize:16,fontWeight:800,color:T.blue,lineHeight:1,fontFamily:"monospace"}}>{fmtDist(planResult.distance)}</div>
+                          <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>DISTANZA</div>
                         </div>
+                        <div style={{width:1,height:30,background:T.border}}/>
+                        <div style={{flex:1,textAlign:"center"}}>
+                          <div style={{fontSize:16,fontWeight:800,color:"#f1f5f9",lineHeight:1,fontFamily:"monospace"}}>{fmtTime(planResult.duration)}</div>
+                          <div style={{fontSize:9,color:T.textDim,marginTop:2,letterSpacing:0.5}}>TEMPO</div>
+                        </div>
+                        <button onClick={e=>{e.stopPropagation();clearPlan();}} style={{background:"transparent",border:"none",color:T.textDim,cursor:"pointer",fontSize:16,padding:"0 10px",lineHeight:1,flexShrink:0}} title="Cancella percorso">×</button>
+                      </div>
+                      <div style={{maxHeight:180,overflowY:"auto"}}>
+                        {planResult.maneuvers.map((m,i)=>(
+                          <div key={i} style={{display:"flex",alignItems:"flex-start",gap:9,padding:"8px 12px",borderBottom:i<planResult.maneuvers.length-1?`1px solid ${T.border}`:"none"}}>
+                            <span style={{fontSize:17,flexShrink:0,lineHeight:1.3,minWidth:20,textAlign:"center"}}>{NAV_ARROW[m.type]||"↑"}</span>
+                            <div style={{flex:1,minWidth:0}}>
+                              <div style={{fontSize:11,color:T.text,lineHeight:1.4}}>{m.instruction}</div>
+                              <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{fmtDist(m.length)} · {fmtTime(m.time)}</div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  ))}
-                </div>}
-                {/* Zone section */}
-                {zones.length>0&&(
-                  <>
-                    <div onClick={()=>setLegendOpen(o=>({...o,zone:!o.zone}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.zone?`1px solid ${T.border}`:"none"}}>
-                      <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Zone ({zones.length})</div>
-                      <span style={{fontSize:12,color:T.textDim}}>{legendOpen.zone?"▲":"▼"}</span>
-                    </div>
-                    {legendOpen.zone&&<div style={{padding:"8px 14px",borderBottom:punti.length>0?`1px solid ${T.border}`:"none"}}>
-                      {zones.map(z=>(
-                        <div key={z.id} onClick={()=>toggleZone(z.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleZones[z.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
-                          <div style={{width:14,height:14,flexShrink:0,background:z.fillColor,opacity:Math.max(z.fillOpacity,0.5),border:`2px solid ${z.borderColor}`,borderRadius:z.type==="circle"?"50%":"2px",clipPath:z.type==="triangle"?"polygon(50% 0%,0% 100%,100% 100%)":z.type==="parallelogram"?"polygon(25% 0%,100% 0%,75% 100%,0% 100%)":undefined}}/>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{z.name||z.type}</div>
-                            {(z.comune||z.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[z.comune,z.materiale].filter(Boolean).join(" · ")}</div>}
-                          </div>
-                          <span style={{fontSize:9,color:T.textDim,flexShrink:0}}>{z.type==="circle"?`${Math.round(z.radius)}m`:z.type.slice(0,3)}</span>
-                        </div>
-                      ))}
-                    </div>}
-                  </>
-                )}
-                {/* Punti section */}
-                {punti.length>0&&(
-                  <>
-                    <div onClick={()=>setLegendOpen(o=>({...o,punti:!o.punti}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.punti?`1px solid ${T.border}`:"none"}}>
-                      <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Punti ({punti.length})</div>
-                      <span style={{fontSize:12,color:T.textDim}}>{legendOpen.punti?"▲":"▼"}</span>
-                    </div>
-                    {legendOpen.punti&&<div style={{padding:"8px 14px"}}>
-                      {punti.map(p=>(
-                        <div key={p.id} onClick={()=>togglePunto(p.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visiblePunti[p.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
-                          <div style={{width:11,height:11,borderRadius:"50%",background:p.color,flexShrink:0,border:"2px solid #fff",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}/>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.nome||"—"}</div>
-                            {(p.comune||p.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[p.comune,p.materiale].filter(Boolean).join(" · ")}</div>}
-                          </div>
-                        </div>
-                      ))}
-                    </div>}
-                  </>
-                )}
-                <div style={{padding:"5px 14px 6px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim}}>Click per mostrare/nascondere</div>
-              </div>
+                  )}
+                </div>
+              )}
 
+              <div style={{padding:"5px 14px 6px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim,flexShrink:0}}>Click per mostrare/nascondere</div>
             </div>
           )}
           {/* ── editor-tab legends (zone / punti) ── */}
