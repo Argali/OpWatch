@@ -84,7 +84,8 @@ app.notFound((c) => c.json({ ok: false, error: "Route non trovata" }, 404));
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.onError((err, c) => {
-  console.error("[Worker error]", err.message);
+  const path = new URL(c.req.url).pathname;
+  console.error("[Worker error]", c.req.method, path, err.message);
   return c.json({ ok: false, error: "Errore interno del server" }, 500);
 });
 

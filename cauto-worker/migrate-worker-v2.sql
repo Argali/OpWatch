@@ -37,5 +37,6 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 CREATE INDEX IF NOT EXISTS idx_audit_client    ON audit_logs(client_id);
 CREATE INDEX IF NOT EXISTS idx_audit_timestamp ON audit_logs(timestamp);
 
--- 4. giorno column on routes (may already be present from migrate-add-giorno.sql)
+-- 4. giorno column on routes — skip this line if you already ran migrate-add-giorno.sql
+--    (D1 will show "duplicate column name: giorno" — that error is harmless, ignore it)
 ALTER TABLE routes ADD COLUMN giorno TEXT DEFAULT NULL;
