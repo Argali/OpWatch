@@ -1,6 +1,6 @@
 /**
  * OpWatch / opsonata-worker — Hono entry point
- * Replaces Express + Render with Cloudflare Workers + D1 + KV
+ * Cloudflare Workers + D1 + KV backend for OpSonata
  */
 
 import { Hono }   from "hono";

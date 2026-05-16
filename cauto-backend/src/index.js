@@ -21,7 +21,7 @@ const fs        = require("fs");
 const rateLimit = require("express-rate-limit");
 const { errorHandler } = require("./middleware/errorHandler");
 
-// Ensure uploads directory exists (Render ephemeral filesystem)
+// Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, "../uploads");
 fs.mkdirSync(uploadsDir, { recursive: true });
 

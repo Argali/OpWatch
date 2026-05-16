@@ -3,21 +3,20 @@
 ## Prerequisites
 
 1. **API key** — already obtained from VisiRun helpdesk (`helpdesk@visirun.com`)
-2. **IP allowlisting** — Render's outbound IP must be registered with VisiRun
+2. **IP allowlisting** — the Worker's outbound IP must be registered with VisiRun
 
 ---
 
-## Step 1 — Find Render's outbound IP
+## Step 1 — Find the Cloudflare Worker outbound IP
 
 VisiRun rejects all requests from non-registered IPs with error `100`.
-You need to send Render's static outbound IP to VisiRun before the integration works.
+You need to send Cloudflare's outbound IP(s) to VisiRun before the integration works.
 
-1. Log in to [render.com](https://render.com) → select your backend service
-2. Go to **Settings → Outbound IPs**
-3. Copy all listed IPs (Render provides a small range, usually 2–4 addresses)
+Cloudflare Workers use a shared pool of egress IPs. You can find the current range at:
+**https://www.cloudflare.com/ips/** — use the IPv4 list.
 
-If Render shows no static IPs, your plan may not include them.  
-Check: **Settings → Plan** — Static outbound IPs require a paid plan.
+Alternatively, deploy the Worker and make a test request through it to a service like
+`https://api.ipify.org` to capture the actual egress IP used.
 
 ---
 
@@ -26,13 +25,13 @@ Check: **Settings → Plan** — Static outbound IPs require a paid plan.
 Send an email to `helpdesk@visirun.com`:
 
 ```
-Subject: IP allowlisting request — OpWatch integration
+Subject: IP allowlisting request — OpSonata integration
 
 Hi,
 
 We would like to register the following IP addresses to use with our API key:
 
-  <paste Render outbound IPs here>
+  <paste Cloudflare egress IPs here>
 
 Company: <your company name>
 API key: <your key>
@@ -44,34 +43,39 @@ Allowlisting typically takes 1–2 business days.
 
 ---
 
-## Step 3 — Add environment variables on Render
+## Step 3 — Add environment variables in Cloudflare
 
-In the Render dashboard, go to your backend service → **Environment**:
+In the Cloudflare dashboard → Workers & Pages → `opsonata-worker` → **Settings → Variables**,
+add these as **Secrets**:
 
 | Variable | Value |
 |----------|-------|
 | `GPS_PROVIDER` | `visirun` |
 | `VISIRUN_API_KEY` | your key from VisiRun |
 
-**Do not commit your API key to git.** It lives only in Render's environment.
+**Do not commit your API key to git.** It lives only in Cloudflare's secret store.
 
 ---
 
 ## Step 4 — Deploy and verify
 
-After saving the env vars, Render will automatically redeploy.
+After saving the secrets, redeploy the Worker:
+
+```bash
+cd cauto-worker && npx wrangler deploy
+```
 
 Verify with a quick curl (replace the token with a valid JWT):
 
 ```bash
-curl https://OpWatch-backend.onrender.com/api/gps/vehicles \
+curl https://opsonata-worker.<your-account>.workers.dev/api/gps/vehicles \
   -H "Authorization: Bearer <your_token>"
 ```
 
 Expected: `{ "ok": true, "data": [ { "id": "...", "name": "...", ... } ] }`
 
 If you see `{ "ok": false, "error": "[VisiRun] SOAP fault..." }` or a 500 error,
-check the Render logs for the raw VisiRun error message.
+check the Worker logs in the Cloudflare dashboard (Workers → opsonata-worker → Logs).
 
 ---
 
@@ -109,7 +113,7 @@ frontend polling every 10 s makes at most ~2 880 SOAP calls per day — well wit
 At any point you can revert to mock data without code changes:
 
 ```
-GPS_PROVIDER=mock   ← set this in Render environment
+GPS_PROVIDER=mock   ← set this in Cloudflare Worker secrets/vars
 ```
 
 The mock adapter returns in-memory demo vehicles. All other endpoints still work.

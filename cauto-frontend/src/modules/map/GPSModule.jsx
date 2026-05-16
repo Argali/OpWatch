@@ -296,6 +296,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const debouncedPlanToQuery=useDebounce(planToQuery,350);
   // ── Mobile nav extras ──────────────────────────────────────────────────────
   const [showNavTrucks,setShowNavTrucks]=useState(false);
+  const [showNavPercorsi,setShowNavPercorsi]=useState(false);
   const [showNavSegnala,setShowNavSegnala]=useState(false);
   const [navSegnalazione,setNavSegnalazione]=useState({tipo:"",note:""});
   const [navSegnalaMsg,setNavSegnalaMsg]=useState(null);
@@ -1473,14 +1474,19 @@ function GPSModule({onSelectVehicle,mode="live"}){
                 </div>
               )}
 
-              {/* ── Left-side FABs: Trucks + Segnalazione ── */}
+              {/* ── Left-side FABs: Trucks + Percorsi + Segnalazione ── */}
               <div style={{position:"absolute",bottom:20,left:16,zIndex:1001,display:"flex",flexDirection:"column",gap:12,alignItems:"center"}}>
-                <button onClick={()=>{setShowNavTrucks(v=>!v);setShowNavSegnala(false);}}
+                <button onClick={()=>{setShowNavTrucks(v=>!v);setShowNavPercorsi(false);setShowNavSegnala(false);}}
                   style={{width:56,height:56,borderRadius:16,background:showNavTrucks?"rgba(59,130,246,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavTrucks?T.blue:T.border}`,color:showNavTrucks?T.blue:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                   <span style={{fontSize:22,lineHeight:1}}>🚛</span>
                   <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>CAMION</span>
                 </button>
-                <button onClick={()=>{setShowNavSegnala(v=>!v);setShowNavTrucks(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}}
+                <button onClick={()=>{setShowNavPercorsi(v=>!v);setShowNavTrucks(false);setShowNavSegnala(false);}}
+                  style={{width:56,height:56,borderRadius:16,background:showNavPercorsi?"rgba(74,222,128,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavPercorsi?T.green:T.border}`,color:showNavPercorsi?T.green:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M3 12h18M3 6l9-3 9 3M3 18l9 3 9-3"/></svg>
+                  <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>PERCORSI</span>
+                </button>
+                <button onClick={()=>{setShowNavSegnala(v=>!v);setShowNavTrucks(false);setShowNavPercorsi(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}}
                   style={{width:56,height:56,borderRadius:16,background:showNavSegnala?"rgba(251,146,60,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavSegnala?T.orange:T.border}`,color:showNavSegnala?T.orange:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                   <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>SEGNALA</span>
@@ -1602,6 +1608,35 @@ function GPSModule({onSelectVehicle,mode="live"}){
                         Centra sulla mappa →
                       </button>
                     )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Mobile: Percorsi slide-up panel ── */}
+          {showNavPercorsi&&mobileFullscreen&&(
+            <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`1px solid ${T.border}`,borderRadius:"20px 20px 0 0",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font,display:"flex",flexDirection:"column",maxHeight:"65dvh"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 20px 12px",flexShrink:0}}>
+                <div style={{fontSize:16,fontWeight:700,color:T.text}}>Percorsi</div>
+                <button onClick={()=>setShowNavPercorsi(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
+              </div>
+              <div style={{overflowY:"auto",padding:"0 16px 32px",display:"flex",flexDirection:"column",gap:8}}>
+                {(routes||[]).length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun percorso disponibile</div>}
+                {(routes||[]).map(r=>(
+                  <div key={r.id}
+                    onClick={()=>{toggleRoute(r.id);}}
+                    style={{background:T.card,border:`1px solid ${visibleRoutes[r.id]!==false?r.color+"55":T.cardBorder}`,borderRadius:12,padding:"12px 14px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",opacity:visibleRoutes[r.id]!==false?1:0.45,transition:"opacity 0.15s,border-color 0.15s"}}>
+                    <div style={{width:4,alignSelf:"stretch",background:r.color,borderRadius:2,flexShrink:0}}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:T.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                      {(r.comune||r.materiale||r.sector)&&(
+                        <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{[r.comune,r.materiale,r.sector].filter(Boolean).join(" · ")}</div>
+                      )}
+                    </div>
+                    <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${visibleRoutes[r.id]!==false?r.color:T.border}`,background:visibleRoutes[r.id]!==false?r.color+"33":"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                      {visibleRoutes[r.id]!==false&&<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke={r.color} strokeWidth="2.5"><polyline points="2,6 5,9 10,3"/></svg>}
+                    </div>
                   </div>
                 ))}
               </div>
