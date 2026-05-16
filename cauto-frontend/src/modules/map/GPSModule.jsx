@@ -1307,22 +1307,60 @@ function GPSModule({onSelectVehicle,mode="live"}){
           {tab==="punti"&&<PuntiMap punti={punti} drawMode={drawingPunti} onMapClick={handlePuntiMapClick} onPuntoDelete={deletePunto}/>}
           {/* ── unified floating legend (live tab, desktop only) ── */}
           {tab==="live"&&!mobileFullscreen&&routes!==null&&(
-            <div style={{position:"absolute",top:12,right:12,zIndex:1000,background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:210,maxWidth:240,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
-              {/* Percorsi section — always visible */}
-              <>
+            <div style={{position:"absolute",top:12,right:12,zIndex:1000,display:"flex",gap:10,alignItems:"flex-start"}}>
+
+              {/* ── LEFT: Vehicles panel ── */}
+              <div style={{background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:170,maxWidth:200,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
+                <div onClick={()=>setLegendOpen(o=>({...o,trucks:!o.trucks}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`}}>
+                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Veicoli ({filteredVehicles.length})</div>
+                  <span style={{fontSize:12,color:T.textDim}}>{legendOpen.trucks?"▲":"▼"}</span>
+                </div>
+                {/* Settore pills */}
+                {uniqueSettori.length>0&&(
+                  <div style={{display:"flex",gap:4,padding:"6px 10px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
+                    <button onClick={()=>setSettoreFilter("")}
+                      style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${!settoreFilter?T.blue:T.border}`,background:!settoreFilter?T.navActive:T.bg,color:!settoreFilter?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!settoreFilter?700:400}}>
+                      Tutti
+                    </button>
+                    {uniqueSettori.map(s=>(
+                      <button key={s} onClick={()=>setSettoreFilter(f=>f===s?"":s)}
+                        style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${settoreFilter===s?T.blue:T.border}`,background:settoreFilter===s?T.navActive:T.bg,color:settoreFilter===s?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:settoreFilter===s?700:400}}>
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {legendOpen.trucks!==false&&<div style={{padding:"8px 14px",maxHeight:220,overflowY:"auto"}}>
+                  {filteredVehicles.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun veicolo</div>}
+                  {filteredVehicles.map(v=>(
+                    <div key={v.id} onClick={()=>liveMapRef.current?.flyTo([v.lat,v.lng],16)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:v.lat?"pointer":"default",opacity:v.status==="workshop"?0.45:1,transition:"opacity 0.15s"}}>
+                      <div style={{width:8,height:8,borderRadius:"50%",background:statusColor[v.status]||T.textDim,flexShrink:0}}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{v.name}</div>
+                        <div style={{fontSize:9,color:T.textDim}}>{v.settore||v.sector||""}{v.speed_kmh>0?` · ${v.speed_kmh} km/h`:""}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>}
+                <div style={{padding:"5px 14px 6px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim}}>Click → centra mappa</div>
+              </div>
+
+              {/* ── RIGHT: Percorsi + Zone + Punti panel ── */}
+              <div style={{background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:210,maxWidth:240,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
+                {/* Percorsi section */}
                 <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:`1px solid ${T.border}`}}>
                   <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({dayRoutes.length})</div>
                   <span style={{fontSize:12,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
                 </div>
-                {/* Day selector pills */}
-                <div style={{display:"flex",gap:4,padding:"8px 14px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
+                {/* Day pills */}
+                <div style={{display:"flex",gap:4,padding:"6px 10px",flexWrap:"wrap",borderBottom:`1px solid ${T.border}`}}>
                   <button onClick={()=>setSelectedGiorno(null)}
-                    style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!selectedGiorno?700:400}}>
+                    style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${!selectedGiorno?T.blue:T.border}`,background:!selectedGiorno?T.navActive:T.bg,color:!selectedGiorno?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:!selectedGiorno?700:400}}>
                     Tutti
                   </button>
                   {GIORNI.map(g=>(
                     <button key={g.key} onClick={()=>setSelectedGiorno(k=>k===g.key?null:g.key)}
-                      style={{padding:"2px 8px",borderRadius:10,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400}}>
+                      style={{padding:"2px 7px",borderRadius:10,border:`1px solid ${selectedGiorno===g.key?T.blue:T.border}`,background:selectedGiorno===g.key?T.navActive:T.bg,color:selectedGiorno===g.key?T.blue:T.textSub,cursor:"pointer",fontSize:10,fontFamily:T.font,fontWeight:selectedGiorno===g.key?700:400}}>
                       {g.label}
                     </button>
                   ))}
@@ -1342,49 +1380,50 @@ function GPSModule({onSelectVehicle,mode="live"}){
                     </div>
                   ))}
                 </div>}
-              </>
-              {/* Zone section */}
-              {zones.length>0&&(
-                <>
-                  <div onClick={()=>setLegendOpen(o=>({...o,zone:!o.zone}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.zone?`1px solid ${T.border}`:"none"}}>
-                    <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Zone ({zones.length})</div>
-                    <span style={{fontSize:12,color:T.textDim}}>{legendOpen.zone?"▲":"▼"}</span>
-                  </div>
-                  {legendOpen.zone&&<div style={{padding:"8px 14px",borderBottom:punti.length>0?`1px solid ${T.border}`:"none"}}>
-                    {zones.map(z=>(
-                      <div key={z.id} onClick={()=>toggleZone(z.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleZones[z.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
-                        <div style={{width:14,height:14,flexShrink:0,background:z.fillColor,opacity:Math.max(z.fillOpacity,0.5),border:`2px solid ${z.borderColor}`,borderRadius:z.type==="circle"?"50%":"2px",clipPath:z.type==="triangle"?"polygon(50% 0%,0% 100%,100% 100%)":z.type==="parallelogram"?"polygon(25% 0%,100% 0%,75% 100%,0% 100%)":undefined}}/>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{z.name||z.type}</div>
-                          {(z.comune||z.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[z.comune,z.materiale].filter(Boolean).join(" · ")}</div>}
+                {/* Zone section */}
+                {zones.length>0&&(
+                  <>
+                    <div onClick={()=>setLegendOpen(o=>({...o,zone:!o.zone}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.zone?`1px solid ${T.border}`:"none"}}>
+                      <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Zone ({zones.length})</div>
+                      <span style={{fontSize:12,color:T.textDim}}>{legendOpen.zone?"▲":"▼"}</span>
+                    </div>
+                    {legendOpen.zone&&<div style={{padding:"8px 14px",borderBottom:punti.length>0?`1px solid ${T.border}`:"none"}}>
+                      {zones.map(z=>(
+                        <div key={z.id} onClick={()=>toggleZone(z.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleZones[z.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
+                          <div style={{width:14,height:14,flexShrink:0,background:z.fillColor,opacity:Math.max(z.fillOpacity,0.5),border:`2px solid ${z.borderColor}`,borderRadius:z.type==="circle"?"50%":"2px",clipPath:z.type==="triangle"?"polygon(50% 0%,0% 100%,100% 100%)":z.type==="parallelogram"?"polygon(25% 0%,100% 0%,75% 100%,0% 100%)":undefined}}/>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{z.name||z.type}</div>
+                            {(z.comune||z.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[z.comune,z.materiale].filter(Boolean).join(" · ")}</div>}
+                          </div>
+                          <span style={{fontSize:9,color:T.textDim,flexShrink:0}}>{z.type==="circle"?`${Math.round(z.radius)}m`:z.type.slice(0,3)}</span>
                         </div>
-                        <span style={{fontSize:9,color:T.textDim,flexShrink:0}}>{z.type==="circle"?`${Math.round(z.radius)}m`:z.type.slice(0,3)}</span>
-                      </div>
-                    ))}
-                  </div>}
-                </>
-              )}
-              {/* Punti section */}
-              {punti.length>0&&(
-                <>
-                  <div onClick={()=>setLegendOpen(o=>({...o,punti:!o.punti}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.punti?`1px solid ${T.border}`:"none"}}>
-                    <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Punti ({punti.length})</div>
-                    <span style={{fontSize:12,color:T.textDim}}>{legendOpen.punti?"▲":"▼"}</span>
-                  </div>
-                  {legendOpen.punti&&<div style={{padding:"8px 14px"}}>
-                    {punti.map(p=>(
-                      <div key={p.id} onClick={()=>togglePunto(p.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visiblePunti[p.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
-                        <div style={{width:11,height:11,borderRadius:"50%",background:p.color,flexShrink:0,border:"2px solid #fff",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}/>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.nome||"—"}</div>
-                          {(p.comune||p.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[p.comune,p.materiale].filter(Boolean).join(" · ")}</div>}
+                      ))}
+                    </div>}
+                  </>
+                )}
+                {/* Punti section */}
+                {punti.length>0&&(
+                  <>
+                    <div onClick={()=>setLegendOpen(o=>({...o,punti:!o.punti}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.punti?`1px solid ${T.border}`:"none"}}>
+                      <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Punti ({punti.length})</div>
+                      <span style={{fontSize:12,color:T.textDim}}>{legendOpen.punti?"▲":"▼"}</span>
+                    </div>
+                    {legendOpen.punti&&<div style={{padding:"8px 14px"}}>
+                      {punti.map(p=>(
+                        <div key={p.id} onClick={()=>togglePunto(p.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visiblePunti[p.id]!==false?1:0.3,transition:"opacity 0.15s"}}>
+                          <div style={{width:11,height:11,borderRadius:"50%",background:p.color,flexShrink:0,border:"2px solid #fff",boxShadow:"0 1px 3px rgba(0,0,0,0.4)"}}/>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{p.nome||"—"}</div>
+                            {(p.comune||p.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[p.comune,p.materiale].filter(Boolean).join(" · ")}</div>}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>}
-                </>
-              )}
-              <div style={{padding:"6px 14px 8px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim}}>Click per mostrare/nascondere</div>
+                      ))}
+                    </div>}
+                  </>
+                )}
+                <div style={{padding:"5px 14px 6px",borderTop:`1px solid ${T.border}`,fontSize:9,color:T.textDim}}>Click per mostrare/nascondere</div>
+              </div>
+
             </div>
           )}
           {/* ── editor-tab legends (zone / punti) ── */}
