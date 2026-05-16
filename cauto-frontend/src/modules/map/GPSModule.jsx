@@ -1279,29 +1279,28 @@ function GPSModule({onSelectVehicle,mode="live"}){
           />}
           {tab==="zone"&&<ZoneMap zones={zones} drawMode={drawingZone} zoneConfig={zoneCfg} onShapeComplete={handleShapeComplete} onZoneDelete={deleteZone}/>}
           {tab==="punti"&&<PuntiMap punti={punti} drawMode={drawingPunti} onMapClick={handlePuntiMapClick} onPuntoDelete={deletePunto}/>}
-          {/* ── unified floating legend (live tab) ── */}
-          {tab==="live"&&((routes&&routes.length>0)||zones.length>0||punti.length>0)&&(
+          {/* ── unified floating legend (live tab, desktop only) ── */}
+          {tab==="live"&&!mobileFullscreen&&routes!==null&&(
             <div style={{position:"absolute",top:12,right:12,zIndex:1000,background:"rgba(13,27,42,0.82)",border:`1px solid ${T.border}`,borderRadius:10,minWidth:210,maxWidth:240,backdropFilter:"blur(8px)",boxShadow:"0 4px 20px rgba(0,0,0,0.4)"}}>
-              {/* Percorsi section */}
-              {routes&&routes.length>0&&(
-                <>
-                  <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.live?`1px solid ${T.border}`:"none"}}>
-                    <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({routes.length})</div>
-                    <span style={{fontSize:12,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
-                  </div>
-                  {legendOpen.live&&<div style={{padding:"8px 14px",borderBottom:zones.length>0||punti.length>0?`1px solid ${T.border}`:"none"}}>
-                    {routes.map(r=>(
-                      <div key={r.id} onClick={()=>toggleRoute(r.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleRoutes[r.id]?1:0.3,transition:"opacity 0.15s"}}>
-                        <div style={{width:22,height:3,background:r.color,borderRadius:2,flexShrink:0}}/>
-                        <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
-                          {(r.comune||r.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[r.comune,r.materiale].filter(Boolean).join(" · ")}</div>}
-                        </div>
+              {/* Percorsi section — always visible */}
+              <>
+                <div onClick={()=>setLegendOpen(o=>({...o,live:!o.live}))} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",cursor:"pointer",userSelect:"none",borderBottom:legendOpen.live?`1px solid ${T.border}`:"none"}}>
+                  <div style={{fontSize:10,color:T.textSub,textTransform:"uppercase",letterSpacing:1,fontWeight:700,flex:1}}>Percorsi ({routes.length})</div>
+                  <span style={{fontSize:12,color:T.textDim}}>{legendOpen.live?"▲":"▼"}</span>
+                </div>
+                {legendOpen.live&&<div style={{padding:"8px 14px",borderBottom:zones.length>0||punti.length>0?`1px solid ${T.border}`:"none"}}>
+                  {routes.length===0&&<div style={{fontSize:11,color:T.textDim,textAlign:"center",padding:"6px 0"}}>Nessun percorso</div>}
+                  {routes.map(r=>(
+                    <div key={r.id} onClick={()=>toggleRoute(r.id)} style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,cursor:"pointer",opacity:visibleRoutes[r.id]?1:0.3,transition:"opacity 0.15s"}}>
+                      <div style={{width:22,height:3,background:r.color,borderRadius:2,flexShrink:0}}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:11,color:T.text,fontWeight:600,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                        {(r.comune||r.materiale)&&<div style={{fontSize:9,color:T.textDim}}>{[r.comune,r.materiale].filter(Boolean).join(" · ")}</div>}
                       </div>
-                    ))}
-                  </div>}
-                </>
-              )}
+                    </div>
+                  ))}
+                </div>}
+              </>
               {/* Zone section */}
               {zones.length>0&&(
                 <>
