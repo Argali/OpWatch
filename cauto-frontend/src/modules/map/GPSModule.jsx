@@ -1083,7 +1083,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
         <div style={{flex:1,borderRadius:mobileFullscreen?0:12,border:mobileFullscreen?"none":`1px solid ${T.border}`,position:"relative",overflow:"hidden",display:tab==="editore"?"none":"block"}}>
           {/* ── Live: search + planner top bar ── */}
           {tab==="live"&&!mobileFullscreen&&(
-            <div style={{position:"absolute",top:8,left:48,right:264,zIndex:1001,display:"flex",gap:8,alignItems:"flex-start",pointerEvents:"none"}}>
+            <div style={{position:"absolute",top:8,left:48,right:420,zIndex:1001,display:"flex",gap:8,alignItems:"flex-start",pointerEvents:"none"}}>
 
               {/* Cerca indirizzo */}
               <div style={{flex:1,pointerEvents:"auto",position:"relative",minWidth:0}}>
