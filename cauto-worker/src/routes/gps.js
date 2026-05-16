@@ -5,6 +5,38 @@ import { rbac }        from "../middleware/rbac.js";
 const gps = new Hono();
 gps.use("*", requireAuth, rbac("gps", "view"));
 
+// ── Valhalla helpers ──────────────────────────────────────────────────────────
+function decodePolyline6(encoded) {
+  const coords = []; let index = 0, lat = 0, lng = 0;
+  while (index < encoded.length) {
+    let b, shift = 0, result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lat += ((result & 1) ? ~(result >> 1) : (result >> 1));
+    shift = 0; result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lng += ((result & 1) ? ~(result >> 1) : (result >> 1));
+    coords.push([lat / 1e6, lng / 1e6]);
+  }
+  return coords;
+}
+
+async function callValhalla(env, endpoint, body, timeoutMs = 12000) {
+  const base = env.VALHALLA_URL || "https://valhalla1.openstreetmap.de";
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${base}/${endpoint}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    return await res.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ── Mock vehicles (replaced by live adapter when Visirun is authorised) ───────
 const MOCK_VEHICLES = [
   { id:"v1", plate:"FE-123-AA", name:"Camion 01", status:"active", lat:44.8381, lng:11.6198, speed:35, comune:"Ferrara", settore:"A" },
@@ -57,6 +89,62 @@ gps.delete("/routes/:id", rbac("gps", "edit"), async (c) => {
   const id   = c.req.param("id");
   await c.env.DB.prepare("DELETE FROM routes WHERE id=? AND tenant_id=?").bind(id, user.tenant_id).run();
   return c.json({ ok: true });
+});
+
+// ── Snap waypoints to roads via Valhalla ──────────────────────────────────────
+gps.post("/routes/snap-to-roads", rbac("gps", "edit"), async (c) => {
+  const { waypoints, costing = "auto" } = await c.req.json().catch(() => ({}));
+  if (!Array.isArray(waypoints) || waypoints.length < 2)
+    return c.json({ ok: false, error: "Servono almeno 2 waypoint." }, 400);
+  const locations = waypoints.map(([lat, lon]) => ({ lat, lon, type: "break" }));
+  try {
+    const data = await callValhalla(c.env, "route", {
+      locations,
+      costing: costing === "truck" ? "truck" : "auto",
+    });
+    if (!data.trip?.legs)
+      return c.json({ ok: false, error: "Risposta Valhalla non valida." }, 502);
+    const segments = data.trip.legs.map(leg => decodePolyline6(leg.shape));
+    return c.json({ ok: true, data: { segments, unmatched: [] } });
+  } catch (err) {
+    if (err.name === "AbortError")
+      return c.json({ ok: false, error: "Valhalla non disponibile. Avvia il server di routing." }, 503);
+    return c.json({ ok: false, error: "Errore snap-to-roads." }, 500);
+  }
+});
+
+// ── Turn-by-turn navigation via Valhalla ──────────────────────────────────────
+gps.post("/navigate", async (c) => {
+  const { from, to, costing = "auto" } = await c.req.json().catch(() => ({}));
+  if (!Array.isArray(from) || !Array.isArray(to))
+    return c.json({ ok: false, error: "from e to [lat,lon] obbligatori" }, 400);
+  try {
+    const data = await callValhalla(c.env, "route", {
+      locations: [
+        { lat: from[0], lon: from[1], type: "break" },
+        { lat: to[0],   lon: to[1],   type: "break" },
+      ],
+      costing: costing === "truck" ? "truck" : "auto",
+      directions_options: { language: "it-IT", units: "km" },
+    }, 15000);
+    if (!data.trip?.legs?.length)
+      return c.json({ ok: false, error: "Nessun percorso trovato tra questi punti." }, 502);
+    const leg = data.trip.legs[0];
+    const maneuvers = (leg.maneuvers || []).map(m => ({
+      type: m.type, instruction: m.instruction || "",
+      length: m.length || 0, time: m.time || 0,
+      begin_shape_index: m.begin_shape_index, end_shape_index: m.end_shape_index,
+    }));
+    const summary = data.trip.summary || {};
+    return c.json({ ok: true, data: {
+      shape: decodePolyline6(leg.shape), maneuvers,
+      distance: summary.length || 0, duration: summary.time || 0,
+    }});
+  } catch (err) {
+    if (err.name === "AbortError")
+      return c.json({ ok: false, error: "Valhalla non disponibile. Controlla la connessione." }, 503);
+    return c.json({ ok: false, error: "Errore navigazione." }, 500);
+  }
 });
 
 // ── Zones ────────────────────────────────────────────────────────────────────
