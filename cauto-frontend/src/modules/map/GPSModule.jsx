@@ -1474,7 +1474,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
               )}
 
               {/* ── Left-side FABs: Trucks + Percorsi + Segnalazione ── */}
-              <div style={{position:"absolute",bottom:20,left:16,zIndex:1001,display:"flex",flexDirection:"column",gap:12,alignItems:"center"}}>
+              <div style={{position:"absolute",bottom:20,left:16,zIndex:1011,display:"flex",flexDirection:"row",gap:10,alignItems:"center"}}>
                 <button onClick={()=>{setShowNavTrucks(v=>!v);setShowNavPercorsi(false);setShowNavSegnala(false);}}
                   style={{width:56,height:56,borderRadius:16,background:showNavTrucks?"rgba(59,130,246,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavTrucks?T.blue:T.border}`,color:showNavTrucks?T.blue:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                   <span style={{fontSize:22,lineHeight:1}}>🚛</span>
