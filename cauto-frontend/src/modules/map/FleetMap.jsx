@@ -51,6 +51,51 @@ function injectGeoCss() {
   document.head.appendChild(s);
 }
 
+// ── Geo helpers ───────────────────────────────────────────────────────────────
+function segDistM(a, b) {
+  const R = 6371000, toRad = x => x * Math.PI / 180;
+  const dLat = toRad(b[0] - a[0]), dLon = toRad(b[1] - a[1]);
+  const s = Math.sin(dLat/2)**2 + Math.cos(toRad(a[0]))*Math.cos(toRad(b[0]))*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+}
+function bearing(a, b) {
+  return Math.atan2(b[1]-a[1], b[0]-a[0]) * 180 / Math.PI;
+}
+function addArrows(waypoints, color, layer, intervalM=500) {
+  let dist=0, nextAt=intervalM/2;
+  for(let i=0;i<waypoints.length-1;i++){
+    const a=waypoints[i],b=waypoints[i+1];
+    const seg=segDistM(a,b);
+    while(dist+seg>=nextAt){
+      const t=(nextAt-dist)/seg;
+      const lat=a[0]+t*(b[0]-a[0]),lng=a[1]+t*(b[1]-a[1]);
+      const deg=bearing(a,b);
+      L.marker([lat,lng],{
+        icon:L.divIcon({
+          className:"",
+          html:`<div style="transform:rotate(${deg}deg);color:${color};font-size:15px;line-height:1;text-shadow:0 0 5px rgba(0,0,0,0.9);filter:drop-shadow(0 0 2px rgba(0,0,0,0.7))">▲</div>`,
+          iconSize:[15,15],iconAnchor:[7,7],
+        }),
+        interactive:false,zIndexOffset:400,
+      }).addTo(layer);
+      nextAt+=intervalM;
+    }
+    dist+=seg;
+  }
+}
+function renderSegmentedRoute(waypoints, transitSet, color, weight, opacity, layer) {
+  if(!waypoints||waypoints.length<2)return;
+  let runStart=0, runIsTransit=transitSet.has(0);
+  for(let i=1;i<=waypoints.length-1;i++){
+    const nextTransit=transitSet.has(i);
+    if(i===waypoints.length-1||nextTransit!==runIsTransit){
+      const pts=waypoints.slice(runStart,i+1);
+      if(pts.length>=2)L.polyline(pts,{color,weight,opacity,dashArray:runIsTransit?"10 6":null}).addTo(layer);
+      runStart=i; runIsTransit=nextTransit;
+    }
+  }
+}
+
 // ── Toolbar action factory ────────────────────────────────────────────────────
 function makeAction(html, tooltip, cbRef, cbKey) {
   return L.Toolbar2.Action.extend({
@@ -67,6 +112,8 @@ function FleetMap({
   // new plugin props
   owmApiKey, weatherLayers, editorActive, toolbarCbRef,
   routeProgress,
+  // transit / arrows props
+  transitMode, transitRange, onWaypointSelect, editTransitSegments,
 }) {
   const containerRef=useRef(null);
   const mapRef=useRef(null);
@@ -85,10 +132,12 @@ function FleetMap({
   const cbMove=useRef(onWaypointMove);
   const cbDel=useRef(onWaypointDelete);
   const cbPathClick=useRef(onPathClick);
+  const cbWpSelect=useRef(onWaypointSelect);
   useEffect(()=>{cbClick.current=onMapClick;},[onMapClick]);
   useEffect(()=>{cbMove.current=onWaypointMove;},[onWaypointMove]);
   useEffect(()=>{cbDel.current=onWaypointDelete;},[onWaypointDelete]);
   useEffect(()=>{cbPathClick.current=onPathClick;},[onPathClick]);
+  useEffect(()=>{cbWpSelect.current=onWaypointSelect;},[onWaypointSelect]);
 
   // ── Map init ────────────────────────────────────────────────────────────────
   useEffect(()=>{
@@ -215,32 +264,34 @@ function FleetMap({
     routes.forEach(r=>{
       const opacity=editMode?0.2:(visibleRoutes[r.id]?(r.opacity??0.85):0);
       if(opacity===0)return;
+      const transitSet=new Set(r.transitSegments||[]);
       const prog=routeProgress&&routeProgress.id===r.id?routeProgress:null;
       if(prog&&prog.completedWaypoints.length>=2&&prog.remainingWaypoints.length>=2){
-        // Completed segment: same colour, heavily faded
-        const doneLine=L.polyline(prog.completedWaypoints,{color:r.color,weight:4,opacity:opacity*0.3,dashArray:null});
+        const doneLine=L.polyline(prog.completedWaypoints,{color:r.color,weight:4,opacity:opacity*0.3});
         doneLine.bindTooltip(`<b>${r.name}</b> — ${prog.percent}% completato`,{sticky:true});
         routeLayerRef.current.addLayer(doneLine);
-        // Remaining segment: full colour
-        const remLine=L.polyline(prog.remainingWaypoints,{color:r.color,weight:4,opacity,dashArray:null});
+        const remLine=L.polyline(prog.remainingWaypoints,{color:r.color,weight:4,opacity});
         routeLayerRef.current.addLayer(remLine);
-        // Percentage badge at the split point
         const sp=prog.remainingWaypoints[0];
         if(sp){
-          const badge=L.marker(sp,{
-            icon:L.divIcon({
-              className:"",
-              html:`<div style="background:${r.color};color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.55);font-family:monospace">${prog.percent}%</div>`,
-              iconSize:[46,22],iconAnchor:[23,11],
-            }),
+          routeLayerRef.current.addLayer(L.marker(sp,{
+            icon:L.divIcon({className:"",html:`<div style="background:${r.color};color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.55);font-family:monospace">${prog.percent}%</div>`,iconSize:[46,22],iconAnchor:[23,11]}),
             zIndexOffset:600,interactive:false,
-          });
-          routeLayerRef.current.addLayer(badge);
+          }));
+        }
+      }else if(transitSet.size>0){
+        renderSegmentedRoute(r.waypoints,transitSet,r.color,4,opacity,routeLayerRef.current);
+        if(!editMode){
+          const mid=r.waypoints[Math.floor(r.waypoints.length/2)];
+          if(mid)L.marker(mid,{icon:L.divIcon({className:"",html:"",iconSize:[0,0]}),interactive:false}).bindTooltip(`<b>${r.name}</b>${r.comune?`<br>${r.comune}`:""}`,{sticky:true}).addTo(routeLayerRef.current);
         }
       }else{
         const line=L.polyline(r.waypoints,{color:r.color,weight:4,opacity,dashArray:r.status==="pianificato"?"10 7":null});
         if(!editMode)line.bindTooltip(`<b>${r.name}</b>${r.comune?`<br>${r.comune}`:""}`,{sticky:true});
         routeLayerRef.current.addLayer(line);
+      }
+      if(r.showArrows&&r.waypoints&&r.waypoints.length>=2&&opacity>0){
+        addArrows(r.waypoints,r.color,routeLayerRef.current);
       }
     });
   },[routes,visibleRoutes,editMode,routeProgress]);
@@ -316,40 +367,68 @@ function FleetMap({
     editLayerRef.current.clearLayers();
     if(!editMode||!editWaypoints||editWaypoints.length===0)return;
     const color=editColor||T.green;
-    const pathPts=snappedSegments?snappedSegments.flat():editWaypoints;
-    const line=L.polyline(pathPts,{color,weight:4,opacity:0.9,interactive:!!snappedSegments});
-    if(snappedSegments&&cbPathClick.current){
-      line.on("click",(e)=>{
-        L.DomEvent.stopPropagation(e);
-        const click=[e.latlng.lat,e.latlng.lng];
-        let bestSeg=0,bestDist=Infinity;
-        for(let i=0;i<editWaypoints.length-1;i++){
-          const a=editWaypoints[i],b=editWaypoints[i+1];
-          const dx=b[0]-a[0],dy=b[1]-a[1];
-          const d2=dx*dx+dy*dy;
-          let t=d2>0?((click[0]-a[0])*dx+(click[1]-a[1])*dy)/d2:0;
-          t=Math.max(0,Math.min(1,t));
-          const dist=Math.hypot(click[0]-(a[0]+t*dx),click[1]-(a[1]+t*dy));
-          if(dist<bestDist){bestDist=dist;bestSeg=i;}
-        }
-        cbPathClick.current(bestSeg+1,click);
-      });
+    const transitSet=new Set(editTransitSegments||[]);
+
+    // Draw path: split by transit segments for dashed/solid rendering
+    if(snappedSegments){
+      // Snapped mode: one L.polyline per snap segment, styled by transit
+      const pathPts=snappedSegments.flat();
+      const line=L.polyline(pathPts,{color,weight:4,opacity:0.9,interactive:true});
+      if(cbPathClick.current){
+        line.on("click",(e)=>{
+          L.DomEvent.stopPropagation(e);
+          const click=[e.latlng.lat,e.latlng.lng];
+          let bestSeg=0,bestDist=Infinity;
+          for(let i=0;i<editWaypoints.length-1;i++){
+            const a=editWaypoints[i],b=editWaypoints[i+1];
+            const dx=b[0]-a[0],dy=b[1]-a[1];
+            const d2=dx*dx+dy*dy;
+            let t=d2>0?((click[0]-a[0])*dx+(click[1]-a[1])*dy)/d2:0;
+            t=Math.max(0,Math.min(1,t));
+            const dist=Math.hypot(click[0]-(a[0]+t*dx),click[1]-(a[1]+t*dy));
+            if(dist<bestDist){bestDist=dist;bestSeg=i;}
+          }
+          cbPathClick.current(bestSeg+1,click);
+        });
+      }
+      editLayerRef.current.addLayer(line);
+    } else if(transitSet.size>0){
+      // Free-hand with transit segments: draw each segment individually
+      for(let i=0;i<editWaypoints.length-1;i++){
+        L.polyline([editWaypoints[i],editWaypoints[i+1]],{
+          color,weight:4,opacity:0.9,
+          dashArray:transitSet.has(i)?"10 6":null,
+        }).addTo(editLayerRef.current);
+      }
+    } else {
+      // Simple: one polyline
+      L.polyline(editWaypoints,{color,weight:4,opacity:0.9}).addTo(editLayerRef.current);
     }
-    editLayerRef.current.addLayer(line);
+
+    // Waypoint markers
     editWaypoints.forEach((wp,idx)=>{
+      const inRange=transitRange&&transitRange[0]!==null&&transitRange[1]!==null
+        &&idx>=transitRange[0]&&idx<=transitRange[1];
+      const isSelected=transitRange&&(transitRange[0]===idx||transitRange[1]===idx);
+      const markerColor=isSelected?"#f97316":inRange?"#fb923c":color;
+      const borderColor=isSelected?"#fff":inRange?"#f97316":"#000";
       const m=L.marker([wp[0],wp[1]],{
-        icon:L.divIcon({className:"",html:`<div style="width:18px;height:18px;background:${color};border:2px solid #000;border-radius:50%;cursor:grab;box-shadow:0 0 6px rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#000">${idx+1}</div>`,iconSize:[18,18],iconAnchor:[9,9]}),
-        draggable:true,zIndexOffset:1000,
+        icon:L.divIcon({className:"",html:`<div style="width:18px;height:18px;background:${markerColor};border:2px solid ${borderColor};border-radius:50%;cursor:${transitMode?"pointer":"grab"};box-shadow:0 0 6px rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#000">${idx+1}</div>`,iconSize:[18,18],iconAnchor:[9,9]}),
+        draggable:!transitMode,zIndexOffset:1000,
       });
-      m.on("dragend",(e)=>{ const{lat,lng}=e.target.getLatLng(); if(cbMove.current)cbMove.current(idx,[lat,lng]); });
-      if(snapMode){
+      if(!transitMode){
+        m.on("dragend",(e)=>{ const{lat,lng}=e.target.getLatLng(); if(cbMove.current)cbMove.current(idx,[lat,lng]); });
+      }
+      if(transitMode){
+        m.on("click",(e)=>{ L.DomEvent.stopPropagation(e); if(cbWpSelect.current)cbWpSelect.current(idx); });
+      } else if(snapMode){
         m.on("contextmenu",(e)=>{ L.DomEvent.stopPropagation(e); if(cbDel.current)cbDel.current(idx); });
       } else {
         m.on("click",(e)=>{ L.DomEvent.stopPropagation(e); if(cbDel.current)cbDel.current(idx); });
       }
       editLayerRef.current.addLayer(m);
     });
-  },[editMode,editWaypoints,editColor,snappedSegments,snapMode]);
+  },[editMode,editWaypoints,editColor,snappedSegments,snapMode,transitMode,transitRange,editTransitSegments]);
 
   // ── My position — pulsing blue dot ─────────────────────────────────────────
   useEffect(()=>{

@@ -101,7 +101,7 @@ const GIORNI=[
 const GIORNO_KEYS=["dom","lun","mar","mer","gio","ven","sab"]; // matches Date.getDay() index
 const todayGiorno=()=>GIORNO_KEYS[new Date().getDay()];
 
-const EMPTY_META={name:"",color:"#4ade80",opacity:0.85,comune:"",materiale:"",sector:"",giorno:""};
+const EMPTY_META={name:"",color:"#4ade80",opacity:0.85,comune:"",materiale:"",sector:"",giorno:"",transitSegments:[],showArrows:false};
 
 const EMPTY_ZONE_CFG={type:"circle",name:"",comune:"",materiale:"",sector:"",fillColor:"#60a5fa",fillOpacity:0.3,borderColor:"#3a7bd5"};
 const EMPTY_PUNTO_CFG={nome:"",comune:"",materiale:"",sector:"",color:"#f87171"};
@@ -328,6 +328,10 @@ function GPSModule({onSelectVehicle,mode="live"}){
 
   const snapMode=snappedSegments!==null;
   const snappedPath=snappedSegments?snappedSegments.flat():null;
+  // ── Transit / tratto selection ─────────────────────────────────────────────
+  const [transitMode,setTransitMode]=useState(false);
+  const [transitRange,setTransitRange]=useState([null,null]); // [startIdx, endIdx]
+  const [snapRangeLoading,setSnapRangeLoading]=useState(false);
 
   // ── PDF export state ──────────────────────────────────────────────────────
   const [pdfPanel,setPdfPanel]=useState(false);
@@ -390,6 +394,62 @@ function GPSModule({onSelectVehicle,mode="live"}){
     setEditWaypoints(prev=>dpSimplify(prev,0.0002));
     setSnappedSegments(null);
   };
+
+  const handleWaypointSelect=useCallback((idx)=>{
+    setTransitRange(prev=>{
+      if(prev[0]===null)return[idx,null];
+      if(prev[1]===null){
+        const[a,b]=[Math.min(prev[0],idx),Math.max(prev[0],idx)];
+        if(a===b)return[null,null];
+        return[a,b];
+      }
+      return[idx,null];
+    });
+  },[]);
+
+  const applyTransit=useCallback(()=>{
+    const[a,b]=transitRange;
+    if(a===null||b===null)return;
+    const segs=[];for(let i=a;i<b;i++)segs.push(i);
+    setMeta(m=>{
+      const existing=new Set(m.transitSegments||[]);
+      const allSet=segs.every(i=>existing.has(i));
+      const next=allSet
+        ?(m.transitSegments||[]).filter(i=>!segs.includes(i))
+        :[...new Set([...(m.transitSegments||[]),...segs])].sort((x,y)=>x-y);
+      return{...m,transitSegments:next};
+    });
+    setTransitRange([null,null]);
+  },[transitRange]);
+
+  const snapSubRange=useCallback(async()=>{
+    const[a,b]=transitRange;
+    if(a===null||b===null||b-a<1)return;
+    setSnapRangeLoading(true);
+    const sub=editWaypoints.slice(a,b+1);
+    try{
+      const res=await fetch(`${API}/gps/routes/snap-to-roads`,{
+        method:"POST",
+        headers:{"Content-Type":"application/json",Authorization:`Bearer ${auth?.token}`},
+        body:JSON.stringify({waypoints:sub,costing:snapCosting}),
+      });
+      const json=await res.json();
+      if(json.ok){
+        const snapped=json.data.segments.flat();
+        setEditWaypoints(prev=>[...prev.slice(0,a),...snapped,...prev.slice(b+1)]);
+        setSnappedSegments(null);
+        setMeta(m=>({...m,transitSegments:(m.transitSegments||[]).filter(i=>i<a||i>=b)}));
+        setTransitRange([null,null]);
+      }else{
+        setCsvError(json.error||"Errore snap tratto");
+        setTimeout(()=>setCsvError(null),6000);
+      }
+    }catch{
+      setCsvError("Valhalla non disponibile");
+      setTimeout(()=>setCsvError(null),6000);
+    }
+    setSnapRangeLoading(false);
+  },[transitRange,editWaypoints,auth?.token,snapCosting]);
 
   const gpxInputRef=useRef(null);
   const handleGPXFile=(e)=>{
@@ -806,9 +866,9 @@ function GPSModule({onSelectVehicle,mode="live"}){
   useEffect(()=>{loadRoutes();},[loadRoutes]);
 
   const toggleRoute=(id)=>setVisibleRoutes(prev=>({...prev,[id]:!prev[id]}));
-  const startEdit=(r)=>{setEditingId(r.id);setEditWaypoints(r.waypoints.map(wp=>[...wp]));setMeta({name:r.name,color:r.color,opacity:r.opacity??0.85,comune:r.comune||"",materiale:r.materiale||"",sector:r.sector||"",giorno:r.giorno||""});setSnappedSegments(null);setEditAnnotations(r.annotations||[]);setAnnotMode(false);setAnnotEditId(null);};
+  const startEdit=(r)=>{setEditingId(r.id);setEditWaypoints(r.waypoints.map(wp=>[...wp]));setMeta({name:r.name,color:r.color,opacity:r.opacity??0.85,comune:r.comune||"",materiale:r.materiale||"",sector:r.sector||"",giorno:r.giorno||"",transitSegments:r.transitSegments||[],showArrows:r.showArrows??false});setSnappedSegments(null);setEditAnnotations(r.annotations||[]);setAnnotMode(false);setAnnotEditId(null);setTransitMode(false);setTransitRange([null,null]);};
   const startNew=()=>{setEditingId("new");setEditWaypoints([]);setMeta({...EMPTY_META});setSnappedSegments(null);setEditAnnotations([]);setAnnotMode(false);setAnnotEditId(null);};
-  const cancelEdit=()=>{setEditingId(null);setEditWaypoints([]);setMeta(EMPTY_META);setSnappedSegments(null);setEditAnnotations([]);setAnnotMode(false);setAnnotEditId(null);};
+  const cancelEdit=()=>{setEditingId(null);setEditWaypoints([]);setMeta(EMPTY_META);setSnappedSegments(null);setEditAnnotations([]);setAnnotMode(false);setAnnotEditId(null);setTransitMode(false);setTransitRange([null,null]);};
 
   // ── Snap-to-roads ──────────────────────────────────────────────────────────
   const reSnapSegments=useCallback(async(controlPts,segStart,segEnd)=>{
@@ -1142,10 +1202,47 @@ function GPSModule({onSelectVehicle,mode="live"}){
                     style={{padding:"5px 11px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font}}>
                     ⌫ Semplifica
                   </button>}
+                  {/* Transit segment tool */}
+                  <button onClick={()=>{setTransitMode(m=>!m);setTransitRange([null,null]);}}
+                    title="Segna tratto transito (linea tratteggiata, senza raccolta)"
+                    style={{padding:"5px 11px",background:transitMode?alpha(T.orange,15):T.bg,border:`1px solid ${transitMode?T.orange:T.border}`,borderRadius:6,color:transitMode?T.orange:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:transitMode?700:400}}>
+                    ✂ Transito
+                  </button>
+                  {/* Direction arrows toggle */}
+                  <button onClick={()=>setMeta(m=>({...m,showArrows:!m.showArrows}))}
+                    title="Mostra frecce di direzione lungo il percorso"
+                    style={{padding:"5px 11px",background:meta.showArrows?alpha(T.blue,15):T.bg,border:`1px solid ${meta.showArrows?T.blue:T.border}`,borderRadius:6,color:meta.showArrows?T.blue:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:meta.showArrows?700:400}}>
+                    → Frecce
+                  </button>
                   <span style={{fontSize:12,color:T.teal,fontWeight:700,fontFamily:"monospace",padding:"4px 10px",background:"rgba(74,222,128,0.07)",borderRadius:6,border:`1px solid rgba(74,222,128,0.2)`}}>
                     {editorTotalKm<1?`${Math.round(editorTotalKm*1000)} m`:`${editorTotalKm.toFixed(2)} km`}
                   </span>
                 </>
+              )}
+              {/* Transit mode action bar */}
+              {transitMode&&editWaypoints.length>=2&&(
+                <div style={{display:"flex",alignItems:"center",gap:8,padding:"4px 10px",background:alpha(T.orange,8),border:`1px solid ${alpha(T.orange,30)}`,borderRadius:8}}>
+                  {transitRange[0]===null&&<span style={{fontSize:11,color:T.orange}}>Click su un punto per iniziare il tratto</span>}
+                  {transitRange[0]!==null&&transitRange[1]===null&&<span style={{fontSize:11,color:T.orange}}>Punto {transitRange[0]+1} selezionato — click sul punto finale</span>}
+                  {transitRange[0]!==null&&transitRange[1]!==null&&(
+                    <>
+                      <span style={{fontSize:11,color:T.orange}}>Punti {transitRange[0]+1}–{transitRange[1]+1}</span>
+                      <button onClick={applyTransit}
+                        style={{padding:"4px 10px",background:"transparent",border:`1px solid ${T.orange}`,borderRadius:5,color:T.orange,cursor:"pointer",fontSize:11,fontFamily:T.font,fontWeight:700}}>
+                        Segna transito
+                      </button>
+                      <button onClick={snapSubRange} disabled={snapRangeLoading}
+                        style={{padding:"4px 10px",background:"transparent",border:`1px solid ${T.blue}`,borderRadius:5,color:T.blue,cursor:snapRangeLoading?"not-allowed":"pointer",fontSize:11,fontFamily:T.font,display:"flex",alignItems:"center",gap:5}}>
+                        {snapRangeLoading&&<span style={{display:"inline-block",width:9,height:9,border:`2px solid ${T.blue}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+                        ↔ Snap tratto
+                      </button>
+                      <button onClick={()=>setTransitRange([null,null])}
+                        style={{padding:"4px 8px",background:"transparent",border:"none",color:T.textDim,cursor:"pointer",fontSize:13,lineHeight:1}}>
+                        ✕
+                      </button>
+                    </>
+                  )}
+                </div>
               )}
             </div>
           )}
@@ -1342,6 +1439,10 @@ function GPSModule({onSelectVehicle,mode="live"}){
             myPosition={tab==="live"?myPos:null}
             driverLocations={tab==="live"?driverLocs:[]}
             routeProgress={tab==="live"&&raccoltaProgress?{id:raccoltaRouteId,...raccoltaProgress}:null}
+            transitMode={tab==="editor"&&transitMode}
+            transitRange={transitRange}
+            onWaypointSelect={handleWaypointSelect}
+            editTransitSegments={meta.transitSegments}
           />}
           {tab==="zone"&&<ZoneMap zones={zones} drawMode={drawingZone} zoneConfig={zoneCfg} onShapeComplete={handleShapeComplete} onZoneDelete={deleteZone}/>}
           {tab==="punti"&&<PuntiMap punti={punti} drawMode={drawingPunti} onMapClick={handlePuntiMapClick} onPuntoDelete={deletePunto}/>}

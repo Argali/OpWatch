@@ -93,7 +93,12 @@ gps.get("/routes", async (c) => {
     .prepare("SELECT * FROM routes WHERE tenant_id = ? ORDER BY created_at DESC")
     .bind(user.tenant_id)
     .all();
-  return c.json({ ok: true, data: results.map(r => ({ ...r, waypoints: JSON.parse(r.waypoints_json) })) });
+  return c.json({ ok: true, data: results.map(r => ({
+    ...r,
+    waypoints: JSON.parse(r.waypoints_json),
+    transitSegments: JSON.parse(r.transit_segments_json || '[]'),
+    showArrows: !!r.show_arrows,
+  })) });
 });
 
 gps.post("/routes", rbac("gps", "edit"), async (c) => {
@@ -101,9 +106,12 @@ gps.post("/routes", rbac("gps", "edit"), async (c) => {
   const body = await c.req.json().catch(() => ({}));
   const id   = crypto.randomUUID();
   await c.env.DB
-    .prepare("INSERT INTO routes (id,tenant_id,name,color,opacity,comune,materiale,sector,giorno,waypoints_json) VALUES (?,?,?,?,?,?,?,?,?,?)")
+    .prepare("INSERT INTO routes (id,tenant_id,name,color,opacity,comune,materiale,sector,giorno,waypoints_json,transit_segments_json,show_arrows) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")
     .bind(id, user.tenant_id, body.name ?? "", body.color ?? "#4ade80", body.opacity ?? 0.85,
-          body.comune ?? "", body.materiale ?? "", body.sector ?? "", body.giorno ?? null, JSON.stringify(body.waypoints ?? []))
+          body.comune ?? "", body.materiale ?? "", body.sector ?? "", body.giorno ?? null,
+          JSON.stringify(body.waypoints ?? []),
+          JSON.stringify(body.transitSegments ?? []),
+          body.showArrows ? 1 : 0)
     .run();
   return c.json({ ok: true, data: { id, ...body } }, 201);
 });
@@ -113,9 +121,12 @@ gps.patch("/routes/:id", rbac("gps", "edit"), async (c) => {
   const id   = c.req.param("id");
   const body = await c.req.json().catch(() => ({}));
   await c.env.DB
-    .prepare("UPDATE routes SET name=?,color=?,opacity=?,comune=?,materiale=?,sector=?,giorno=?,waypoints_json=?,updated_at=datetime('now') WHERE id=? AND tenant_id=?")
+    .prepare("UPDATE routes SET name=?,color=?,opacity=?,comune=?,materiale=?,sector=?,giorno=?,waypoints_json=?,transit_segments_json=?,show_arrows=?,updated_at=datetime('now') WHERE id=? AND tenant_id=?")
     .bind(body.name, body.color, body.opacity, body.comune, body.materiale, body.sector,
-          body.giorno ?? null, JSON.stringify(body.waypoints ?? []), id, user.tenant_id)
+          body.giorno ?? null, JSON.stringify(body.waypoints ?? []),
+          JSON.stringify(body.transitSegments ?? []),
+          body.showArrows ? 1 : 0,
+          id, user.tenant_id)
     .run();
   return c.json({ ok: true });
 });
