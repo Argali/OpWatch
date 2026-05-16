@@ -305,6 +305,9 @@ function GPSModule({onSelectVehicle,mode="live"}){
   const [showNavTrucks,setShowNavTrucks]=useState(false);
   const [showNavPercorsi,setShowNavPercorsi]=useState(false);
   const [showNavSegnala,setShowNavSegnala]=useState(false);
+  const [showNavRaccolta,setShowNavRaccolta]=useState(false);
+  // ── Raccolta progress tracking ─────────────────────────────────────────────
+  const [raccoltaRouteId,setRaccoltaRouteId]=useState(()=>localStorage.getItem("OpSonata_raccolta_route")||null);
   const [selectedGiorno,setSelectedGiorno]=useState(todayGiorno);
   const [settoreFilter,setSettoreFilter]=useState("");
   const [navSegnalazione,setNavSegnalazione]=useState({tipo:"",note:""});
@@ -360,6 +363,93 @@ function GPSModule({onSelectVehicle,mode="live"}){
     clear:()=>{setEditWaypoints([]);setSnappedSegments(null);},
     annotate:()=>{setAnnotMode(m=>!m);setAnnotEditId(null);setIllustrateMode(false);},
     illustrate:()=>{setIllustrateMode(m=>!m);setAnnotMode(false);},
+  };
+
+  // ── Route editing helpers ──────────────────────────────────────────────────
+  const reverseRoute=()=>{
+    if(snapMode){
+      setSnappedSegments(prev=>[...prev].reverse().map(seg=>[...seg].reverse()));
+    }else{
+      setEditWaypoints(prev=>[...prev].reverse());
+    }
+  };
+
+  const dpSimplify=(pts,tol)=>{
+    if(pts.length<=2)return pts;
+    const[a,b]=[pts[0],pts[pts.length-1]];
+    const dx=b[0]-a[0],dy=b[1]-a[1],lenSq=dx*dx+dy*dy;
+    let maxDist=0,maxIdx=0;
+    for(let i=1;i<pts.length-1;i++){
+      const d=lenSq===0?Math.hypot(pts[i][0]-a[0],pts[i][1]-a[1]):Math.abs((pts[i][0]-a[0])*dy-(pts[i][1]-a[1])*dx)/Math.sqrt(lenSq);
+      if(d>maxDist){maxDist=d;maxIdx=i;}
+    }
+    if(maxDist>tol)return[...dpSimplify(pts.slice(0,maxIdx+1),tol).slice(0,-1),...dpSimplify(pts.slice(maxIdx),tol)];
+    return[a,b];
+  };
+  const simplifyRoute=()=>{
+    setEditWaypoints(prev=>dpSimplify(prev,0.0002));
+    setSnappedSegments(null);
+  };
+
+  const gpxInputRef=useRef(null);
+  const handleGPXFile=(e)=>{
+    const file=e.target.files?.[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=(ev)=>{
+      const doc=new DOMParser().parseFromString(ev.target.result,"text/xml");
+      const pts=Array.from(doc.querySelectorAll("trkpt,rtept")).map(pt=>[parseFloat(pt.getAttribute("lat")),parseFloat(pt.getAttribute("lon"))]).filter(([a,b])=>!isNaN(a)&&!isNaN(b));
+      if(pts.length>=2){setEditWaypoints(pts);setSnappedSegments(null);}
+      else setCsvError("Nessun punto trovato nel file GPX");
+    };
+    reader.readAsText(file);
+    e.target.value="";
+  };
+
+  const editorTotalKm=useMemo(()=>{
+    const pts=snappedPath||editWaypoints;
+    if(pts.length<2)return 0;
+    let d=0;for(let i=0;i<pts.length-1;i++)d+=distanceM(pts[i],pts[i+1]);
+    return d/1000;
+  },[editWaypoints,snappedPath]);
+
+  // ── Raccolta progress ──────────────────────────────────────────────────────
+  const computeRouteProgress=(waypoints,pos)=>{
+    if(!waypoints||waypoints.length<2||!pos)return null;
+    let minDist=Infinity,bestSeg=0,bestT=0;
+    for(let i=0;i<waypoints.length-1;i++){
+      const[a,b]=[waypoints[i],waypoints[i+1]];
+      const dx=b[0]-a[0],dy=b[1]-a[1],lenSq=dx*dx+dy*dy;
+      const t=lenSq===0?0:Math.max(0,Math.min(1,((pos[0]-a[0])*dx+(pos[1]-a[1])*dy)/lenSq));
+      const proj=[a[0]+t*dx,a[1]+t*dy];
+      const d=distanceM(pos,proj);
+      if(d<minDist){minDist=d;bestSeg=i;bestT=t;}
+    }
+    let total=0,done=0;
+    for(let i=0;i<waypoints.length-1;i++){
+      const seg=distanceM(waypoints[i],waypoints[i+1]);
+      total+=seg;
+      if(i<bestSeg)done+=seg;
+      else if(i===bestSeg)done+=seg*bestT;
+    }
+    const splitPt=[
+      waypoints[bestSeg][0]+bestT*(waypoints[bestSeg+1][0]-waypoints[bestSeg][0]),
+      waypoints[bestSeg][1]+bestT*(waypoints[bestSeg+1][1]-waypoints[bestSeg][1]),
+    ];
+    return{
+      percent:total>0?Math.round((done/total)*100):0,
+      completedWaypoints:[...waypoints.slice(0,bestSeg+1),splitPt],
+      remainingWaypoints:[splitPt,...waypoints.slice(bestSeg+1)],
+      doneKm:done/1000,totalKm:total/1000,
+    };
+  };
+
+  const raccoltaRoute=(routes||[]).find(r=>r.id===raccoltaRouteId)||null;
+  const raccoltaProgress=raccoltaRoute&&myPos?computeRouteProgress(raccoltaRoute.waypoints,myPos):null;
+
+  const setRaccolta=(id)=>{
+    setRaccoltaRouteId(id);
+    if(id)localStorage.setItem("OpSonata_raccolta_route",id);
+    else localStorage.removeItem("OpSonata_raccolta_route");
   };
 
   // ── zone editor state ─────────────────────────────────────────────────────
@@ -1007,7 +1097,9 @@ function GPSModule({onSelectVehicle,mode="live"}){
             <>
               <input ref={csvInputRef} type="file" accept=".csv,.txt" onChange={handleCSVFile} style={{display:"none"}}/>
               <input ref={excelInputRef} type="file" accept=".xlsx,.xls,.ods" onChange={handleExcelFile} style={{display:"none"}}/>
-              <button onClick={()=>csvInputRef.current.click()} style={{padding:"7px 16px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:600}}>↑ Importa CSV</button>
+              <input ref={gpxInputRef} type="file" accept=".gpx" onChange={handleGPXFile} style={{display:"none"}}/>
+              <button onClick={()=>csvInputRef.current.click()} style={{padding:"7px 16px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:600}}>↑ CSV</button>
+              <button onClick={()=>gpxInputRef.current.click()} style={{padding:"7px 16px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:8,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,fontWeight:600}}>↑ GPX</button>
               <button onClick={()=>excelInputRef.current.click()} disabled={excelLoading} style={{padding:"7px 16px",background:excelLoading?T.bg:T.bg,border:`1px solid ${excelLoading?T.border:T.green+"55"}`,borderRadius:8,color:excelLoading?T.textDim:T.green,cursor:excelLoading?"not-allowed":"pointer",fontSize:13,fontFamily:T.font,fontWeight:600,display:"flex",alignItems:"center",gap:6}}>
                 {excelLoading&&<span style={{display:"inline-block",width:11,height:11,border:`2px solid ${T.green}`,borderTopColor:"transparent",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
                 {excelLoading?"Geocodifica…":"↑ Importa Excel"}
@@ -1039,6 +1131,21 @@ function GPSModule({onSelectVehicle,mode="live"}){
               )}
               {!snapMode&&editWaypoints.length<2&&(
                 <span style={{fontSize:11,color:T.textSub}}>Click mappa → aggiungi · Click punto → rimuovi · Trascina → sposta</span>
+              )}
+              {editWaypoints.length>=2&&(
+                <>
+                  <button onClick={reverseRoute} title="Inverti direzione percorso"
+                    style={{padding:"5px 11px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font,display:"flex",alignItems:"center",gap:5}}>
+                    ⇄ Inverti
+                  </button>
+                  {!snapMode&&<button onClick={simplifyRoute} title="Riduci i punti in eccesso"
+                    style={{padding:"5px 11px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:6,color:T.textSub,cursor:"pointer",fontSize:13,fontFamily:T.font}}>
+                    ⌫ Semplifica
+                  </button>}
+                  <span style={{fontSize:12,color:T.teal,fontWeight:700,fontFamily:"monospace",padding:"4px 10px",background:"rgba(74,222,128,0.07)",borderRadius:6,border:`1px solid rgba(74,222,128,0.2)`}}>
+                    {editorTotalKm<1?`${Math.round(editorTotalKm*1000)} m`:`${editorTotalKm.toFixed(2)} km`}
+                  </span>
+                </>
               )}
             </div>
           )}
@@ -1302,6 +1409,7 @@ function GPSModule({onSelectVehicle,mode="live"}){
             onCdrClick={tab==="live"?(c)=>{setTab("cdr");editCdrItem(c);}:null}
             myPosition={tab==="live"?myPos:null}
             driverLocations={tab==="live"?driverLocs:[]}
+            routeProgress={tab==="live"&&raccoltaProgress?{id:raccoltaRouteId,...raccoltaProgress}:null}
           />}
           {tab==="zone"&&<ZoneMap zones={zones} drawMode={drawingZone} zoneConfig={zoneCfg} onShapeComplete={handleShapeComplete} onZoneDelete={deleteZone}/>}
           {tab==="punti"&&<PuntiMap punti={punti} drawMode={drawingPunti} onMapClick={handlePuntiMapClick} onPuntoDelete={deletePunto}/>}
@@ -1566,10 +1674,16 @@ function GPSModule({onSelectVehicle,mode="live"}){
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M3 12h18M3 6l9-3 9 3M3 18l9 3 9-3"/></svg>
                   <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>PERCORSI</span>
                 </button>
-                <button onClick={()=>{setShowNavSegnala(v=>!v);setShowNavTrucks(false);setShowNavPercorsi(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}}
+                <button onClick={()=>{setShowNavSegnala(v=>!v);setShowNavTrucks(false);setShowNavPercorsi(false);setShowNavRaccolta(false);setNavSegnalazione({tipo:"",note:""});setNavSegnalaMsg(null);}}
                   style={{width:56,height:56,borderRadius:16,background:showNavSegnala?"rgba(251,146,60,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavSegnala?T.orange:T.border}`,color:showNavSegnala?T.orange:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)"}}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                   <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>SEGNALA</span>
+                </button>
+                <button onClick={()=>{setShowNavRaccolta(v=>!v);setShowNavTrucks(false);setShowNavPercorsi(false);setShowNavSegnala(false);}}
+                  style={{width:56,height:56,borderRadius:16,background:showNavRaccolta||raccoltaRouteId?"rgba(96,165,250,0.2)":"rgba(13,27,42,0.92)",border:`2px solid ${showNavRaccolta||raccoltaRouteId?T.blue:T.border}`,color:showNavRaccolta||raccoltaRouteId?T.blue:T.textSub,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,backdropFilter:"blur(8px)",boxShadow:"0 4px 16px rgba(0,0,0,0.5)",position:"relative"}}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  <span style={{fontSize:8,fontWeight:700,letterSpacing:0.4,lineHeight:1}}>RACCOLTA</span>
+                  {raccoltaProgress&&<div style={{position:"absolute",top:4,right:4,background:T.blue,color:"#fff",fontSize:7,fontWeight:800,borderRadius:6,padding:"1px 4px",fontFamily:"monospace"}}>{raccoltaProgress.percent}%</div>}
                 </button>
               </div>
 
@@ -1747,6 +1861,64 @@ function GPSModule({onSelectVehicle,mode="live"}){
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Mobile: Raccolta progress panel ── */}
+          {showNavRaccolta&&mobileFullscreen&&(
+            <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:1010,background:"rgba(10,16,26,0.97)",borderTop:`2px solid ${T.blue}`,borderRadius:"20px 20px 0 0",backdropFilter:"blur(16px)",boxShadow:"0 -8px 32px rgba(0,0,0,0.6)",fontFamily:T.font,display:"flex",flexDirection:"column",maxHeight:"65dvh"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 20px 10px",flexShrink:0}}>
+                <div style={{fontSize:16,fontWeight:700,color:T.text,display:"flex",alignItems:"center",gap:8}}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.blue} strokeWidth="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  Raccolta
+                </div>
+                <button onClick={()=>setShowNavRaccolta(false)} style={{background:"transparent",border:"none",color:T.textDim,fontSize:20,cursor:"pointer",lineHeight:1}}>✕</button>
+              </div>
+              {raccoltaRoute&&raccoltaProgress&&(
+                <div style={{margin:"0 20px 14px",padding:"12px 14px",background:"rgba(59,130,246,0.08)",border:`1px solid ${alpha(T.blue,40)}`,borderRadius:12,flexShrink:0}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                    <span style={{fontSize:13,fontWeight:700,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",flex:1}}>{raccoltaRoute.name}</span>
+                    <span style={{fontSize:20,fontWeight:800,color:T.blue,fontFamily:"monospace",flexShrink:0,marginLeft:8}}>{raccoltaProgress.percent}%</span>
+                  </div>
+                  <div style={{background:"rgba(255,255,255,0.08)",borderRadius:6,height:6,overflow:"hidden"}}>
+                    <div style={{height:"100%",background:raccoltaRoute.color||T.blue,width:`${raccoltaProgress.percent}%`,borderRadius:6,transition:"width 0.5s ease"}}/>
+                  </div>
+                  <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
+                    <span style={{fontSize:10,color:T.textDim}}>{raccoltaProgress.doneKm.toFixed(2)} km percorsi</span>
+                    <span style={{fontSize:10,color:T.textDim}}>{raccoltaProgress.totalKm.toFixed(2)} km totali</span>
+                  </div>
+                  <button onClick={()=>setRaccolta(null)}
+                    style={{width:"100%",marginTop:10,padding:"8px",background:"transparent",border:`1px solid ${alpha(T.red,50)}`,borderRadius:8,color:T.red,cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600}}>
+                    Termina raccolta
+                  </button>
+                </div>
+              )}
+              {!raccoltaRoute&&<div style={{padding:"0 20px 10px",fontSize:12,color:T.textDim,flexShrink:0}}>Seleziona il percorso che stai facendo</div>}
+              <div style={{overflowY:"auto",padding:"0 16px 32px",display:"flex",flexDirection:"column",gap:8}}>
+                {(routes||[]).length===0&&<div style={{textAlign:"center",color:T.textDim,fontSize:13,padding:"20px 0"}}>Nessun percorso disponibile</div>}
+                {(routes||[]).map(r=>{
+                  const isActive=raccoltaRouteId===r.id;
+                  return(
+                    <div key={r.id} style={{background:T.card,border:`1px solid ${isActive?r.color+"88":T.cardBorder}`,borderRadius:12,padding:"12px 14px",display:"flex",alignItems:"center",gap:12}}>
+                      <div style={{width:4,alignSelf:"stretch",background:r.color,borderRadius:2,flexShrink:0}}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:700,color:T.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{r.name}</div>
+                        <div style={{fontSize:10,color:T.textDim,marginTop:2}}>{[r.giorno&&GIORNI.find(g=>g.key===r.giorno)?.label,r.comune,r.materiale].filter(Boolean).join(" · ")||"Tutti i giorni"}</div>
+                      </div>
+                      {isActive
+                        ?<button onClick={()=>setRaccolta(null)}
+                            style={{flexShrink:0,padding:"6px 12px",background:T.bg,border:`1px solid ${alpha(T.red,50)}`,borderRadius:8,color:T.red,cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600}}>
+                            Ferma
+                          </button>
+                        :<button onClick={()=>{setRaccolta(r.id);if(!visibleRoutes[r.id])toggleRoute(r.id);}}
+                            style={{flexShrink:0,padding:"6px 12px",background:T.navActive,border:`1px solid ${alpha(T.blue,33)}`,borderRadius:8,color:T.blue,cursor:"pointer",fontSize:12,fontFamily:T.font,fontWeight:600}}>
+                            Avvia
+                          </button>
+                      }
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

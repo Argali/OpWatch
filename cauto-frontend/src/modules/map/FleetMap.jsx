@@ -66,6 +66,7 @@ function FleetMap({
   onPathClick, annotations=[], myPosition, driverLocations,
   // new plugin props
   owmApiKey, weatherLayers, editorActive, toolbarCbRef,
+  routeProgress,
 }) {
   const containerRef=useRef(null);
   const mapRef=useRef(null);
@@ -214,11 +215,35 @@ function FleetMap({
     routes.forEach(r=>{
       const opacity=editMode?0.2:(visibleRoutes[r.id]?(r.opacity??0.85):0);
       if(opacity===0)return;
-      const line=L.polyline(r.waypoints,{color:r.color,weight:4,opacity,dashArray:r.status==="pianificato"?"10 7":null});
-      if(!editMode)line.bindTooltip(`<b>${r.name}</b>${r.comune?`<br>${r.comune}`:""}`,{sticky:true});
-      routeLayerRef.current.addLayer(line);
+      const prog=routeProgress&&routeProgress.id===r.id?routeProgress:null;
+      if(prog&&prog.completedWaypoints.length>=2&&prog.remainingWaypoints.length>=2){
+        // Completed segment: same colour, heavily faded
+        const doneLine=L.polyline(prog.completedWaypoints,{color:r.color,weight:4,opacity:opacity*0.3,dashArray:null});
+        doneLine.bindTooltip(`<b>${r.name}</b> — ${prog.percent}% completato`,{sticky:true});
+        routeLayerRef.current.addLayer(doneLine);
+        // Remaining segment: full colour
+        const remLine=L.polyline(prog.remainingWaypoints,{color:r.color,weight:4,opacity,dashArray:null});
+        routeLayerRef.current.addLayer(remLine);
+        // Percentage badge at the split point
+        const sp=prog.remainingWaypoints[0];
+        if(sp){
+          const badge=L.marker(sp,{
+            icon:L.divIcon({
+              className:"",
+              html:`<div style="background:${r.color};color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.55);font-family:monospace">${prog.percent}%</div>`,
+              iconSize:[46,22],iconAnchor:[23,11],
+            }),
+            zIndexOffset:600,interactive:false,
+          });
+          routeLayerRef.current.addLayer(badge);
+        }
+      }else{
+        const line=L.polyline(r.waypoints,{color:r.color,weight:4,opacity,dashArray:r.status==="pianificato"?"10 7":null});
+        if(!editMode)line.bindTooltip(`<b>${r.name}</b>${r.comune?`<br>${r.comune}`:""}`,{sticky:true});
+        routeLayerRef.current.addLayer(line);
+      }
     });
-  },[routes,visibleRoutes,editMode]);
+  },[routes,visibleRoutes,editMode,routeProgress]);
 
   // ── Zones overlay ───────────────────────────────────────────────────────────
   useEffect(()=>{
