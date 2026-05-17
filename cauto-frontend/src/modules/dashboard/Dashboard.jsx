@@ -24,6 +24,7 @@ const SuperAdminDashboard = lazy(() => import("@/modules/admin/SuperAdminDashboa
 const CompanyAdminPanel   = lazy(() => import("@/modules/admin/CompanyAdminPanel"));
 const SuperAdminAnalytics = lazy(() => import("@/modules/admin/SuperAdminAnalytics"));
 const PlanningModule      = lazy(() => import("@/modules/planning/PlanningModule"));
+const FinanceModule       = lazy(() => import("@/modules/finance/FinanceModule"));
 
 const NAV_DEF = [
   { id: "home",       label: "Dashboard",  short: "Home",      icon: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10", module: null },
@@ -34,6 +35,7 @@ const NAV_DEF = [
   { id: "fleet",      label: "Flotta",     short: "Flotta",    icon: "M3 22V8l9-6 9 6v14H3z M9 22v-6h6v6",                             modules: ["fuel", "suppliers", "costs"] },
   { id: "territorio", label: "Territorio", short: "Territorio",icon: "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01", module: "gps" },
   { id: "planning",   label: "Pianificatore", short: "Piani.", icon: "M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z", module: "planning" },
+  { id: "finance",    label: "OpsFinance",   short: "Finance", icon: "M3 3v18h18 M18 17V9 M13 17V5 M8 17v-3", module: "finance" },
   { id: "admin",      label: "Admin",      short: "Admin",     icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z", module: "admin" },
 ];
 
@@ -89,6 +91,7 @@ export default function Dashboard() {
       fleet:      <FlottaModule />,
       territorio: <TerritorioModule />,
       planning:   <PlanningModule />,
+      finance:    <FinanceModule />,
       admin:      adminPanel,
     };
     return map[active] || null;

@@ -17,7 +17,7 @@ binding    = "MEDIA"
 bucket_name = "opsonata-media"
 
 [triggers]
-crons = ["0 6 * * *"]   # Daily 6am UTC — PM scheduler + license expiry check
+crons = ["0 6 * * *", "0 2 * * *"]   # 06:00 UTC PM/license check | 02:00 UTC budget actuals
 
 [vars]
 ENVIRONMENT        = "production"

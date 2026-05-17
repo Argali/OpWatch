@@ -21,9 +21,12 @@ import reports          from "./routes/reports.js";
 import planning         from "./routes/planning.js";
 import upload, { serveMedia } from "./routes/upload.js";
 import superadmin, { auditLogs } from "./routes/superadmin.js";
-import bugs             from "./routes/bugs.js";
-import { seedPasswords } from "./seed.js";
-import { requireAuth }   from "./middleware/auth.js";
+import bugs                    from "./routes/bugs.js";
+import financeDepartments      from "./routes/finance-departments.js";
+import financeBudgets          from "./routes/finance-budgets.js";
+import { handleBudgetActualsCron } from "./cron-budget-actuals.js";
+import { seedPasswords }       from "./seed.js";
+import { requireAuth }         from "./middleware/auth.js";
 
 const app = new Hono();
 
@@ -74,6 +77,8 @@ app.route("/api/upload",           upload);
 app.route("/api/superadmin",       superadmin);
 app.route("/api/audit-logs",       auditLogs);
 app.route("/api/bugs",             bugs);
+app.route("/api/finance",          financeDepartments);
+app.route("/api/finance",          financeBudgets);
 
 // ── Public media serving from R2 (no auth — URLs are unguessable) ─────────────
 app.get("/api/media/:key{[^/]+}", serveMedia);
@@ -93,11 +98,12 @@ app.onError((err, c) => {
 export default {
   fetch: app.fetch,
 
-  // Cron: runs daily at 06:00 UTC (configured in wrangler.toml)
-  // Placeholder for PM scheduler + license expiry alerts (Phase 2 & 3)
-  async scheduled(_event, env, _ctx) {
-    console.log("[Cron] Daily job triggered at", new Date().toISOString());
-    // TODO Phase 2: import and run pmScheduler(env)
-    // TODO Phase 3: import and run alertEngine(env)
+  async scheduled(event, env, _ctx) {
+    console.log("[Cron] Triggered at", new Date().toISOString(), "cron:", event.cron);
+    if (event.cron === "0 2 * * *") {
+      await handleBudgetActualsCron(env);
+    }
+    // TODO Phase 2: pmScheduler(env) on "0 6 * * *"
+    // TODO Phase 3: alertEngine(env) on "0 6 * * *"
   },
 };

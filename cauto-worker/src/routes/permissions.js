@@ -5,7 +5,7 @@ import { rbac }        from "../middleware/rbac.js";
 const permissions = new Hono();
 permissions.use("*", requireAuth);
 
-const MODULES = ["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","segnalazioni","fuel","suppliers","costs","planning","territorio","admin"];
+const MODULES = ["gps","navigation","foto_timbrata","cdr","zone","punti","percorsi","pdf_export","workshop","segnalazioni","fuel","suppliers","costs","planning","territorio","finance","admin"];
 const ROLES   = ["company_admin","fleet_manager","responsabile_officina","coordinatore_officina","coordinatore_operativo"];
 const LEVELS  = ["none","view","edit","full"];
 

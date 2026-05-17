@@ -38,12 +38,50 @@ async function callValhalla(env, endpoint, body, timeoutMs = 12000) {
 }
 
 // ── Mock vehicles (fallback when GPS_PROVIDER != "geotab") ───────────────────
-const MOCK_VEHICLES = [
-  { id:"v1", plate:"FE-123-AA", name:"Camion 01", status:"active",   lat:44.8381, lng:11.6198, speed_kmh:35, comune:"Ferrara", settore:"A" },
-  { id:"v2", plate:"FE-456-BB", name:"Camion 02", status:"active",   lat:44.8321, lng:11.6301, speed_kmh:0,  comune:"Ferrara", settore:"B" },
-  { id:"v3", plate:"FE-789-CC", name:"Furgone 01",status:"active",   lat:44.8412, lng:11.6089, speed_kmh:28, comune:"Ferrara", settore:"A" },
-  { id:"v4", plate:"FE-012-DD", name:"Camion 03", status:"workshop", lat:44.8290, lng:11.6250, speed_kmh:0,  comune:"Ferrara", settore:"C" },
-];
+const MOCK_VEHICLES = (() => {
+  const DEFS = [
+    { prefix: "Camion",        total: 50 },
+    { prefix: "Furgone",       total: 40 },
+    { prefix: "Compattatore",  total: 30 },
+  ];
+  const SECTORS  = ["A","B","C","D","E","F"];
+  const COMUNI   = ["Ferrara","Cento","Bondeno","Comacchio","Argenta","Codigoro","Mesola","Portomaggiore"];
+  const LC       = 44.8381, LW = 0.15;   // lat centre / half-width
+  const LNC      = 11.6198, LNW = 0.20;  // lng centre / half-width
+  const PLATE_L  = "ABCDEFGHJKLMNPRSTUVWXYZ"; // no I,O,Q (Italian)
+
+  const out = [];
+  let seq = 0;
+  for (const { prefix, total } of DEFS) {
+    for (let i = 1; i <= total; i++) {
+      seq++;
+      const sIdx   = (seq - 1) % 6;
+      const cIdx   = (seq - 1) % COMUNI.length;
+      const roll   = seq % 10;
+      const status = roll < 7 ? "active" : roll < 9 ? "idle" : "workshop";
+      const speed  = status === "active" ? 15 + (seq * 7) % 50 : 0;
+      const fuel   = 15 + (seq * 13) % 85;
+      const lat    = Math.round((LC + ((seq * 17) % 300 - 150) * 0.001) * 10000) / 10000;
+      const lng    = Math.round((LNC + ((seq * 23) % 400 - 200) * 0.001) * 10000) / 10000;
+      const pNum   = 100 + seq;
+      const pL1    = PLATE_L[(seq * 3) % PLATE_L.length];
+      const pL2    = PLATE_L[(seq * 7) % PLATE_L.length];
+      out.push({
+        id:        `v${seq}`,
+        plate:     `FE-${pNum}-${pL1}${pL2}`,
+        name:      `${prefix} ${String(i).padStart(2, "0")}`,
+        status,
+        lat,
+        lng,
+        speed_kmh: speed,
+        fuel_pct:  fuel,
+        comune:    COMUNI[cIdx],
+        settore:   SECTORS[sIdx],
+      });
+    }
+  }
+  return out;
+})();
 
 // ── Geotab MyGeotab API adapter ───────────────────────────────────────────────
 const GT_SESSION_KEY = "geotab:session";
